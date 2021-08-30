@@ -5,6 +5,9 @@ import sys
 import signal
 from multiprocessing.sharedctypes import Array
 from ctypes import Structure, c_int32, c_float, c_bool, c_uint8
+from configs import runInfo
+
+debug = runInfo.debug
 
 class TrackToken:
     def __init__(self, bbox, tid):
@@ -161,14 +164,16 @@ class ShmManager():
         # handler 등록을 안 하면 시그널  발생 시 프로세스가 종료되어서 dummy handler를 추가함.
         for sig in self.sigList:
             signal.signal(sig, self.dummy_sig_handler)
-        print("{} init".format(self.myPid))
+        if debug:
+            print("{} init".format(self.myPid))
     
     def send_ready_signal(self):
         '''
         한 프레임에 대한 처리를 마친 뒤 다음 차례의 프로세스에게 신호를 주는 함수.
         '''
         os.kill(self.nextPid, signal.SIGUSR1)
-        print("{} send_ready_signal".format(self.myPid))
+        if debug:
+            print("{} send_ready_signal".format(self.myPid))
 
     def dummy_sig_handler(self, signum, frame):
         pass
@@ -186,12 +191,15 @@ class ShmManager():
         준비가 다 되면 data.frames와 data.people 배열에 접근하기 위한 인덱스를 반환한다.
         '''
         while not self.data.is_ready_to_write(peopleNum):
-            print("{} get_ready_to_write: Not yet.".format(self.myPid))
+            if debug:
+                print("{} get_ready_to_write: Not yet.".format(self.myPid))
             result = signal.sigtimedwait(self.sigList, 60)
             # timeout이 발생했을 경우
             if result == None:
                 print("{} get_ready_to_write: wait 1 min (frame: {}))".format(self.myPid, self.data.get_frame_in_processing()))
-        print("{} get_ready_to_write: I'm ready!".format(self.myPid))
+        
+        if debug:
+            print("{} get_ready_to_write: I'm ready!".format(self.myPid))
         self.data.update_peopleIdx(peopleNum);
         framesIdx, peopleIndices = self.data.get_next_frame_index()
         return framesIdx, peopleIndices
@@ -202,11 +210,14 @@ class ShmManager():
         준비가 다 되면 data.frames와 data.people 배열에 접근하기 위한 인덱스를 반환한다.
         '''
         while not self.data.is_ready_to_read():
-            print("{} get_ready_to_read: Not yet.".format(self.myPid))
+            if debug:
+                print("{} get_ready_to_read: Not yet.".format(self.myPid))
             result = signal.sigtimedwait(self.sigList, 60)
             # timeout이 발생했을 경우
             if result == None:
                 print("{} get_ready_to_read: wait 1 min (frame: {}))".format(self.myPid, self.data.get_frame_in_processing()))     
-        print("{} get_ready_to_read: I'm ready!".format(self.myPid))
+        
+        if debug:
+            print("{} get_ready_to_read: I'm ready!".format(self.myPid))
         framesIdx, peopleIndices = self.data.get_next_frame_index()
         return framesIdx, peopleIndices
