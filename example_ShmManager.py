@@ -1,7 +1,7 @@
 import os
 from timeit import time
 from multiprocessing import Process
-from utils.types import ShmManager, bbox
+from utils.types import ShmManager, BBox
 
 # 프레임 단위 정보 저장 배열의 크기
 FRAMES_SIZE = 4
@@ -27,7 +27,7 @@ def writer(shm, processOrder, nextPid):
         
         for pIdx in personIdx:
             # Write at people
-            shm.data.people[pIdx].bbox = bbox(1, 2, 3, 4)
+            shm.data.people[pIdx].bbox = BBox(1, 2, 3, 4)
             shm.data.people[pIdx].tid = pIdx + 1
             print("{} writer: write person = {}".format(myPid, shm.data.people[pIdx].tid))
             

@@ -24,13 +24,13 @@ class MaskToken(Enum) :
 class FrameInfo(Structure):
     _fields_ = [('reid', c_int32)]
 
-class bbox(Structure):
+class BBox(Structure):
     _fields_ = [('minX', c_float), ('minY', c_float), ('maxX', c_float), ('maxY', c_float)]
 
 Masked, NotMasked, NotNear = 1, 2, 3 # + FaceNotFound
 
 class PersonInfo(Structure):
-    _fields_ = [('bbox', bbox), ('tid', c_int32), ('isClose', c_bool), ('isMask', c_uint8)]
+    _fields_ = [('bbox', BBox), ('tid', c_int32), ('isClose', c_bool), ('isMask', c_uint8)]
 
 
 class Data():
