@@ -1,7 +1,8 @@
 import os
+from configs import runInfo
 from timeit import time
 from multiprocessing import Process
-from utils.types import ShmManager, BBox
+from utils.types import ShmManager, BBox, ShmSerialManager
 
 # 프레임 단위 정보 저장 배열의 크기
 FRAMES_SIZE = 4
@@ -33,6 +34,7 @@ def writer(shm, processOrder, nextPid):
             
         shm.finish_a_frame()
     print("{} writer: finish".format(myPid))
+    shm.process_finish()
     
     
 def reader_and_writer(shm, processOrder, nextPid):
@@ -61,6 +63,7 @@ def reader_and_writer(shm, processOrder, nextPid):
             
         shm.finish_a_frame()
     print("{} reader_and_writer: finish".format(myPid))
+    shm.process_finish()
     
     
 def reader_and_remover(shm, processOrder, nextPid):
@@ -81,12 +84,16 @@ def reader_and_remover(shm, processOrder, nextPid):
                 
         shm.finish_a_frame()
     print("{} reader_and_remover: finish".format(myPid))
+    shm.process_finish()
     
     
 if __name__ == '__main__':
     startTime = time.time()
     
-    shm = ShmManager(processNum=3, framesSize=FRAMES_SIZE, peopleSize=PEOPLE_SIZE)
+    if runInfo.parallel_processing:
+        shm = ShmManager(processNum=3, framesSize=FRAMES_SIZE, peopleSize=PEOPLE_SIZE)
+    else:
+        shm = ShmSerialManager(processNum=3, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*max(PEOPLE_NUM_LIST))
     
     p2 = Process(target=reader_and_writer, args=(shm, 1, os.getpid()))
     p2.start()

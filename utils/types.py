@@ -3,6 +3,7 @@ from enum import Enum
 import os
 import sys
 import signal
+from multiprocessing import Value
 from multiprocessing.sharedctypes import Array
 from ctypes import Structure, c_int32, c_float, c_bool, c_uint8
 from configs import runInfo
@@ -160,12 +161,18 @@ class ShmManager():
         self.data.set_process_order(myOrder)
         self.myPid = myPid
         self.nextPid = nextPid
-        self.sigList = [signal.SIGUSR1, signal.SIGALRM]
-        # handler 등록을 안 하면 시그널  발생 시 프로세스가 종료되어서 dummy handler를 추가함.
+        self.sigList = [signal.SIGUSR1]
+        # handler 등록을 하지 않아 시그널  발생 시 프로세스가 종료되는 것을 막기 위해 dummy handler를 추가함.
         for sig in self.sigList:
             signal.signal(sig, self.dummy_sig_handler)
         if debug:
             print("{} init".format(self.myPid))
+    
+    def process_finish(self):
+        '''
+        프로세스가 끝났을 때 호출하는 함수.
+        '''
+        pass
     
     def send_ready_signal(self):
         '''
@@ -219,5 +226,70 @@ class ShmManager():
         
         if debug:
             print("{} get_ready_to_read: I'm ready!".format(self.myPid))
+        framesIdx, peopleIndices = self.data.get_next_frame_index()
+        return framesIdx, peopleIndices
+
+class ShmSerialManager():
+    def __init__(self, processNum, framesSize, peopleSize):
+        self.data = Data(processNum, framesSize, peopleSize)
+        self.lastProcess = processNum-1
+        self.finishedProcess = Value('l', -1, lock=False)
+
+    def process_init(self, myOrder, myPid, nextPid):
+        '''
+        메모리를 공유하는 각 프로세스에 대한 정보를 초기화하는 함수.
+        '''
+        self.data.set_process_order(myOrder)
+        self.myPid = myPid
+        self.nextPid = nextPid
+        # handler 등록을 하지 않아 시그널  발생 시 프로세스가 종료되는 것을 막기 위해 dummy handler를 추가함.
+        signal.signal(signal.SIGUSR1, self.dummy_sig_handler)
+        while self.finishedProcess.value != (self.data.myOrder - 1):
+            if debug:
+                print("{} process_init: Not yet.".format(self.myPid))
+            signal.pause()
+    
+        if debug:
+            print("{} init".format(self.myPid))
+            
+    def process_finish(self):
+        '''
+        프로세스가 끝났을 때 호출하는 함수.
+        '''
+        self.finishedProcess.value += 1
+        if self.finishedProcess.value != self.lastProcess:
+            self.send_ready_signal()
+    
+    def send_ready_signal(self):
+        '''
+        한 프레임에 대한 처리를 마친 뒤 다음 차례의 프로세스에게 신호를 주는 함수.
+        '''
+        os.kill(self.nextPid, signal.SIGUSR1)
+        if debug:
+            print("{} send_ready_signal".format(self.myPid))
+
+    def dummy_sig_handler(self, signum, frame):
+        pass
+    
+    def finish_a_frame(self):
+        '''
+        한 프레임에 대한 처리를 완료했을 때 호출하는 함수.
+        '''
+        self.data.finish_a_frame()
+
+    def get_ready_to_write(self, peopleNum):
+        '''
+        다음 프레임에 대한 정보를 공유 메모리에 쓰기 전에 호출하는 함수.
+        준비가 다 되면 data.frames와 data.people 배열에 접근하기 위한 인덱스를 반환한다.
+        '''
+        self.data.update_peopleIdx(peopleNum);
+        framesIdx, peopleIndices = self.data.get_next_frame_index()
+        return framesIdx, peopleIndices
+
+    def get_ready_to_read(self):
+        '''
+        다음 프레임에 대한 정보를 공유 메모리로부터 읽기 전에 호출하는 함수.
+        준비가 다 되면 data.frames와 data.people 배열에 접근하기 위한 인덱스를 반환한다.
+        '''
         framesIdx, peopleIndices = self.data.get_next_frame_index()
         return framesIdx, peopleIndices
