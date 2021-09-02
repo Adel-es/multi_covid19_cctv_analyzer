@@ -264,7 +264,6 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             continue
         if frame_no > end_frame:
             break
-        print('reid frame: ', frame_no)
         frameIdx, personIdx = shm.get_ready_to_read()
         
         # frame에 사람이 없다면 pass
