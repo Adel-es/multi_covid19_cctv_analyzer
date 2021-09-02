@@ -17,7 +17,7 @@ PEOPLE_NUM_LIST = [3, 1, 3, 0, 7, 8, 5]
 
 def writer(shm, processOrder, nextPid):
     myPid = 'A'
-    shm.process_init(processOrder, myPid, nextPid)
+    shm.init_process(processOrder, myPid, nextPid)
     for fIdx in range(FRAME_NUM):
         peopleNum = PEOPLE_NUM_LIST[fIdx]
         frameIdx, personIdx = shm.get_ready_to_write(peopleNum)
@@ -34,12 +34,12 @@ def writer(shm, processOrder, nextPid):
             
         shm.finish_a_frame()
     print("{} writer: finish".format(myPid))
-    shm.process_finish()
+    shm.finish_process()
     
     
 def reader_and_writer(shm, processOrder, nextPid):
     myPid = '\tB'
-    shm.process_init(processOrder, myPid, nextPid)
+    shm.init_process(processOrder, myPid, nextPid)
     
     for fIdx in range(FRAME_NUM):
         frameIdx, personIdx = shm.get_ready_to_read()
@@ -63,12 +63,12 @@ def reader_and_writer(shm, processOrder, nextPid):
             
         shm.finish_a_frame()
     print("{} reader_and_writer: finish".format(myPid))
-    shm.process_finish()
+    shm.finish_process()
     
     
 def reader_and_remover(shm, processOrder, nextPid):
     myPid = '\t\tC'
-    shm.process_init(processOrder, myPid, nextPid)
+    shm.init_process(processOrder, myPid, nextPid)
     
     for fIdx in range(FRAME_NUM):
         frameIdx, personIdx = shm.get_ready_to_read()
@@ -84,7 +84,7 @@ def reader_and_remover(shm, processOrder, nextPid):
                 
         shm.finish_a_frame()
     print("{} reader_and_remover: finish".format(myPid))
-    shm.process_finish()
+    shm.finish_process()
     
     
 if __name__ == '__main__':
@@ -103,4 +103,4 @@ if __name__ == '__main__':
 
     reader_and_remover(shm, 2, p1.pid)
     
-    print("Runing time:", time.time() - startTime)
+    print("Running time:", time.time() - startTime)

@@ -28,7 +28,7 @@ class FrameInfo(Structure):
 class BBox(Structure):
     _fields_ = [('minX', c_float), ('minY', c_float), ('maxX', c_float), ('maxY', c_float)]
 
-Masked, NotMasked, NotNear = 1, 2, 3 # + FaceNotFound
+Masked, NotMasked, NotNear, FaceNotFound = 1, 2, 3, 4
 
 class PersonInfo(Structure):
     _fields_ = [('bbox', BBox), ('tid', c_int32), ('isClose', c_bool), ('isMask', c_uint8)]
@@ -154,7 +154,7 @@ class ShmManager():
     def __init__(self, processNum, framesSize, peopleSize):
         self.data = Data(processNum, framesSize, peopleSize)
     
-    def process_init(self, myOrder, myPid, nextPid):
+    def init_process(self, myOrder, myPid, nextPid):
         '''
         메모리를 공유하는 각 프로세스에 대한 정보를 초기화하는 함수.
         '''
@@ -168,7 +168,7 @@ class ShmManager():
         if debug:
             print("{} init".format(self.myPid))
     
-    def process_finish(self):
+    def finish_process(self):
         '''
         프로세스가 끝났을 때 호출하는 함수.
         '''
@@ -235,7 +235,7 @@ class ShmSerialManager():
         self.lastProcess = processNum-1
         self.finishedProcess = Value('l', -1, lock=False)
 
-    def process_init(self, myOrder, myPid, nextPid):
+    def init_process(self, myOrder, myPid, nextPid):
         '''
         메모리를 공유하는 각 프로세스에 대한 정보를 초기화하는 함수.
         '''
@@ -252,7 +252,7 @@ class ShmSerialManager():
         if debug:
             print("{} init".format(self.myPid))
             
-    def process_finish(self):
+    def finish_process(self):
         '''
         프로세스가 끝났을 때 호출하는 함수.
         '''

@@ -1,6 +1,6 @@
 import cv2
 from distance import getCentroid
-from utils.types import MaskToken
+from utils.types import Masked, NotMasked, NotNear, FaceNotFound
 from configs import runInfo
 
 input_video_path = runInfo.input_video_path
@@ -8,78 +8,89 @@ output_video_path = runInfo.output_video_path
 start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 
-def writeVideo(tracking, reid, distance, mask):
+def writeVideo(shm, processOrder, nextPid):
+    
     # Prepare input video
     video_capture = cv2.VideoCapture(input_video_path)
     frame_index = -1
-        
+    
     # Prepare output video
     w = int(video_capture.get(3))
     h = int(video_capture.get(4))
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     # fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
     out = cv2.VideoWriter(output_video_path, fourcc, 30, (w, h))
-        
-    # for test
+    
+    myPid = 'writeVideo'
+    shm.init_process(processOrder, myPid, nextPid)
+    
     while True:
-        if start_frame == 0:
-            break
         ret, frame = video_capture.read()
-        frame_index += 1
         if ret != True:
             break
-        if frame_index < start_frame-1:
-            continue
-        elif frame_index == start_frame-1:
-            break
-        else:
-            print("Frame capture error! Check start_frame and end_frame: {}, {}".format(start_frame, end_frame))
-    # for test
         
-    for aFrameTracking, aFrameReid, aFrameDistance, aFrameMask in zip(tracking, reid, distance, mask):
-        ret, frame = video_capture.read()
-        frame_index += 1
-        if ret != True:
-            break
         # for test
+        frame_index += 1
+        if frame_index < start_frame:
+            continue
         if frame_index > end_frame:
             break
         # for test
-            
+        
+        frameIdx, personIdx = shm.get_ready_to_read()
+        
         # Draw detection and tracking result for a frame
-        TEXT_UP_FROM_BBOX = 2
-        for person in aFrameTracking:
-            cv2.rectangle(frame, (int(person.bbox[0]), int(person.bbox[1])), (int(person.bbox[2]), int(person.bbox[3])), (255, 255, 255), 2) #white 
-            cv2.putText(frame, "ID: " + str(person.tid), (int(person.bbox[0]), int(person.bbox[1])-TEXT_UP_FROM_BBOX), 0,
-                            8e-4 * frame.shape[0], (0, 255, 0), 3) #green 
+        for pIdx in personIdx:
+            draw_bbox_and_tid(frame=frame, person=shm.data.people[pIdx], isConfirmed=False)
             
-        if aFrameReid != -1: # if there is confirmed case
+        reid = shm.data.frames[frameIdx].reid
+        if reid != -1: # if there is confirmed case
+            confirmed = shm.data.people[reid]
+            
             # Draw red bbox for confirmed case
-            confirmed = aFrameTracking[aFrameReid]
-            cv2.rectangle(frame, (int(confirmed.bbox[0]), int(confirmed.bbox[1])), (int(confirmed.bbox[2]), int(confirmed.bbox[3])), (0, 0, 255), 2)
-            cv2.putText(frame, "ID: " + str(confirmed.tid), (int(confirmed.bbox[0]), int(confirmed.bbox[1])-TEXT_UP_FROM_BBOX), 0,
-                            8e-4 * frame.shape[0], (0, 0, 255), 3) #red 
+            draw_bbox_and_tid(frame=frame, person=confirmed, isConfirmed=True)
                 
             # Draw distance result for a frame
             c_stand_point = getCentroid(bbox=confirmed.bbox, return_int=True)
-            for idx, is_close in enumerate(aFrameDistance):
-                if not is_close:
+            for pIdx in personIdx:
+                person = shm.data.people[pIdx]
+                if not person.isClose:
                     continue
-                closePerson = aFrameTracking[idx]
-                stand_point = getCentroid(bbox=closePerson.bbox, return_int=True)
+                stand_point = getCentroid(bbox=person.bbox, return_int=True)
                 cv2.line(frame, c_stand_point, stand_point, (0, 0, 255), 2) #red 
 
-            for idx, is_masked in enumerate(aFrameMask) : 
-                square = aFrameTracking[idx].bbox
-                if is_masked == MaskToken.NotNear : 
+            # Draw mask result for a frame
+            for pIdx in personIdx:
+                person = shm.data.people[pIdx]
+                square = person.bbox
+                if person.isMask == NotNear : 
                     continue 
-                elif is_masked == MaskToken.NotMasked : 
-                    cv2.rectangle(frame, (int(square[0]+5), int(square[1]+5)), (int(square[2]-5), int(square[3]-5)), (127, 127, 255), 2) #light pink
-                elif is_masked == MaskToken.Masked : 
-                    cv2.rectangle(frame, (int(square[0]+5), int(square[1]+5)), (int(square[2]-5), int(square[3]-5)), (127, 255, 127), 2) #light green 
-                elif is_masked == MaskToken.FaceNotFound : 
-                    cv2.rectangle(frame, (int(square[0]+5), int(square[1]+5)), (int(square[2]-5), int(square[3]-5)), (0, 165, 255), 2) #orange 
+                elif person.isMask == NotMasked : 
+                    cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (127, 127, 255), 2) #light pink
+                elif person.isMask == Masked : 
+                    cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (127, 255, 127), 2) #light green 
+                elif person.isMask == FaceNotFound : 
+                    cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (0, 165, 255), 2) #orange 
         out.write(frame)
+        shm.finish_a_frame()
         
+    shm.finish_process()
     out.release()
     video_capture.release()
+
+def draw_bbox_and_tid(frame, person, isConfirmed):
+    TEXT_UP_FROM_BBOX = 2
+    bboxLeftUpPoint = (int(person.bbox.minX), int(person.bbox.minY))
+    bboxRightDownPoint = (int(person.bbox.maxX), int(person.bbox.maxY))
+    tidText = "ID: " + str(person.tid)
+    tidPosition = (bboxLeftUpPoint[0], bboxLeftUpPoint[1]-TEXT_UP_FROM_BBOX)
+    
+    if isConfirmed:
+        bboxColor = (0, 0, 255) # red
+        tidColor = (0, 0, 255) # red
+    else:
+        bboxColor = (255, 255, 255) # white
+        tidColor = (0, 255, 0) # green
+        
+    cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 2)
+    cv2.putText(frame, tidText, tidPosition, 0, 8e-4 * frame.shape[0], tidColor, 3)
