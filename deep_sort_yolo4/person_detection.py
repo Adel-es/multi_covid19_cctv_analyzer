@@ -45,8 +45,6 @@ def positioning_in_frame(bbox, f_width, f_height):
         bbox[3] = f_height
 
 def detectAndTrack(shm, processOrder, nextPid):
-    myPid = 'detectAndTrack'
-    shm.init_process(processOrder, myPid, nextPid)
     
     gpus = tf.config.experimental.list_physical_devices('GPU')
     if gpus:
@@ -74,6 +72,9 @@ def detectAndTrack(shm, processOrder, nextPid):
     # Prepare input videovideo_path
     video_capture = cv2.VideoCapture(input_video_path)
     frame_index = -1
+    
+    myPid = 'detectAndTrack'
+    shm.init_process(processOrder, myPid, nextPid)
     
     while True:
         ret, frame = video_capture.read()
@@ -130,5 +131,5 @@ def detectAndTrack(shm, processOrder, nextPid):
         shm.finish_a_frame()
     # end of while()
     
-    video_capture.release()
     shm.finish_process()
+    video_capture.release()

@@ -9,8 +9,6 @@ start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 
 def writeVideo(shm, processOrder, nextPid):
-    myPid = 'writeVideo'
-    shm.init_process(processOrder, myPid, nextPid)
     
     # Prepare input video
     video_capture = cv2.VideoCapture(input_video_path)
@@ -22,6 +20,9 @@ def writeVideo(shm, processOrder, nextPid):
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     # fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
     out = cv2.VideoWriter(output_video_path, fourcc, 30, (w, h))
+    
+    myPid = 'writeVideo'
+    shm.init_process(processOrder, myPid, nextPid)
     
     while True:
         ret, frame = video_capture.read()
@@ -73,9 +74,9 @@ def writeVideo(shm, processOrder, nextPid):
         out.write(frame)
         shm.finish_a_frame()
         
+    shm.finish_process()
     out.release()
     video_capture.release()
-    shm.finish_process()
 
 def draw_bbox_and_tid(frame, person, isConfirmed):
     TEXT_UP_FROM_BBOX = 2
