@@ -31,8 +31,8 @@ class Market1501(ImageDataset):
     def __init__(self, root='', market1501_500k=False, **kwargs):
         self.root = osp.abspath(osp.expanduser(root))
         self.dataset_dir = osp.join(self.root, self.dataset_dir)
-        self.download_dataset(self.dataset_dir, self.dataset_url)
-        
+        # self.download_dataset(self.dataset_dir, self.dataset_url) # 자동으로 다운로드 받는 코드 삭제
+       
         # allow alternative directory structure
         self.data_dir = self.dataset_dir
         data_dir = osp.join(self.data_dir, 'Market-1501-v15.09.15')
