@@ -1,4 +1,9 @@
 import math
+from configs import runInfo
+
+start_frame = runInfo.start_frame
+end_frame = runInfo.end_frame
+FRAME_NUM = end_frame - start_frame + 1
 
 DISTANCE_BBOX_RATIO_CRITERIA = 5
 
@@ -7,33 +12,32 @@ def getCentroid(bbox, return_int=False):
     Returns the coordinate of the center point of the lower side of the bbox.
     If return_int is true, the type of return value is (int, int), otherwise, (float, float)
     '''
-    start_x, start_y, end_x, end_y = bbox
-    centroid_x = (start_x + end_x) / 2
+    centroid_x = (bbox.minX + bbox.maxX) / 2
+    max_y = bbox.maxY
     if return_int:
         centroid_x = int(centroid_x)
-        end_y = int(end_y)
-    centroid = (centroid_x, end_y)
+        max_y = int(max_y)
+    centroid = (centroid_x, max_y)
     return centroid
 
-def getBoundingBoxWidth(bbox):
-    start_x, start_y, end_x, end_y = bbox
-    width = end_x - start_x
-    return width
-
-def checkDistance(trackingRslt, reidRslt, distanceRslt):
-    for aFrameTracking, aFrameReid in zip(trackingRslt, reidRslt):       
-        aFrameDistance = []
-        
+def checkDistance(shm, processOrder, nextPid):
+    myPid = 'checkDistance'
+    shm.init_process(processOrder, myPid, nextPid)
+    
+    for fIdx in range(FRAME_NUM):
+        frameIdx, personIdx = shm.get_ready_to_read()
+    
+        reid = shm.data.frames[frameIdx].reid
         # If there is the confirmed case in this frame
-        if aFrameReid != -1:
-            confirmedIdx = aFrameReid
-            confirmed_case = aFrameTracking[confirmedIdx]
-        
-            c_width = getBoundingBoxWidth(confirmed_case.bbox)
-            c_centroid = getCentroid(confirmed_case.bbox)
-            for person in aFrameTracking:
+        if reid != -1:
+            confirmed = shm.data.people[reid]
+            c_width = confirmed.bbox.maxX - confirmed.bbox.minX
+            c_centroid = getCentroid(confirmed.bbox)
+            
+            for pIdx in personIdx:
                 # Find the average bounding box width of two people
-                width = getBoundingBoxWidth(person.bbox)
+                person = shm.data.people[pIdx]
+                width = person.bbox.maxX - person.bbox.minX
                 bbox_average_width = (c_width + width) / 2
                 # Find the distance between centroids for two people
                 centroid = getCentroid(person.bbox)
@@ -41,7 +45,8 @@ def checkDistance(trackingRslt, reidRslt, distanceRslt):
                 # Compare the bbox_average_width and distance to determine if the two people are close
                 is_close = distance <= DISTANCE_BBOX_RATIO_CRITERIA * bbox_average_width
                 if is_close:
-                    aFrameDistance.append(True)
+                    shm.data.people[pIdx].isClose = True
                 else:
-                    aFrameDistance.append(False)        
-        distanceRslt.append(aFrameDistance)
+                    shm.data.people[pIdx].isClose = False
+        shm.finish_a_frame()
+    shm.finish_process()

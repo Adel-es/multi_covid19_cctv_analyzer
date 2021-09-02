@@ -4,11 +4,17 @@
 from __future__ import division, print_function, absolute_import
 
 import os
+import sys
+root_path = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(root_path)
+sys.path.append(root_path + '/deep_sort_yolo4')
+
 import warnings
 import cv2
 import numpy as np
 from PIL import Image
 from yolo import YOLO
+import tensorflow as tf
 
 from deep_sort import preprocessing
 from deep_sort import nn_matching
@@ -17,7 +23,7 @@ from deep_sort.tracker import Tracker
 from tools import generate_detections as gdet
 
 from configs import runInfo
-from utils.types import TrackToken
+from utils.types import BBox
 
 warnings.filterwarnings('ignore')
 
@@ -38,7 +44,19 @@ def positioning_in_frame(bbox, f_width, f_height):
     if bbox[3] > f_height:
         bbox[3] = f_height
 
-def detectAndTrack(trackingRslt):
+def detectAndTrack(shm, processOrder, nextPid):
+    myPid = 'detectAndTrack'
+    shm.init_process(processOrder, myPid, nextPid)
+    
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    if gpus:
+        # Limit TensorFlow to use only the first GPU
+        try:
+            tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
+            tf.config.experimental.set_memory_growth(gpus[0], True)
+        except RuntimeError as e:
+            print(e)
+                
     # Get detection model
     yolo = YOLO()
 
@@ -88,7 +106,8 @@ def detectAndTrack(trackingRslt):
         tracker.predict()
         tracker.update(detections)
 
-        aFrameTracking = []
+        tids = []
+        bboxes = []
         for track in tracker.tracks:
             if not track.is_confirmed() or track.time_since_update > 1:
                 continue
@@ -98,8 +117,18 @@ def detectAndTrack(trackingRslt):
             f_height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float `height`
             positioning_in_frame(bbox, f_width, f_height)
             
-            aFrameTracking.append( TrackToken(bbox, track.track_id) )
-        trackingRslt.append(aFrameTracking)
+            tids.append(track.track_id)
+            bboxes.append(bbox)
+            
+        peopleNum = len(tids)
+        frameIdx, personIdx = shm.get_ready_to_write(peopleNum)
+        for i in range(peopleNum):
+            # Write at people
+            shm.data.people[ personIdx[i] ].bbox = BBox(bboxes[i][0], bboxes[i][1], bboxes[i][2], bboxes[i][3])
+            shm.data.people[ personIdx[i] ].tid = tids[i]
+            
+        shm.finish_a_frame()
     # end of while()
     
     video_capture.release()
+    shm.finish_process()
