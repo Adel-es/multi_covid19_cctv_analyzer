@@ -10,6 +10,7 @@ from main import config_for_topdb, run_top_db_test
 
 from configs import runInfo
 from collections import Counter # for test
+import random
 
 # input_video_path = 'OxfordTownCentreDataset.avi'
 input_video_path = runInfo.input_video_path
@@ -18,42 +19,52 @@ start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 query_image_path = runInfo.query_image_path
 
+def fakeReid(shm, processOrder, nextPid):
+    myPid = 'fakeReid'
+    shm.init_process(processOrder, myPid, nextPid)
     
-def fakeReid(trackingRslt, reidRslt):
-    # Find most frequent tid(person) in video frames
-    idList = []
-    for aFrameTracking in trackingRslt:
-        for idx, person in enumerate(aFrameTracking):
-            idList.append(person.tid)
-    if len(idList) == 0:
-        print("Nobody in this video: {}".format(input_video_path))
-        print("Tracking result: {}".format(trackingRslt))
-        confirmed_id = -1
-    else:
-        confirmed_id = Counter(idList).most_common(n=1)[0][0]
+    # select confirmed case randomly
+    FRAME_NUM = end_frame - start_frame + 1
+    doneFIdx = FRAME_NUM - 1
+    for fIdx in range(FRAME_NUM):
+        frameIdx, personIdx = shm.get_ready_to_read()
+        if len(personIdx) > 0:
+            random_pIdx = random.choice(personIdx)
+            confirmed_tid = shm.data.people[random_pIdx].tid
+            shm.data.frames[frameIdx].reid = random_pIdx
+            shm.finish_a_frame()
+            doneFIdx = fIdx
+            break
+        shm.data.frames[frameIdx].reid = -1
+        shm.finish_a_frame()
     
-    # Fill in the reidRslt
-    for aFrameTracking in trackingRslt:
-        confirmed_idx = -1
-        for idx, person in enumerate(aFrameTracking):
-            if person.tid == confirmed_id:
-                confirmed_idx = idx
+    # find confirmed_tid
+    for fIdx in range(doneFIdx + 1, FRAME_NUM):
+        frameIdx, personIdx = shm.get_ready_to_read()
+        shm.data.frames[frameIdx].reid = -1
+        for pIdx in personIdx:
+            if shm.data.people[pIdx].tid == confirmed_tid:
+                shm.data.frames[frameIdx].reid = pIdx
                 break
-        reidRslt.append(confirmed_idx)
-
-def personReid_topdb(trackingRslt, reidRslt):
+        shm.finish_a_frame()
+        
+    shm.finish_process()
+    
+def personReid_topdb(shm, processOrder, nextPid):
     # CUDA_VISIBLE_DEVICES를 0으로 설정하지 않으면 topdb 돌릴 때 아래와 같은 err가 뜬다
     # TypeError: forward() missing 1 required positional argument: 'x'
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     top_db_engine, top_db_cfg = config_for_topdb( root_path , query_image_path=query_image_path)
+    myPid = 'topdbReid'
     run_top_db_test(engine=top_db_engine, cfg=top_db_cfg, 
                     start_frame=start_frame, end_frame=end_frame,
-                    input_video_path=input_video_path, output_video_path=output_video_path, 
-                    tracking_list=trackingRslt, reid_list=reidRslt, 
+                    input_video_path=input_video_path, output_video_path=output_video_path,
+                    shm=shm, processOrder=processOrder, myPid=myPid, nextPid=nextPid,
                     query_image_path=query_image_path)
     # 지금 reidRslt에서 확진자가 없는 경우(-1)는 나오지 않는다. (reid 정확성 문제 때문에)
-
-def personReid_la_transformer(trackingRslt, reidRslt):
+    
+    
+def personReid_la_transformer(shm, processOrder, nextPid):
     calculation_mode = 'custom'
     
     if calculation_mode == 'custom':
@@ -62,22 +73,56 @@ def personReid_la_transformer(trackingRslt, reidRslt):
         from la_transformer_original_calc import config_la_transformer, run_la_transformer
         
     model, data_transforms = config_la_transformer(root_path)
+    
+    myPid = 'laReid'
+    shm.init_process(processOrder, myPid, nextPid)
+    
     run_la_transformer(model=model, data_transforms=data_transforms,
                     root_path=root_path, query_image_path=query_image_path,
                     start_frame=start_frame, end_frame=end_frame,
                     input_video_path=input_video_path, output_video_path=output_video_path, 
-                    tracking_list=trackingRslt, reid_list=reidRslt,
+                    shm=shm, processOrder=processOrder, myPid=myPid, nextPid=nextPid,
                     debug_enable=False,
                     debug_logging_file_path=root_path+"/la_trans_log.txt")
-
-def runPersonReid(trackingRslt, reidRslt, select_reid_model):
     
+    shm.finish_process()
+    
+# def personReid_topdb(trackingRslt, reidRslt):
+#     # CUDA_VISIBLE_DEVICES를 0으로 설정하지 않으면 topdb 돌릴 때 아래와 같은 err가 뜬다
+#     # TypeError: forward() missing 1 required positional argument: 'x'
+#     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+#     top_db_engine, top_db_cfg = config_for_topdb( root_path , query_image_path=query_image_path)
+#     run_top_db_test(engine=top_db_engine, cfg=top_db_cfg, 
+#                     start_frame=start_frame, end_frame=end_frame,
+#                     input_video_path=input_video_path, output_video_path=output_video_path, 
+#                     tracking_list=trackingRslt, reid_list=reidRslt, 
+#                     query_image_path=query_image_path)
+#     # 지금 reidRslt에서 확진자가 없는 경우(-1)는 나오지 않는다. (reid 정확성 문제 때문에)
+
+# def personReid_la_transformer(trackingRslt, reidRslt):
+#     calculation_mode = 'custom'
+    
+#     if calculation_mode == 'custom':
+#         from la_transformer import config_la_transformer, run_la_transformer
+#     elif calculation_mode == 'original':
+#         from la_transformer_original_calc import config_la_transformer, run_la_transformer
+        
+#     model, data_transforms = config_la_transformer(root_path)
+#     run_la_transformer(model=model, data_transforms=data_transforms,
+#                     root_path=root_path, query_image_path=query_image_path,
+#                     start_frame=start_frame, end_frame=end_frame,
+#                     input_video_path=input_video_path, output_video_path=output_video_path, 
+#                     tracking_list=trackingRslt, reid_list=reidRslt,
+#                     debug_enable=False,
+#                     debug_logging_file_path=root_path+"/la_trans_log.txt")
+
+def runPersonReid(shm, processOrder, nextPid, select_reid_model): 
     if select_reid_model == 'topdb':
-        personReid_topdb(trackingRslt, reidRslt)
+        personReid_topdb(shm, processOrder, nextPid)
     elif select_reid_model == 'la':
-        personReid_la_transformer(trackingRslt, reidRslt)
+        personReid_la_transformer(shm, processOrder, nextPid)
     elif select_reid_model == 'fake':
-        fakeReid(trackingRslt, reidRslt)
+        fakeReid(shm, processOrder, nextPid)
     else:
         print("Plz Select PersonReid model")
         sys.exit()
