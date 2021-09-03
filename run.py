@@ -45,7 +45,7 @@ if __name__ == '__main__':
     distanceProc = Process(target=checkDistance, args=(shm, 2, os.getpid()))
     distanceProc.start()
     
-    reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, 'topdb')) # 'fake' or 'topdb' or 'la'
+    reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, 'la', 2)) # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
     reidProc.start()
 
     detectTrackProc = Process(target=detectAndTrack, args=(shm, 0, reidProc.pid))

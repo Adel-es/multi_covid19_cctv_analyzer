@@ -37,14 +37,14 @@ import numpy as np
 import cv2
 import imutils
 
-os.environ['CUDA_VISIBLE_DEVICES']='0'
-device = "cuda"
+from gpuinfo import GPUInfo
 
 # Config parameters
 batch_size = 8
 gamma = 0.7
 seed = 42
 
+device = ""
 model_save_path = ""
 image_data_dir = ""
 query_data_dir = "" 
@@ -58,7 +58,6 @@ def get_activation(name):
     return hook
 
 def extract_feature(model,image):
-    
     img = image.to(device)
     output = model(img)
     # output = output.view([1,-1]) # tensor 값을 (1,x,y) -> (1,x*y)로 조정
@@ -89,7 +88,10 @@ def read_image(path):
             pass
     return img, id
 
-def config_la_transformer(root_path):
+def config_la_transformer(root_path, gpu_idx, gpu_usage_check=False):
+    global device
+    device = torch.device("cuda:{}".format(gpu_idx))
+    
     model_save_path = root_path + "/personReid/LA_Transformer/model/"
     # image_data_dir = root_path + "/personReid/LA_Transformer/data/"
     
@@ -97,9 +99,20 @@ def config_la_transformer(root_path):
     ## Load Model
     # Load ViT
     print("Load ViT......")
+    
+    if gpu_usage_check == True:
+        print(" * before loading LA-trans model * ")
+        GPUInfo.get_user(1)
+        GPUInfo.get_info()        
+        
     vit_base = timm.create_model('vit_base_patch16_224', pretrained=True, num_classes=751)
     vit_base= vit_base.to(device)
 
+    if gpu_usage_check == True:
+        print(" * After loading LA-trans model * ")
+        GPUInfo.get_user(1)
+        GPUInfo.get_info()       
+        
     # Create La-Transformer
     print("Create La-Transformer......")
     model = LATransformerTest(vit_base, lmbd=8).to(device)
