@@ -1,6 +1,8 @@
 import os
+import torch
 from multiprocessing import Process
 from utils.types import ShmManager, ShmSerialManager
+from utils.logger import make_logger 
 from configs import runInfo
 from timeit import time
 
@@ -8,7 +10,7 @@ from deep_sort_yolo4.person_detection import detectAndTrack
 from distance import checkDistance
 import random # for fakeReid
 from personReid.personReid import runPersonReid
-from maskdetect.maskDetect import runMaskDetect
+from maskdetect.maskDetect import runMaskDetection
 from write_video import writeVideo
 
 input_video_path = runInfo.input_video_path
@@ -58,7 +60,9 @@ FRAME_NUM = end_frame - start_frame + 1
 # 프레임 인원 수의 상한선
 MAX_PEOPLE_NUM = 10
 
+
 if __name__ == '__main__':
+    logger = make_logger(runInfo.logfile_name, 'root')
     startTime = time.time()
     
     if runInfo.parallel_processing:
@@ -75,7 +79,7 @@ if __name__ == '__main__':
     distanceProc = Process(target=checkDistance, args=(shm, 2, os.getpid()))
     distanceProc.start()
     
-    reidProc = Process(target=fakeReid, args=(shm, 1, distanceProc.pid))
+    reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, 'la', 2)) # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
     reidProc.start()
 
     detectTrackProc = Process(target=detectAndTrack, args=(shm, 0, reidProc.pid))
@@ -84,4 +88,4 @@ if __name__ == '__main__':
     # writeVideo(shm, 4, detectTrackProc.pid)
     writeVideo(shm, 3, detectTrackProc.pid)
     
-    print("Running time:", time.time() - startTime)
+    logger.info("Running time: {}".format(time.time() - startTime))
