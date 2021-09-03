@@ -11,7 +11,7 @@ from distance import checkDistance
 
 import random # for fakeReid
 from personReid.personReid import runPersonReid
-from maskdetect.maskDetect import runMaskDetection
+from maskdetect.maskDetect import runMaskDetect
 from write_video import writeVideo
 
 input_video_path = runInfo.input_video_path
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     distanceProc = Process(target=checkDistance, args=(shm, 2, os.getpid()))
     distanceProc.start()
     
-    reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, 'la', 2)) # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
+    reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, 'topdb', runInfo.reid_gpu_id)) # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
     reidProc.start()
 
     detectTrackProc = Process(target=detectAndTrack, args=(shm, 0, reidProc.pid))

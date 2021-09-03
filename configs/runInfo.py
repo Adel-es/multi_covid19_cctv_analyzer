@@ -16,3 +16,8 @@ file_log_level = logging.DEBUG
 parallel_processing = True
 use_mask_voting = False 
 
+# allocate specific gpu device
+tracking_gpu_id=0
+reid_gpu_id=1
+face_gpu_id=2
+mask_gpu_id=3
