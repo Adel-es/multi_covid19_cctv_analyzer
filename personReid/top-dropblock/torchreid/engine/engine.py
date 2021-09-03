@@ -786,14 +786,20 @@ class Engine(object):
         print('Done, obtained {}-by-{} matrix'.format(qf.size(0), qf.size(1)))
         
         print('Extracting features from gallery set ...')
-        gf, ga, g_pids, g_camids, gm = [], [], [], [], [] # gallery features, gallery activations,  gallery person IDs, gallery camera IDs and image drop masks
+        '''
+            gf = gallery features, 
+            ga = gallery activations,  
+            g_pids = gallery person IDs, 
+            g_camids = gallery camera IDs,
+            gm = image drop masks,
+            g_pIdx = gallery's personIdx in shm.data.people -> return value
+        '''
+        gf, ga, g_pids, g_camids, gm, g_pIdx = [], [], [], [], [], [] 
         end = time.time()
         for data in gallery_data:
-            imgs, pids, camids = data
+            imgs, pids, camids, pIdx = data
             imgs = self.datamanager.transform_te(imgs)      # imgs type : <class 'torch.Tensor'>
             imgs = torch.unsqueeze(imgs, 0)   
-            pids = [pids]
-            camids = [camids]
             
             if self.use_gpu:
                 imgs = imgs.cuda()
@@ -807,14 +813,16 @@ class Engine(object):
             gf.append(features)
             ga.append(torch.Tensor(activations))
             gm.append(torch.Tensor(dropmask))
-            g_pids.extend(pids)
-            g_camids.extend(camids)
+            g_pids.append(pids)
+            g_camids.append(camids)
+            g_pIdx.append(pIdx)
             
         gf = torch.cat(gf, 0)
         gm = torch.cat(gm, 0)
         ga = torch.cat(ga, 0)
         g_pids = np.asarray(g_pids)
         g_camids = np.asarray(g_camids)
+        g_pIdx = np.asarray(g_pIdx)
         print('Done, obtained {}-by-{} matrix'.format(gf.size(0), gf.size(1)))
 
         print('Speed: {:.4f} sec/batch'.format(batch_time.avg))
@@ -976,13 +984,13 @@ class Engine(object):
                 topk=visrank_topk
             )
 
-        top_1_indices = np.transpose(dist_indices)[0]
+        top_1_indices = np.transpose(dist_indices)[0] # 각 query에 대해 top1으로 꼽히는 gallery들의 list
         
-        # 가장 많이 나타난 gallery id를 counting
-        top1_gpids = np.transpose(g_pids[dist_indices])[0]
-        top1_gpids_bincount = np.bincount(top1_gpids) # top1 gallery ids를 오름차순 정렬 후, 빈도수를 반환.
-        top1_gpid = top1_gpids_bincount.argmax() # 가장 빈도수가 높은 gallery id를 가져옴
-        return top1_gpid
+        # 가장 많이 나타난 gallery의 pIdx를 counting
+        top1_gpIdx = np.transpose(g_pIdx[dist_indices])[0] # top1 gallery ids를 오름차순 정렬 후, 빈도수를 반환.
+        top1_gpIdx_bincount = np.bincount(top1_gpIdx)
+        top1_gpIdx_max = top1_gpIdx_bincount.argmax() # 가장 빈도수가 높은 gallery의 pIdx를 가져옴
+        return top1_gpIdx
         
         # dist_indices = np.transpose(dist_indices) # qn X gn
         # return [ (i, j) for i, j in zip(dist_indices[0], q_pids) ] # query 의 top1의 index

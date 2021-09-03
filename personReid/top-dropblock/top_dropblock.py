@@ -128,72 +128,7 @@ def reset_config(cfg, args):
     if args.transforms:
         cfg.data.transforms = args.transforms
 
-    
-def main():
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--config-file', type=str, default='', help='path to config file')
-    parser.add_argument('-s', '--sources', type=str, nargs='+', help='source datasets (delimited by space)')
-    parser.add_argument('-t', '--targets', type=str, nargs='+', help='target datasets (delimited by space)')
-    parser.add_argument('--transforms', type=str, nargs='+', help='data augmentation')
-    parser.add_argument('--root', type=str, default='', help='path to data root')
-    parser.add_argument('--gpu-devices', type=str, default='',)
-    parser.add_argument('opts', default=None, nargs=argparse.REMAINDER, help='Modify config options using the command-line')
-    args = parser.parse_args()
-
-    cfg = get_default_config()
-    cfg.use_gpu = torch.cuda.is_available()
-    if args.config_file:
-        cfg.merge_from_file(args.config_file)
-    reset_config(cfg, args)
-    cfg.merge_from_list(args.opts)
-    cfg.freeze()
-    set_random_seed(cfg.train.seed)
-
-    if cfg.use_gpu and args.gpu_devices:
-        # if gpu_devices is not specified, all available gpus will be used
-        os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_devices
-    log_name = 'test.log' if cfg.test.evaluate else 'train.log'
-    log_name += time.strftime('-%Y-%m-%d-%H-%M-%S')
-    sys.stdout = Logger(osp.join(cfg.data.save_dir, log_name))
-    
-    print('Show configuration\n{}\n'.format(cfg))
-    print('Collecting env info ...')
-    print('** System info **\n{}\n'.format(collect_env_info()))
-    
-    if cfg.use_gpu:
-        torch.backends.cudnn.benchmark = True
-    
-    datamanager = build_datamanager(cfg)
-    
-    print('Building model: {}'.format(cfg.model.name))
-    model = torchreid.models.build_model(
-        name=cfg.model.name,
-        num_classes=datamanager.num_train_pids,
-        loss=cfg.loss.name,
-        pretrained=cfg.model.pretrained,
-        use_gpu=cfg.use_gpu
-    )
-    num_params, flops = compute_model_complexity(model, (1, 3, cfg.data.height, cfg.data.width))
-    print('Model complexity: params={:,} flops={:,}'.format(num_params, flops))
-
-    if cfg.model.load_weights and check_isfile(cfg.model.load_weights):
-        load_pretrained_weights(model, cfg.model.load_weights)
-    
-    if cfg.use_gpu:
-        model = nn.DataParallel(model).cuda()
-
-    optimizer = torchreid.optim.build_optimizer(model, **optimizer_kwargs(cfg))
-    scheduler = torchreid.optim.build_lr_scheduler(optimizer, **lr_scheduler_kwargs(cfg))
-
-    if cfg.model.resume and check_isfile(cfg.model.resume):
-        args.start_epoch = resume_from_checkpoint(cfg.model.resume, model, optimizer=optimizer)
-
-    print('Building {}-engine for {}-reid'.format(cfg.loss.name, cfg.data.type))
-    engine = build_engine(cfg, datamanager, model, optimizer, scheduler)
-    engine.run(**engine_run_kwargs(cfg))
-    
-
-def main_concat_with_track( config_file_path, data_root_path , query_image_path):
+def main_concat_with_track( config_file_path, data_root_path , query_image_path, gpu_idx):
     cfg = get_default_config()
     cfg.use_gpu = torch.cuda.is_available()
     # if args.config_file:
@@ -208,7 +143,6 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path)
 
     # if cfg.use_gpu and args.gpu_devices:
     #     # if gpu_devices is not specified, all available gpus will be used
-    #     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_devices
     log_name = 'test.log' if cfg.test.evaluate else 'train.log'
     log_name += time.strftime('-%Y-%m-%d-%H-%M-%S')
     sys.stdout = Logger(osp.join(cfg.data.save_dir, log_name))
@@ -238,9 +172,9 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path)
         load_pretrained_weights(model, cfg.model.load_weights)
     
     if cfg.use_gpu:
-        # device = torch.device("cuda:3")
-        # model = nn.DataParallel(model).to(device)
-        model = nn.DataParallel(model).cuda()
+        device = torch.device("cuda:{}".format(gpu_idx))
+        model = nn.DataParallel(model, device_ids=[gpu_idx]).to(device)
+        # model = nn.DataParallel(model).cuda()
 
     optimizer = torchreid.optim.build_optimizer(model, **optimizer_kwargs(cfg))
     scheduler = torchreid.optim.build_lr_scheduler(optimizer, **lr_scheduler_kwargs(cfg))
@@ -253,47 +187,27 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path)
 
     return engine, cfg
 
-def read_gallery_image():
-    gallery_dir_path = "/home/gram/JCW/covid19_cctv_analyzer_multi_proc/top-dropblock/data/tempDataset/gallery/"
-    
-    gallery_img_path = [ gallery_dir_path + i for i in os.listdir(gallery_dir_path)]
-    gallery_img_path = glob.glob(osp.join(gallery_dir_path, '*.jpg'))
-        
-    data = []
-    pid = 1     # temp
-    camid = 0   # temp
-    for img_path in gallery_img_path:
-        img = read_image(img_path)
-        pid = int(img_path.split("/")[-1].split("_")[0])
-        data.append((img, pid, camid))
-        # pid += 1
-        
-    return data
-
-def config_for_topdb(root_path, query_image_path=''):
+def config_for_topdb(root_path, query_image_path, gpu_idx):
     query_image_path = root_path + "/" + query_image_path
     config_file_path = root_path + "/personReid/top-dropblock/configs/im_top_bdnet_test_concat_track.yaml"
     data_root_path = root_path + "/personReid/top-dropblock/data"
-    return main_concat_with_track(config_file_path, data_root_path, query_image_path)
-
-def _run_top_db_test(gallery_data, engine, cfg):
-    # os.environ["CUDA_VISIBLE_DEVICES"] = "1, 2, 3"
-    engine.test_only(gallery_data = gallery_data, **engine_test_kwargs(cfg))
+    return main_concat_with_track(config_file_path, data_root_path, query_image_path, gpu_idx)
 
 def crop_frame_image(frame, bbox):
     # bbox[0,1,2,3] = [x,y,x+w,y+h]
-    return Image.fromarray(frame).crop( (int(bbox[0]),int(bbox[1]), int(bbox[2]),int(bbox[3])) ) # (start_x, start_y, start_x + width, start_y + height) 
+    # return Image.fromarray(frame).crop( (int(bbox[0]),int(bbox[1]), int(bbox[2]),int(bbox[3])) ) # (start_x, start_y, start_x + width, start_y + height) 
+    return Image.fromarray(frame).crop( (int(bbox.minX),int(bbox.minY), 
+                                         int(bbox.maxX),int(bbox.maxY)) ) # (start_x, start_y, start_x + width, start_y + height) 
      
 def run_top_db_test(engine, cfg, start_frame, end_frame, 
-                    input_video_path, output_video_path, 
-                    tracking_list, reid_list, query_image_path):
+                    input_video_path, output_video_path,
+                    shm, processOrder, myPid, nextPid,
+                    query_image_path):
     #DEBUG
     print("++++++++++++debug+++++++++++++++++")
     print(start_frame)
     print(end_frame)
-    print(tracking_list)
     print("+++++++++++++++++++++++++++++++++++")
-    # os.environ["CUDA_VISIBLE_DEVICES"] = "1, 2, 3"
     writeVideo_flag = True
     asyncVideo_flag = False
 
@@ -322,6 +236,7 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     cam_id = 0;     # 임의로 cam_no 정의
     frame_no = -1   
     
+    shm.init_process(processOrder, myPid, nextPid)
     while True:
         ret, frame = video_capture.read()  # frame shape 640*480*3
         if ret != True:
@@ -331,30 +246,26 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             continue
         if frame_no > end_frame:
             break
+        frameIdx, personIdx = shm.get_ready_to_read()
         
-        print(" reid frame_no : ", frame_no)
         # frame에 사람이 없다면 pass
-        if len(tracking_list[frame_no]) == 0: 
-            reid_list.append(-1)
+        if len(personIdx) == 0: 
+            shm.data.frames[frameIdx].reid = -1
+            shm.finish_a_frame()
             continue
         
         # frame에 있는 사람들 사진을 수집
         gallery = []
-        for image_info in tracking_list[frame_no]:
-            image_bbox = image_info.bbox                  # bounding box
-            image_tid = image_info.tid                   # track id
-            image = crop_frame_image(frame, image_bbox) # PIL type
-            gallery.append( (image, image_tid, cam_id) )
+        for pIdx in personIdx:
+            bbox = shm.data.people[pIdx].bbox
+            tid = shm.data.people[pIdx].tid
+            image = crop_frame_image(frame, bbox)       # PIL type
+            gallery.append( (image, tid, cam_id, pIdx))
         
         # reid 수행
-        top1_gpid = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
-        top1_index = -1
-        # top1 gallery의 index 탐색
-        for idx, image_info in enumerate(tracking_list[frame_no]):
-            if image_info.tid == top1_gpid:
-                top1_index = idx
-                break
-        reid_list.append(top1_index)
+        top1_gpIdx = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
+        shm.data.frames[frameIdx].reid = top1_gpIdx
+                
         # # 결과 확인용 - top1의 사진 출력
         # if reid_result != -1:
         #     crop_image = crop_frame_image(frame, tracking_list[frame_no][reid_result].bbox)
@@ -368,7 +279,8 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             frame_index = frame_index + 1
             
         fps_imutils.update()
-        
+        shm.finish_a_frame()
+            
     fps_imutils.stop()
     print('imutils FPS: {}'.format(fps_imutils.fps()))
 
@@ -379,10 +291,5 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
 
     if writeVideo_flag:
         out.release()
-
-if __name__ == '__main__':
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-    engine, cfg = config_for_topdb("../")
-    gallery_data = read_gallery_image() # type : [(img, pid, camid), ...]
-    _run_top_db_test(gallery_data, engine, cfg)
-    # main()
+    
+    shm.finish_process()

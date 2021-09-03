@@ -8,6 +8,7 @@ from timeit import time
 
 from deep_sort_yolo4.person_detection import detectAndTrack
 from distance import checkDistance
+
 import random # for fakeReid
 from personReid.personReid import runPersonReid
 from maskdetect.maskDetect import runMaskDetection
@@ -18,37 +19,6 @@ output_video_path = runInfo.output_video_path
 start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 query_image_path = runInfo.query_image_path
-
-def fakeReid(shm, processOrder, nextPid):
-    myPid = 'fakeReid'
-    shm.init_process(processOrder, myPid, nextPid)
-    
-    # select confirmed case randomly
-    FRAME_NUM = end_frame - start_frame + 1
-    doneFIdx = FRAME_NUM - 1
-    for fIdx in range(FRAME_NUM):
-        frameIdx, personIdx = shm.get_ready_to_read()
-        if len(personIdx) > 0:
-            random_pIdx = random.choice(personIdx)
-            confirmed_tid = shm.data.people[random_pIdx].tid
-            shm.data.frames[frameIdx].reid = random_pIdx
-            shm.finish_a_frame()
-            doneFIdx = fIdx
-            break
-        shm.data.frames[frameIdx].reid = -1
-        shm.finish_a_frame()
-    
-    # find confirmed_tid
-    for fIdx in range(doneFIdx + 1, FRAME_NUM):
-        frameIdx, personIdx = shm.get_ready_to_read()
-        shm.data.frames[frameIdx].reid = -1
-        for pIdx in personIdx:
-            if shm.data.people[pIdx].tid == confirmed_tid:
-                shm.data.frames[frameIdx].reid = pIdx
-                break
-        shm.finish_a_frame()
-        
-    shm.finish_process()
 
 # 프레임 단위 정보 저장 배열의 크기
 FRAMES_SIZE = end_frame - start_frame + 1
