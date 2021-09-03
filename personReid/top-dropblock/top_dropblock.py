@@ -128,7 +128,7 @@ def reset_config(cfg, args):
     if args.transforms:
         cfg.data.transforms = args.transforms
 
-def main_concat_with_track( config_file_path, data_root_path , query_image_path):
+def main_concat_with_track( config_file_path, data_root_path , query_image_path, gpu_idx):
     cfg = get_default_config()
     cfg.use_gpu = torch.cuda.is_available()
     # if args.config_file:
@@ -143,7 +143,6 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path)
 
     # if cfg.use_gpu and args.gpu_devices:
     #     # if gpu_devices is not specified, all available gpus will be used
-    #     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_devices
     log_name = 'test.log' if cfg.test.evaluate else 'train.log'
     log_name += time.strftime('-%Y-%m-%d-%H-%M-%S')
     sys.stdout = Logger(osp.join(cfg.data.save_dir, log_name))
@@ -173,9 +172,9 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path)
         load_pretrained_weights(model, cfg.model.load_weights)
     
     if cfg.use_gpu:
-        # device = torch.device("cuda:3")
-        # model = nn.DataParallel(model).to(device)
-        model = nn.DataParallel(model).cuda()
+        device = torch.device("cuda:{}".format(gpu_idx))
+        model = nn.DataParallel(model, device_ids=[gpu_idx]).to(device)
+        # model = nn.DataParallel(model).cuda()
 
     optimizer = torchreid.optim.build_optimizer(model, **optimizer_kwargs(cfg))
     scheduler = torchreid.optim.build_lr_scheduler(optimizer, **lr_scheduler_kwargs(cfg))
@@ -188,28 +187,11 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path)
 
     return engine, cfg
 
-# def read_gallery_image():
-#     gallery_dir_path = "/home/gram/JCW/covid19_cctv_analyzer_multi_proc/top-dropblock/data/tempDataset/gallery/"
-    
-#     gallery_img_path = [ gallery_dir_path + i for i in os.listdir(gallery_dir_path)]
-#     gallery_img_path = glob.glob(osp.join(gallery_dir_path, '*.jpg'))
-        
-#     data = []
-#     pid = 1     # temp
-#     camid = 0   # temp
-#     for img_path in gallery_img_path:
-#         img = read_image(img_path)
-#         pid = int(img_path.split("/")[-1].split("_")[0])
-#         data.append((img, pid, camid))
-#         # pid += 1
-        
-#     return data
-
-def config_for_topdb(root_path, query_image_path=''):
+def config_for_topdb(root_path, query_image_path, gpu_idx):
     query_image_path = root_path + "/" + query_image_path
     config_file_path = root_path + "/personReid/top-dropblock/configs/im_top_bdnet_test_concat_track.yaml"
     data_root_path = root_path + "/personReid/top-dropblock/data"
-    return main_concat_with_track(config_file_path, data_root_path, query_image_path)
+    return main_concat_with_track(config_file_path, data_root_path, query_image_path, gpu_idx)
 
 def crop_frame_image(frame, bbox):
     # bbox[0,1,2,3] = [x,y,x+w,y+h]
