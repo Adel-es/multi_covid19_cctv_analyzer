@@ -7,15 +7,15 @@ from multiprocessing import Value
 from multiprocessing.sharedctypes import Array
 from ctypes import Structure, c_int32, c_float, c_bool, c_uint8
 from configs import runInfo
-
-debug = runInfo.debug
+import logging
+from enum import IntEnum
 
 class TrackToken:
     def __init__(self, bbox, tid):
         self.bbox = bbox
         self.tid = tid
 
-class MaskToken(Enum) : 
+class MaskToken(IntEnum) : 
     Masked = 1 
     NotMasked = 2 
     FaceNotFound = 3
@@ -153,6 +153,7 @@ class Data():
 class ShmManager():
     def __init__(self, processNum, framesSize, peopleSize):
         self.data = Data(processNum, framesSize, peopleSize)
+        self.logger = logging.getLogger('root')
     
     def init_process(self, myOrder, myPid, nextPid):
         '''
@@ -165,8 +166,7 @@ class ShmManager():
         # handler 등록을 하지 않아 시그널  발생 시 프로세스가 종료되는 것을 막기 위해 dummy handler를 추가함.
         for sig in self.sigList:
             signal.signal(sig, self.dummy_sig_handler)
-        if debug:
-            print("{} init".format(self.myPid))
+        self.logger.debug("{} init".format(self.myPid))
     
     def finish_process(self):
         '''
@@ -179,8 +179,7 @@ class ShmManager():
         한 프레임에 대한 처리를 마친 뒤 다음 차례의 프로세스에게 신호를 주는 함수.
         '''
         os.kill(self.nextPid, signal.SIGUSR1)
-        if debug:
-            print("{} send_ready_signal".format(self.myPid))
+        self.logger.debug("{} send_ready_signal".format(self.myPid))
 
     def dummy_sig_handler(self, signum, frame):
         pass
@@ -198,15 +197,12 @@ class ShmManager():
         준비가 다 되면 data.frames와 data.people 배열에 접근하기 위한 인덱스를 반환한다.
         '''
         while not self.data.is_ready_to_write(peopleNum):
-            if debug:
-                print("{} get_ready_to_write: Not yet.".format(self.myPid))
+            self.logger.debug("{} get_ready_to_write: Not yet.".format(self.myPid))
             result = signal.sigtimedwait(self.sigList, 60)
             # timeout이 발생했을 경우
             if result == None:
                 print("{} get_ready_to_write: wait 1 min (frame: {}))".format(self.myPid, self.data.get_frame_in_processing()))
-        
-        if debug:
-            print("{} get_ready_to_write: I'm ready!".format(self.myPid))
+        self.logger.debug("{} get_ready_to_write: I'm ready!".format(self.myPid))
         self.data.update_peopleIdx(peopleNum);
         framesIdx, peopleIndices = self.data.get_next_frame_index()
         return framesIdx, peopleIndices
@@ -217,15 +213,13 @@ class ShmManager():
         준비가 다 되면 data.frames와 data.people 배열에 접근하기 위한 인덱스를 반환한다.
         '''
         while not self.data.is_ready_to_read():
-            if debug:
-                print("{} get_ready_to_read: Not yet.".format(self.myPid))
+            self.logger.debug("{} get_ready_to_read: Not yet.".format(self.myPid))
             result = signal.sigtimedwait(self.sigList, 60)
             # timeout이 발생했을 경우
             if result == None:
                 print("{} get_ready_to_read: wait 1 min (frame: {}))".format(self.myPid, self.data.get_frame_in_processing()))     
         
-        if debug:
-            print("{} get_ready_to_read: I'm ready!".format(self.myPid))
+        self.logger.debug("{} get_ready_to_read: I'm ready!".format(self.myPid))
         framesIdx, peopleIndices = self.data.get_next_frame_index()
         return framesIdx, peopleIndices
 
@@ -245,12 +239,9 @@ class ShmSerialManager():
         # handler 등록을 하지 않아 시그널  발생 시 프로세스가 종료되는 것을 막기 위해 dummy handler를 추가함.
         signal.signal(signal.SIGUSR1, self.dummy_sig_handler)
         while self.finishedProcess.value != (self.data.myOrder - 1):
-            if debug:
-                print("{} process_init: Not yet.".format(self.myPid))
+            self.logger.debug("{} process_init: Not yet.".format(self.myPid))
             signal.pause()
-    
-        if debug:
-            print("{} init".format(self.myPid))
+        self.logger.debug("{} init".format(self.myPid))
             
     def finish_process(self):
         '''
@@ -265,8 +256,7 @@ class ShmSerialManager():
         한 프레임에 대한 처리를 마친 뒤 다음 차례의 프로세스에게 신호를 주는 함수.
         '''
         os.kill(self.nextPid, signal.SIGUSR1)
-        if debug:
-            print("{} send_ready_signal".format(self.myPid))
+        self.logger.debug("{} send_ready_signal".format(self.myPid))
 
     def dummy_sig_handler(self, signum, frame):
         pass
