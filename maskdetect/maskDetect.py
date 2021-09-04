@@ -1,166 +1,85 @@
-#from configs.config_handler import Config
-import cv2 as cv
-import numpy as np
+import cv2 
+import numpy as np 
+from pypreprocessor import pypreprocessor
+import logging
 import maskdetect.faceDetection.faceDetector as face
-import maskdetect.maskDetection.maskDetector as mask 
+import maskdetect.maskClassifier.maskDetector as mask
 import libs.votingSystem as vs
+from configs import runInfo
+from utils.types import MaskToken
+
+start_frame = runInfo.start_frame 
+end_frame = runInfo.end_frame 
+input_video = runInfo.input_video_path 
+FRAME_NUM = end_frame - start_frame + 1 
 
 
-import sys, os
-root_path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(root_path)
-from configs import runInfo 
-from utils.types import MaskToken, TrackToken
-
-
-def cropHuman(trackingReslt, frameId, raw_img) : 
-    if len(trackingReslt[frameId]) == 0 : 
-        return 
-    else : 
-        for bbox, tid in trackingReslt[frameId] : 
-            croppedHuman = raw_img[int(bbox[1]) : int(bbox[3]), int(bbox[0]) : int(bbox[2])]
-            imageName = "{}_{}.jpg".format(frameId, tid); 
-            print(imageName)
-            cv.imwrite("images/" + imageName, croppedHuman)
     
-        
-def runMaskDetect(trackingResult, reidResult, distanceResult, MaskResult) : 
-    InputVideo = runInfo.input_video_path
-    # outputVideo = runInfo.output_video_path
-    startFrame = runInfo.start_frame 
-    endFrame = runInfo.end_frame
-    votingSystem = vs.VotingSystem()
+def runMaskDetection(shm, processOrder, nextPid):
+	myPid = 'maskDetection'
+	shm.init_process(processOrder, myPid, nextPid) 
+	logger = logging.getLogger('root') 
+	faceDetector = face.Detector(runInfo.faceGPU)
+	maskDetector = mask.Classifier(runInfo.maskGPU)
 
-    outputWriter = None
-    faceDetector = face.Detector()
-    maskDetector = mask.Classifier()
-    origWidth = 0
-    origHeight = 0
+	frame_index = -1
+	logger.info("mask detection process starts")
+	input_capture = cv2.VideoCapture(input_video)
+	
+	while (input_capture.isOpened()) :
+		frame_index = frame_index + 1 
+		ret, raw_image = input_capture.read() 
 
-    inputCapture = cv.VideoCapture(InputVideo)
-    frameId = -1; 
-    
-    print(" == [ MaskDetect ] : run Mask Detection == ")
-    while(inputCapture.isOpened()) : 
-        
-        frameId = frameId + 1
-        
-        ret, raw_img = inputCapture.read() 
-        
-        '''        
-        if outputWriter is None :         
-            origWidth = raw_img.shape[1]
-            origHeight = raw_img.shape[0]
-            outputWriter = cv.VideoWriter(outputVideo, cv.VideoWriter_fourcc('M', 'J', 'P', 'G'), 24, (origWidth, origHeight))
-        '''
-        if ret == False : 
-            break 
-        if frameId < startFrame : 
-            continue 
-        if frameId > endFrame : 
-            break 
-        
-        if reidResult[frameId] == -1 : 
-            MaskResult.append([])
-            continue
-        
-        if(len(trackingResult[frameId]) != len(distanceResult[frameId])) : 
-            print("[ERROR] in frame{} : tracking Result and distance Result length is different!! ".format(frameId))
-            print("trackingResult length is {}".format(len(trackingResult[frameId])))
-            print("distanceResult length is {}".format(len(distanceResult[frameId])))
-            MaskResult.append([])        
-            continue 
-        
-        frameResult = np.empty(len(trackingResult[frameId]), MaskToken)
-        frameResult.fill(-1)    
-        faces = [] 
-        
-        for idx in range(0, len(trackingResult[frameId])) : 
-            if distanceResult[frameId][idx] == False : 
-                frameResult[idx] = MaskToken.NotNear
-                continue 
-            
-            # run Face Detector 
-            # bbox = trackingResult[frameId][idx].bbox 
-            # issue #7 - https://github.com/Adel-es/covid19_cctv_analyzer/issues/7 
-            '''
-            old version
-            for bidx in range(0, 4) : 
-                if trackingResult[frameId][idx].bbox[bidx] < 0 : 
-                    trackingResult[frameId][idx].bbox[bidx] = 0
-                    print("update bbox inner value = becasuse it has negative value")
-                    print(trackingResult[frameId][idx].bbox[bidx])
+		if ret == False : 
+			logger.critical("mask detection can not read the video")
+			break 
+		if frame_index < start_frame : 
+			continue 
+		if frame_index > end_frame : 
+			break 
 
-            bbox = []
-            tid = trackingResult[frameId][idx].tid 
-            for bidx in range(0, 4) : 
-                if trackingResult[frameId][idx].bbox[bidx] < 0 : 
-                    bbox.append(0)
-                else : 
-                    bbox.append(trackingResult[frameId][idx].bbox[bidx])
-            '''   
-            tid = trackingResult[frameId][idx].tid 
-            bbox = trackingResult[frameId][idx].bbox                
-            print("<= bbox of frameID_{} and TID_{}".format(frameId, tid))
-            print(bbox)                   
-            
-            cropedPerson = raw_img[int(bbox[1]) : int(bbox[3]), int(bbox[0]) : int(bbox[2])]      
-            PersonWidth = cropedPerson.shape[1]
-            PersonHeight = cropedPerson.shape[0]
-            resizedPerson = cv.resize(cropedPerson,  (faceDetector.width, faceDetector.height))                   
-            rgbResizedImage = cv.cvtColor(resizedPerson, cv.COLOR_BGR2RGB)
-            
-            objList = faceDetector.inference(rgbResizedImage)    
-             
-            if len(objList) == 0 : 
-                vres = votingSystem.vote(tid, MaskToken.FaceNotFound)
-                frameResult[idx] = vres 
-                #frameResult[idx] = MaskToken.FaceNotFound
-                #if tid == 1 : 
-                #    votingSystem.show(1)
-                continue 
-            
-            if not 'bbox' in objList[0].keys() : 
-                vres = votingSystem.vote(tid, MaskToken.FaceNotFound)
-                frameResult[idx] = vres                 
-                # frameResult[idx] = MaskToken.FaceNotFound
-                #if tid == 1 : 
-                #    votingSystem.show(1)
-                continue
-            
-            #run MaskDetection             
-            obj = objList[0]
-            face_bbox = obj['bbox']  # [ymin, xmin, ymax, xmax]
-            xmin, xmax = np.multiply([face_bbox[1], face_bbox[3]], PersonWidth)
-            ymin, ymax = np.multiply([face_bbox[0], face_bbox[2]], PersonHeight)
-            cropedFace = cropedPerson[int(ymin):int(ymin) + (int(ymax) - int(ymin)), int(xmin):int(xmin) + (int(xmax) - int(xmin))]
-            cropedFace = cv.resize(cropedFace, (maskDetector.width, maskDetector.height)) 
-            cropedFace = cropedFace/255.0 
-            faces.append(cropedFace)               
-
-        faceMaskResult, scores = maskDetector.inference(np.array(faces))
+		shm_frame_index, person_indices = shm.get_ready_to_read() 
+		reid = shm.data.frames[shm_frame_index].reid
+		logger.debug("{} reader_and_writer: read frame {}".format(myPid, reid))
+		if reid == -1 : 
+			shm.finish_a_frame()
+			continue         
         
-        MRIdx = 0
-        for result in enumerate(faceMaskResult) : 
-            while(frameResult[MRIdx] != -1) : 
-                MRIdx = MRIdx + 1 
-            tid = trackingResult[frameId][MRIdx].tid 
-            vres = None 
-            if result == 1 : 
-                vres = votingSystem.vote(tid, MaskToken.Masked) 
-                # frameResult[MRIdx] = MaskToken.Masked 
-            else : 
-                vres = votingSystem.vote(tid, MaskToken.NotMasked)
-                # frameResult[MRIdx] = MaskToken.NotMasked
-            
-            #voting system devugging ~ 
-            #if tid == 1 : 
-            #    votingSystem.show(1)
-
-            frameResult[MRIdx] = vres 
-            MRIdx = MRIdx + 1    
-        
-        MaskResult.append(frameResult.tolist())
-        
-    inputCapture.release() 
-    print("== [MaskDetect ] : finish Mask Detection == ")
+		faces_in_frame = [] 
+		tids_in_frame = [] 
+		
+		for p_index in person_indices : 
+			person = shm.data.people[p_index] 
+			bbox = person.bbox 
+			person_width = bbox.maxX - bbox.minX 
+			person_height = bbox.maxY - bbox.minY 
+			if (person.isClose == False) : 
+				shm.data.people[p_index].isMask = int(MaskToken.NotNear)
+			else : 
+				cropped_person = raw_image[int(bbox.minY): int(bbox.maxY), int(bbox.minX):int(bbox.maxX)] 
+				rgb_person = cv2.cvtColor(cropped_person, cv2.COLOR_BGR2RGB)
+				face_list = faceDetector.inference(rgb_person)
+				if len(face_list) == 0 : 
+					shm.data.people[p_index].isMask = int(MaskToken.FaceNotFound)
+				else :
+					face_xmin = int(max(0, face_list[0][0])) 
+					face_ymin = int(max(0, face_list[0][1])) 
+					face_xmax = int(min(person_width, face_list[0][2])) 
+					face_ymax = int(min(person_height, face_list[0][3])) 
+					cropped_face = cropped_person[face_ymin : face_ymax, face_xmin : face_xmax]
+					cropped_face = cv2.resize(cropped_face, (maskDetector.width, maskDetector.height)) 
+					cropped_face = cropped_face/255.0 
+					faces_in_frame.append(cropped_face)
+					tids_in_frame.append(p_index)
+		
+		if len(faces_in_frame) != 0 : 
+			mask_results, scores = maskDetector.inference(np.array(faces_in_frame))
+			for index, result in enumerate(mask_results) : 
+				if result == 0 : 
+					shm.data.people[tids_in_frame[index]].isMask = int(MaskToken.Masked)
+				else : 
+					shm.data.people[tids_in_frame[index]].isMask = int(MaskToken.NotMasked)
+		
+		shm.finish_a_frame()	
+	print("{} reader_and_writer: finish".format(myPid))
+	shm.finish_process()
