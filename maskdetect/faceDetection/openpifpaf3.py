@@ -6,68 +6,94 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import libs.fpsCalculator as FPST
 
+
 class OpenPPWrapper:
     """
     Perform pose estimation with Openpifpaf model. extract pedestrian's bounding boxes from key-points.
     :param config: Is a Config instance which provides necessary parameters.
     """
 
-    def __init__(self, gpu_num):
+    def __init__(self):
         USE_CUDA = torch.cuda.is_available()
-        self.gpu_num = gpu_num
+        self.gpu_num = 6; #TODO; remove hard coded  
+        self.checkpoint = "shufflenetv2k16"
         self.device = torch.device("cuda:{}".format(self.gpu_num) if USE_CUDA else 'cpu')
         self.timer = FPST.FPSCalc()
         self.fps = 0; 
-        self.net, self.processor = self.load_model()
-        self.w = 30 # TODO 
-        self.h = 80 #TODO
+        self.model, self.preprocess, self.processor = self.load_model()
+        # self.w = 30 # TODO 
+        # self.h = 80 #TODO
         
-        print("== openpifpaf face detector == ")
-        print("* run on GPU : {}".format(self.gpu_num))
-        print("* input image width : {}".format(self.w))
-        print("* input image height : {}".format(self.h))
       
     def load_model(self):
-        net_cpu, _ = openpifpaf.network.factory(checkpoint="resnet50", download_progress=False)
-        net = net_cpu.to(self.device)
-        openpifpaf.decoder.CifSeeds.threshold = 0.5
-        openpifpaf.decoder.nms.Keypoints.keypoint_threshold = 0.2
-        openpifpaf.decoder.nms.Keypoints.instance_threshold = 0.2
-        processor = openpifpaf.decoder.factory_decode(net.head_nets, basenet_stride=net.base_net.stride)
-        return net, processor
-
-    def inference(self, resized_rgb_image):
-        """
-        This method will perform inference and return the detected bounding boxes
-        Args:
-            resized_rgb_image: uint8 numpy array with shape (img_height, img_width, channels)
-        Returns:
-            result: a dictionary contains of [{"id": 0, "bbox": [x1, y1, x2, y2], "score":s%}, {...}, {...}, ...]
-        """
-        pil_im = PIL.Image.fromarray(resized_rgb_image)
+        openpifpaf.network.Factory.checkpoint = self.checkpoint 
+        model_cpu, _ = openpifpaf.network.Factory().factory()          
+        model = model_cpu.to(self.device)
+        # model = torch.nn.DataParallel(model)  
+        rescale_t = None  #setting for long edige = default None 
+        pad_t = None     
         preprocess = openpifpaf.transforms.Compose([
             openpifpaf.transforms.NormalizeAnnotations(),
-            openpifpaf.transforms.CenterPadTight(16),
+            rescale_t,
+            pad_t,
             openpifpaf.transforms.EVAL_TRANSFORM,
         ])
-        data = openpifpaf.datasets.PilImageList([pil_im], preprocess=preprocess)
-        loader = torch.utils.data.DataLoader(
-            data, batch_size=1, pin_memory=True,
+        processor = openpifpaf.decoder.factory(model_cpu.head_metas)
+        return model, preprocess, processor 
+        
+        
+    def dataset(self, data):
+        batch_size = 1
+        loader_workers = batch_size if len(data) > 1 else 0
+        loader_workers = 0 # for avoding cuda reinitialize error 
+        dataloader = torch.utils.data.DataLoader(
+            data, batch_size=batch_size, shuffle=False,
+            pin_memory=self.device.type != 'cpu',
+            num_workers=loader_workers,
             collate_fn=openpifpaf.datasets.collate_images_anns_meta)
 
-        self.timer.start(); 
-        for images_batch, _, __ in loader:
-            predictions = self.processor.batch(self.net, images_batch, device=self.device)[0]
-        self.fps = self.timer.end(); 
+        yield from self.dataloader(dataloader)
 
-        results = []
-        for i, pred in enumerate(predictions):
-            pred = pred.data
-            check, facebox = self.getFacePosition(pred)
-            if check == True : 
-                results.append(facebox)
-        return results 
+    def dataloader(self, dataloader):
+        for batch_i, item in enumerate(dataloader):
+            if len(item) == 3:
+                processed_image_batch, gt_anns_batch, meta_batch = item
+                image_batch = [None for _ in processed_image_batch]
+            elif len(item) == 4:
+                image_batch, processed_image_batch, gt_anns_batch, meta_batch = item
+
+            pred_batch = self.processor.batch(self.model, processed_image_batch, device=self.device)
+
+            # un-batch
+            for image, pred, gt_anns, meta in \
+                    zip(image_batch, pred_batch, gt_anns_batch, meta_batch):
+                      
+                pred = [ann.inverse_transform(meta) for ann in pred]
+                gt_anns = [ann.inverse_transform(meta) for ann in gt_anns]
+                yield pred, gt_anns, meta
+                
+    def _inference(self, resized_rgb_image) : 
+        data = openpifpaf.datasets.NumpyImageList(
+            [resized_rgb_image], preprocess=self.preprocess, with_raw_image=True)
+        return next(iter(self.dataset(data)))
+
+    def inference(self, resized_rgb_image):
+        predictions, gt_anns, meta = self._inference(resized_rgb_image)
         
+        result = []
+        for i in range (0, len(predictions)) :
+            score = predictions[i].score 
+            if(score < 0.2 ) : 
+                continue 
+            keypoints = predictions[i].data 
+            bbox = predictions[i].bbox()  
+            
+            isFace, faceBox = self.getFacePosition(keypoints)
+            if isFace == True : 
+                result.append(faceBox)
+        return result
+    
+    
     def getMedianValue(self, left, right) : 
         x = 0 
         y = 0 

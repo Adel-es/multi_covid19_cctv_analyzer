@@ -1,6 +1,3 @@
-#from maskDetection.faceDetection import openpifpaf
-#import faceDetection.openpifpaf as open
-# from faceDetection.openpifpaf import OpenFaceDetector
 from . import openpifpaf
 
 class Detector:
@@ -10,8 +7,8 @@ class Detector:
     input image in order to get the detection results.
     :param config: Is a ConfigEngine instance which provides necessary parameters.
     """
-    def __init__(self):
-        self.net = openpifpaf.OpenPPWrapper()
+    def __init__(self, gpu_num):
+        self.net = openpifpaf.OpenPPWrapper(gpu_num)
         self.width = self.net.w
         self.height = self.net.h 
         

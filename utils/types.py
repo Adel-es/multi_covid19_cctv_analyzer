@@ -228,6 +228,7 @@ class ShmSerialManager():
         self.data = Data(processNum, framesSize, peopleSize)
         self.lastProcess = processNum-1
         self.finishedProcess = Value('l', -1, lock=False)
+        self.logger = logging.getLogger('root')
 
     def init_process(self, myOrder, myPid, nextPid):
         '''
