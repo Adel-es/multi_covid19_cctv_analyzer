@@ -11,7 +11,7 @@ from distance import checkDistance
 
 import random # for fakeReid
 from personReid.personReid import runPersonReid
-from maskdetect.maskDetect import runMaskDetect
+from maskdetect.maskProcess import runMaskDetection
 from write_video import writeVideo
 
 input_video_path = runInfo.input_video_path
@@ -32,30 +32,28 @@ MAX_PEOPLE_NUM = 10
 
 
 if __name__ == '__main__':
+    # torch.multiprocessing.set_start_method('spawn')    
     logger = make_logger(runInfo.logfile_name, 'root')
-    startTime = time.time()
-    
-    if runInfo.parallel_processing:
-        # shm = ShmManager(processNum=5, framesSize=FRAMES_SIZE, peopleSize=PEOPLE_SIZE)
-        shm = ShmManager(processNum=4, framesSize=FRAMES_SIZE, peopleSize=PEOPLE_SIZE)
-    else:
-        # shm = ShmSerialManager(processNum=5, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
-        shm = ShmSerialManager(processNum=4, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
-    
-    # maskProc = Process(target=runMaskDetect, args=(shm, 3, os.getpid()))
-    # maskProc.start()
 
-    # distanceProc = Process(target=checkDistance, args=(shm, 2, maskProc.pid))
-    distanceProc = Process(target=checkDistance, args=(shm, 2, os.getpid()))
+    startTime = time.time()
+    if runInfo.parallel_processing:
+        shm = ShmManager(processNum=5, framesSize=FRAMES_SIZE, peopleSize=PEOPLE_SIZE)
+    else:
+        shm = ShmSerialManager(processNum=5, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
+    
+    maskProc = Process(target=runMaskDetection, args=(shm, 3, os.getpid()))
+    maskProc.start()
+
+    distanceProc = Process(target=checkDistance, args=(shm, 2, maskProc.pid))
     distanceProc.start()
     
-    reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, 'topdb', runInfo.reid_gpu_id)) # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
+    reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, runInfo.reid_model, runInfo.reidGPU)) # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
     reidProc.start()
 
     detectTrackProc = Process(target=detectAndTrack, args=(shm, 0, reidProc.pid))
     detectTrackProc.start()
 
-    # writeVideo(shm, 4, detectTrackProc.pid)
-    writeVideo(shm, 3, detectTrackProc.pid)
+    writeVideo(shm, 4, detectTrackProc.pid)
+    # writeVideo(shm, 3, detectTrackProc.pid)
     
     logger.info("Running time: {}".format(time.time() - startTime))

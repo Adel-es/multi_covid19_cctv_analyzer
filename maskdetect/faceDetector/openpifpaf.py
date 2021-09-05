@@ -3,6 +3,7 @@ import torch
 import numpy as np
 import PIL
 import os, sys 
+import logging
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import libs.fpsCalculator as FPST
 
@@ -14,18 +15,19 @@ class OpenPPWrapper:
 
     def __init__(self, gpu_num):
         USE_CUDA = torch.cuda.is_available()
+        self.logger = logging.getLogger('root')
         self.gpu_num = gpu_num
         self.device = torch.device("cuda:{}".format(self.gpu_num) if USE_CUDA else 'cpu')
-        self.timer = FPST.FPSCalc()
-        self.fps = 0; 
+        # self.timer = FPST.FPSCalc()
+        # self.fps = 0; 
         self.net, self.processor = self.load_model()
         self.w = 30 # TODO 
         self.h = 80 #TODO
         
-        print("== openpifpaf face detector == ")
-        print("* run on GPU : {}".format(self.gpu_num))
-        print("* input image width : {}".format(self.w))
-        print("* input image height : {}".format(self.h))
+        self.logger.info("openpifpaf based face detection run on GPU : {}".format(self.gpu_num))
+        self.logger.info("openpifpaf based face detector input image width : {}".format(self.w))
+        self.logger.info("openpifpaf based face detector input imgae height : {}".format(self.h))
+
       
     def load_model(self):
         net_cpu, _ = openpifpaf.network.factory(checkpoint="resnet50", download_progress=False)
@@ -55,10 +57,10 @@ class OpenPPWrapper:
             data, batch_size=1, pin_memory=True,
             collate_fn=openpifpaf.datasets.collate_images_anns_meta)
 
-        self.timer.start(); 
+        # self.timer.start(); 
         for images_batch, _, __ in loader:
             predictions = self.processor.batch(self.net, images_batch, device=self.device)[0]
-        self.fps = self.timer.end(); 
+        # self.fps = self.timer.end(); 
 
         results = []
         for i, pred in enumerate(predictions):

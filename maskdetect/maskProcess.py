@@ -2,8 +2,9 @@ import cv2
 import numpy as np 
 from pypreprocessor import pypreprocessor
 import logging
-import maskdetect.faceDetection.faceDetector as face
-import maskdetect.maskClassifier.maskDetector as mask
+import maskdetect.faceDetector.faceDetector as face
+import maskdetect.maskClassifier.maskClassifier as mask
+import math 
 import libs.votingSystem as vs
 from configs import runInfo
 from utils.types import MaskToken
@@ -13,19 +14,28 @@ end_frame = runInfo.end_frame
 input_video = runInfo.input_video_path 
 FRAME_NUM = end_frame - start_frame + 1 
 
-
+def cutoff_face(person_image, face_bbox) : 
+	person_width = math.trunc(person_image.shape[0]) 
+	person_height = math.trunc(person_image.shape[1])  
+	face_xmin = int(max(0, face_bbox[0])) 
+	face_ymin = int(max(0, face_bbox[1])) 
+	face_xmax = int(min(person_width, face_bbox[2])) 
+	face_ymax = int(min(person_height, face_bbox[3])) 
+	face = person_image[face_ymin : face_ymax, face_xmin : face_xmax]
+	return face 
     
 def runMaskDetection(shm, processOrder, nextPid):
-	myPid = 'maskDetection'
-	shm.init_process(processOrder, myPid, nextPid) 
 	logger = logging.getLogger('root') 
 	faceDetector = face.Detector(runInfo.faceGPU)
-	maskDetector = mask.Classifier(runInfo.maskGPU)
+	maskClassifier = mask.Classifier(runInfo.maskGPU)
 
 	frame_index = -1
-	logger.info("mask detection process starts")
 	input_capture = cv2.VideoCapture(input_video)
-	
+	logger.info("mask detection process starts")
+ 
+	myPid = 'maskDetection'
+	shm.init_process(processOrder, myPid, nextPid) 
+ 
 	while (input_capture.isOpened()) :
 		frame_index = frame_index + 1 
 		ret, raw_image = input_capture.read() 
@@ -40,7 +50,6 @@ def runMaskDetection(shm, processOrder, nextPid):
 
 		shm_frame_index, person_indices = shm.get_ready_to_read() 
 		reid = shm.data.frames[shm_frame_index].reid
-		logger.debug("{} reader_and_writer: read frame {}".format(myPid, reid))
 		if reid == -1 : 
 			shm.finish_a_frame()
 			continue         
@@ -51,8 +60,6 @@ def runMaskDetection(shm, processOrder, nextPid):
 		for p_index in person_indices : 
 			person = shm.data.people[p_index] 
 			bbox = person.bbox 
-			person_width = bbox.maxX - bbox.minX 
-			person_height = bbox.maxY - bbox.minY 
 			if (person.isClose == False) : 
 				shm.data.people[p_index].isMask = int(MaskToken.NotNear)
 			else : 
@@ -62,18 +69,14 @@ def runMaskDetection(shm, processOrder, nextPid):
 				if len(face_list) == 0 : 
 					shm.data.people[p_index].isMask = int(MaskToken.FaceNotFound)
 				else :
-					face_xmin = int(max(0, face_list[0][0])) 
-					face_ymin = int(max(0, face_list[0][1])) 
-					face_xmax = int(min(person_width, face_list[0][2])) 
-					face_ymax = int(min(person_height, face_list[0][3])) 
-					cropped_face = cropped_person[face_ymin : face_ymax, face_xmin : face_xmax]
-					cropped_face = cv2.resize(cropped_face, (maskDetector.width, maskDetector.height)) 
+					cropped_face = cutoff_face(cropped_person, face_list[0])
+					cropped_face = cv2.resize(cropped_face, (maskClassifier.width, maskClassifier.height)) 
 					cropped_face = cropped_face/255.0 
 					faces_in_frame.append(cropped_face)
 					tids_in_frame.append(p_index)
 		
 		if len(faces_in_frame) != 0 : 
-			mask_results, scores = maskDetector.inference(np.array(faces_in_frame))
+			mask_results, scores = maskClassifier.inference(np.array(faces_in_frame))
 			for index, result in enumerate(mask_results) : 
 				if result == 0 : 
 					shm.data.people[tids_in_frame[index]].isMask = int(MaskToken.Masked)
