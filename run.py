@@ -32,7 +32,14 @@ MAX_PEOPLE_NUM = 10
 
 
 if __name__ == '__main__':
-    # torch.multiprocessing.set_start_method('spawn')    
+    # torch.multiprocessing.set_start_method('spawn')   
+    if os.path.exists(runInfo.input_video_path) == False:
+        print("[IO Error] Input video path: {} is not exists".format(runInfo.input_video_path))
+        exit(-1)
+    if os.path.exists(runInfo.query_image_path) == False:
+        print("[IO Error] Query image directory path: {} is not exists".format(runInfo.query_image_path))
+        exit(-1)
+    
     logger = make_logger(runInfo.logfile_name, 'root')
 
     startTime = time.time()
