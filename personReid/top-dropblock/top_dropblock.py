@@ -265,13 +265,6 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
         # reid 수행
         top1_gpIdx = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
         shm.data.frames[frameIdx].reid = top1_gpIdx
-                
-        # # 결과 확인용 - top1의 사진 출력
-        # if reid_result != -1:
-        #     crop_image = crop_frame_image(frame, tracking_list[frame_no][reid_result].bbox)
-        #     cv2.imwrite('/home/gram/JCW/covid19_cctv_analyzer_multi_proc/top-dropblock/data/equal_query/'
-        #             +str( tracking_list[frame_no][reid_result].tid )+'_'+str(frame_no)+'.jpg', #gpid_frameno.jpg
-        #             np.asarray( crop_image , dtype=np.uint8) )
 
         if writeVideo_flag: # and not asyncVideo_flag:
             # save a frame
