@@ -1,7 +1,9 @@
 import cv2
+from typing import List
 from distance import getCentroid
 from utils.types import Masked, NotMasked, NotNear, FaceNotFound
 from configs import runInfo
+from utils.resultManager import ResultManager
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
@@ -9,6 +11,8 @@ start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 
 def writeVideo(shm, processOrder, nextPid):
+    # prepare ResultManager to write output json file  
+    res_manager = ResultManager() 
     
     # Prepare input video
     video_capture = cv2.VideoCapture(input_video_path)
@@ -38,6 +42,8 @@ def writeVideo(shm, processOrder, nextPid):
         # for test
         
         frameIdx, personIdx = shm.get_ready_to_read()
+        
+        update_output_json(shm, res_manager, frame_index, frameIdx, personIdx) 
         
         # Draw detection and tracking result for a frame
         for pIdx in personIdx:
@@ -75,6 +81,7 @@ def writeVideo(shm, processOrder, nextPid):
         shm.finish_a_frame()
         
     shm.finish_process()
+    res_manager.write_jsonfile(runInfo.output_json_path)
     out.release()
     video_capture.release()
 
@@ -94,3 +101,7 @@ def draw_bbox_and_tid(frame, person, isConfirmed):
         
     cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 2)
     cv2.putText(frame, tidText, tidPosition, 0, 8e-4 * frame.shape[0], tidColor, 3)
+
+def update_output_json(shm, res_manager, frame_number:int, frame_index : int, person_indices : List[int]) : 
+    is_target : bool = ( shm.data.frames[frame_index].reid != -1 )
+    res_manager.update_targetinfo(frame_number, is_target)
