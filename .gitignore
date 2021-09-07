@@ -9,6 +9,7 @@ test
 # tempData
 log/*
 log
+log.txt
 # data
 data/*
 
