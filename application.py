@@ -1,10 +1,11 @@
 import sys
 import threading
 import math
-from PyQt5.QtWidgets import QApplication, QDialog, QDesktopWidget, QStackedWidget, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
+from qtimeline import QTimeLine
 
 import cv2 # for test
 
@@ -31,6 +32,10 @@ class DataInputWindow(QDialog):
         loadUi("./UI/dataInput.ui", self)
         self.path = 'C:'
         self.video_paths = []
+        # for test
+        # self.video_paths = [
+        #     'G:/내 드라이브/졸업과제/Deep-SORT-YOLOv4 출력 영상/output_yolov4_filtered.avi'
+        # ]
         self.addPhotoBtn.clicked.connect(self.addPhotoBtnClicked)
         self.addVideoBtn.clicked.connect(self.addVideoBtnClicked)
         self.startAnalysisBtn.clicked.connect(self.startAnalysisBtnClicked)
@@ -68,6 +73,7 @@ class AnalysisWindow(QDialog):
         self.labels = [self.videoLabel1, self.videoLabel2, self.videoLabel3, self.videoLabel4]
         self.timer = 0
         self.playTime = 3
+        self.showRsltBtn.clicked.connect(self.showRsltBtnClicked)
 
     def analysis(self, video_path, i):
         cap = cv2.VideoCapture(video_path)
@@ -129,6 +135,47 @@ class AnalysisWindow(QDialog):
             print("Timer stop")
             timerThread.cancel()
 
+    def showRsltBtnClicked(self):
+        '''분석 중단일 경우 정리할 것들 정리'''
+        # 결과 화면 목록창으로 전환
+        self.stop()
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
+class ResultListWindow(QDialog):
+    
+    def __init__(self):
+        super().__init__()
+        loadUi("./UI/resultList.ui", self)
+        self.showRootRsltBtn.clicked.connect(self.showRootRsltBtnClicked)
+
+    def showRootRsltBtnClicked(self):
+        # RootOfConfirmedCaseWindow로 전환
+        widget.setCurrentIndex(widget.currentIndex()+1)
+        #  결과 띄우기
+        widget.currentWidget().showResult()
+
+class RootOfConfirmedCaseWindow(QDialog):
+    
+    def __init__(self):
+        super().__init__()
+        loadUi("./UI/rootOfConfirmedCase.ui", self)
+        self.backBtn.clicked.connect(self.backBtnClicked)
+
+    def showResult(self):
+        print('in showResult')
+        result = [("input_video1.avi", "1", "00:03:30", "00:03:35"), ("input_video2.avi", "2", "00:04:30", "00:03:35"), ("input_video1.avi", "3", "00:05:30", "00:05:35")]
+        
+        self.tableWidget.setRowCount(len(result))
+        self.tableWidget.setColumnCount(4)
+        for row in range(len(result)):
+            for col in range(4):
+                self.tableWidget.setItem(row, col, QTableWidgetItem(result[row][col]))
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+    def backBtnClicked(self):
+        # 결과 화면 목록창으로 전환
+        widget.setCurrentIndex(widget.currentIndex()-1)
+
 def center(self):
     qr = self.frameGeometry()
     cp = QDesktopWidget().availableGeometry().center()
@@ -146,11 +193,15 @@ if __name__ == '__main__':
     firstWindow = FirstWindow()
     dataInputWindow = DataInputWindow()
     analysisWindow = AnalysisWindow()
+    resultListWindow = ResultListWindow()
+    rootOfConfirmedCaseWindow = RootOfConfirmedCaseWindow()
 
     #Widget 추가
     widget.addWidget(firstWindow)
     widget.addWidget(dataInputWindow)
     widget.addWidget(analysisWindow)
+    widget.addWidget(resultListWindow)
+    widget.addWidget(rootOfConfirmedCaseWindow)
 
     #프로그램 화면을 보여주는 코드
     widget.setWindowTitle('CCTV 영상 분석을 통한 코로나 확진자 동선 및 접촉자 판별 시스템')
