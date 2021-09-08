@@ -1,5 +1,6 @@
 import cv2 
 import numpy as np 
+import os.path
 from pypreprocessor import pypreprocessor
 import logging
 import maskdetect.faceDetector.faceDetector as face
@@ -35,13 +36,17 @@ def runMaskDetection(shm, processOrder, nextPid):
  
 	myPid = 'maskDetection'
 	shm.init_process(processOrder, myPid, nextPid) 
+
+	if os.path.exists(runInfo.input_video_path) == False:
+		logger.critical("[IO Error] Input video path: '{}' is not exists".format(runInfo.input_video_path))
+		exit(-1)
  
 	while (input_capture.isOpened()) :
 		frame_index = frame_index + 1 
 		ret, raw_image = input_capture.read() 
 
 		if ret == False : 
-			logger.critical("mask detection can not read the video")
+			logger.critical("mask detection process last frame :)")
 			break 
 		if frame_index < start_frame : 
 			continue 
