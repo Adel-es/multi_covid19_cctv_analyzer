@@ -48,5 +48,9 @@ def checkDistance(shm, processOrder, nextPid):
                     shm.data.people[pIdx].isClose = True
                 else:
                     shm.data.people[pIdx].isClose = False
+            
+            # Set the confirmed case's isClose value to False
+            shm.data.people[reid].isClose = False
+            
         shm.finish_a_frame()
     shm.finish_process()
