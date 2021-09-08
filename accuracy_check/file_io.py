@@ -98,18 +98,28 @@ def convertGTruthFileToJsonObject(gTruth_file_path):
             (How to make .mat file: https://www.notion.so/bob8ysh/Python-mat-60e5bb65c5864930b756def24c4daafa)
     Return: 
         gTruth = {
-            "P1": [[], [], ... , {'Position': [94.0, 7.0, 27.1, 64.6], 'ismask': 'notfound'}, ... , [], []],
+            "P1": [[], [], ... , {'Position': [94.0, 75.0, 190.1, 264.6], 'ismask': 'notfound'}, ... , [], []],
             ...
             "P8": [[], ... , []]
         }
     '''
     mat_file = scipy.io.loadmat(gTruth_file_path)
 
+    # Convert mat format file to json object
     gTruth = dict()
     for key in mat_file:
         if type(mat_file[key]) == np.ndarray:
             string_data = mat_file[key][0]
             json_data = json.loads(string_data)
             gTruth[key] = json_data
+    
+    # Change gTruth's bounding box format from [minX, minY, width, height] to [minX, minY, maxX, maxY]
+    for key in gTruth:
+        for i in range(len(gTruth[key])):
+            if type(gTruth[key][i]) == dict:
+                minX, minY, width, height = gTruth[key][i]['Position']
+                maxX = minX + width
+                maxY = minY + height
+                gTruth[key][i]['Position'] = [minX, minY, maxX, maxY]
     
     return gTruth
