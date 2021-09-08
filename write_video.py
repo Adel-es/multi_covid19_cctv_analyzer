@@ -3,7 +3,7 @@ from typing import List
 from distance import getCentroid
 from utils.types import Masked, NotMasked, NotNear, FaceNotFound
 from configs import runInfo
-from utils.resultManager import ResultManager
+from utils.resultManager import Contactor, ResultManager
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
@@ -102,6 +102,20 @@ def draw_bbox_and_tid(frame, person, isConfirmed):
     cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 2)
     cv2.putText(frame, tidText, tidPosition, 0, 8e-4 * frame.shape[0], tidColor, 3)
 
+
 def update_output_json(shm, res_manager, frame_number:int, frame_index : int, person_indices : List[int]) : 
-    is_target : bool = ( shm.data.frames[frame_index].reid != -1 )
+    reid_index = shm.data.frames[frame_index].reid 
+    is_target : bool = ( reid_index != -1 )
     res_manager.update_targetinfo(frame_number, is_target)
+    
+    target = shm.data.people[reid_index]
+    target_mask = target.isMask 
+    
+    for pIdx in person_indices:
+        person = shm.data.people[pIdx]
+        if not person.isClose:
+            continue
+        tid = person.tid 
+        contactor_mask = person.isMask 
+        bbox = [int(person.bbox.minX), int(person.bbox.minY), int(person.bbox.maxX), int(person.bbox.maxY)]
+        res_manager.update_contactorinfo(frame_number, tid, target_mask, contactor_mask, bbox)
