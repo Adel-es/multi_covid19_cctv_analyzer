@@ -3,19 +3,19 @@ import scipy.io
 import numpy as np
 from collections import OrderedDict
 
-def getOutputFilePath(input_video_path):
+def getShmFilePath(input_video_path):
     '''
     ex: input_video_path = "data/input/video.mp4"
-        -> output = "accuracy_check/system_output_file/video_output.json"
+        -> return "accuracy_check/shm_file/video_shm.json"
     '''
     videoName = input_video_path.split('/')[-1]
     videoName = videoName.split('.')[0]
-    return 'accuracy_check/system_output_file/{}_output.json'.format(videoName)
+    return 'accuracy_check/shm_file/{}_shm.json'.format(videoName)
 
 def getGTruthFilePath(input_video_path):
     '''
     ex: input_video_path = "data/input/video.mp4"
-        -> output = "accuracy_check/gTruth_file/video_gTruth.mat"
+        -> return "accuracy_check/gTruth_file/video_gTruth.mat"
     '''
     videoName = input_video_path.split('/')[-1]
     videoName = videoName.split('.')[0]
@@ -23,9 +23,13 @@ def getGTruthFilePath(input_video_path):
 
 def writeShmToJsonFile(data, start_frame, end_frame, input_video_path):
     '''
-    input: 
-        data: ShmSerialManger.data
-    output: 
+    Param: 
+        - data: ShmSerialManger.data
+        - start_frame, end_frame: int type
+        - input_video_path: string type
+    Return: 
+        None
+    Output: 
         .json file 
     '''
     shm = OrderedDict()
@@ -58,16 +62,16 @@ def writeShmToJsonFile(data, start_frame, end_frame, input_video_path):
     shm["people"] = people
 
     # Write JSON
-    with open(getOutputFilePath(input_video_path), 'w', encoding="utf-8") as make_file:
+    with open(getShmFilePath(input_video_path), 'w', encoding="utf-8") as make_file:
         json.dump(shm, make_file, ensure_ascii=False, indent="\t")
         
         
-def convertOutputFileToJsonObject(output_file_path):
+def convertShmFileToJsonObject(shm_file_path):
     '''
-    input: 
-        output_file_path: path of .json file written by writeShmToFile() 
-    output: 
-        systemOutput = {
+    Param: 
+        shm_file_path: path of .json file written by writeShmToFile() 
+    Return: 
+        shm = {
             "start_frame": 0,
             "end_frame": 9,
             "frames": [
@@ -82,17 +86,17 @@ def convertOutputFileToJsonObject(output_file_path):
             ]
         }
     '''
-    with open(output_file_path) as json_file:
-        system_output = json.load(json_file)
-    return system_output
+    with open(shm_file_path) as json_file:
+        shm = json.load(json_file)
+    return shm
 
 
 def convertGTruthFileToJsonObject(gTruth_file_path):
     '''
-    input: 
+    Param: 
         gTruth_file_path: path of .mat file converted by jsonencode() in MATLAB
             (How to make .mat file: https://www.notion.so/bob8ysh/Python-mat-60e5bb65c5864930b756def24c4daafa)
-    output: 
+    Return: 
         gTruth = {
             "P1": [[], [], ... , {'Position': [94.0, 7.0, 27.1, 64.6], 'ismask': 'notfound'}, ... , [], []],
             ...

@@ -9,31 +9,31 @@
 			"reid": -1
 		},
 		{
-			"reid": 2
+			"reid": -1
 		},
 		{
-			"reid": 3
+			"reid": -1
 		},
 		{
-			"reid": 6
+			"reid": -1
 		},
 		{
-			"reid": 9
+			"reid": -1
 		},
 		{
-			"reid": 12
+			"reid": -1
 		},
 		{
-			"reid": 15
+			"reid": -1
 		},
 		{
-			"reid": 18
+			"reid": -1
 		},
 		{
-			"reid": 21
+			"reid": -1
 		},
 		{
-			"reid": 24
+			"reid": 0
 		}
 	],
 	"people": [
@@ -48,8 +48,8 @@
 					653.369140625
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -59,8 +59,8 @@
 					640.6201782226562
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -70,8 +70,8 @@
 					637.3442993164062
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		],
 		[
@@ -83,8 +83,8 @@
 					653.4060668945312
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -94,8 +94,8 @@
 					642.757568359375
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -105,8 +105,8 @@
 					639.7847900390625
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		],
 		[
@@ -118,8 +118,8 @@
 					657.0237426757812
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -129,8 +129,8 @@
 					646.3076782226562
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -140,8 +140,8 @@
 					639.1376953125
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		],
 		[
@@ -153,8 +153,8 @@
 					659.6140747070312
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -164,8 +164,8 @@
 					645.9984741210938
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -175,8 +175,8 @@
 					640.3654174804688
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		],
 		[
@@ -188,8 +188,8 @@
 					660.4483032226562
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -199,8 +199,8 @@
 					645.086669921875
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -210,8 +210,8 @@
 					638.0191040039062
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		],
 		[
@@ -223,8 +223,8 @@
 					660.6630859375
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -234,8 +234,8 @@
 					644.6881103515625
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -245,8 +245,8 @@
 					640.639892578125
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		],
 		[
@@ -258,8 +258,8 @@
 					662.70458984375
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -269,8 +269,8 @@
 					643.8151245117188
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -280,8 +280,8 @@
 					642.271728515625
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		],
 		[
@@ -293,8 +293,8 @@
 					665.4152221679688
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -304,8 +304,8 @@
 					643.4572143554688
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -315,8 +315,8 @@
 					649.6326293945312
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		],
 		[
