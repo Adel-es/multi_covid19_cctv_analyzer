@@ -105,6 +105,33 @@ class Data():
     
         return framesIdx, peopleIndices
     
+    def get_index_of_frame(self, frameNum):
+        '''
+        frameNum번째 프레임의 인덱스를 반환한다. 
+        (주의: 영상에서 start_frame이 200이라도 frameNum은 200이 아니라 1이어야 첫 번째 프레임을 의미한다.)
+        framesIdx: frames 배열의 인덱스. 정수 타입.
+        peopleIndices: people 배열의 인데스들. List 타입
+        '''
+        # Get framesIdx
+        framesIdx = self.convert_logical_idx_to_physical(len(self.frames), frameNum)
+        
+        # Get peopleIndices
+        peopleIdxStart = self.convert_logical_idx_to_physical(len(self.peopleIdx), frameNum-1)
+        peopleIdxEnd = self.convert_logical_idx_to_physical(len(self.peopleIdx), frameNum)
+        
+        peopleLogicalStart = self.peopleIdx[ peopleIdxStart ]
+        peopleLogicalEnd = self.peopleIdx[ peopleIdxEnd ]
+        
+        peoplePhysicalStart = self.convert_logical_idx_to_physical(len(self.people), peopleLogicalStart)
+        peoplePhysicalEnd = self.convert_logical_idx_to_physical(len(self.people), peopleLogicalEnd)
+        
+        if peoplePhysicalEnd < peoplePhysicalStart:
+            peopleIndices = list(range(peoplePhysicalStart, len(self.people))) + list(range(0, peoplePhysicalEnd))
+        else:
+            peopleIndices = list(range(peoplePhysicalStart, peoplePhysicalEnd))
+    
+        return framesIdx, peopleIndices
+        
     def update_peopleIdx(self, newPeopleNum):
         '''
         첫 번째 프로세스에서 새로운 프레임을 공유 메모리에 쓸 때

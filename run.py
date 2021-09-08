@@ -13,6 +13,7 @@ import random # for fakeReid
 from personReid.personReid import runPersonReid
 from maskdetect.maskProcess import runMaskDetection
 from write_video import writeVideo
+from accuracy_check.file_io import writeShmToJsonFile
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
@@ -64,3 +65,6 @@ if __name__ == '__main__':
     # writeVideo(shm, 3, detectTrackProc.pid)
     
     logger.info("Running time: {}".format(time.time() - startTime))
+
+    if (not runInfo.parallel_processing) and runInfo.write_result:
+        writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path)
