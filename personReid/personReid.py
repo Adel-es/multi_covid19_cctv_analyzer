@@ -20,6 +20,25 @@ start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 query_image_path = runInfo.query_image_path
 
+def fakeReid2(shm, processOrder, nextPid):
+    myPid = 'fakeReid2'
+    shm.init_process(processOrder, myPid, nextPid)
+    
+    # decide confirmed tid 
+    confirmed_tid = {6}
+    
+    # find confirmed_tid
+    for fIdx in range(start_frame, end_frame):
+        frameIdx, personIdx = shm.get_ready_to_read()
+        shm.data.frames[frameIdx].reid = -1
+        for pIdx in personIdx:
+            if shm.data.people[pIdx].tid in confirmed_tid:
+                shm.data.frames[frameIdx].reid = pIdx
+                break
+        shm.finish_a_frame()
+        
+    shm.finish_process()
+
 def fakeReid(shm, processOrder, nextPid):
     myPid = 'fakeReid'
     shm.init_process(processOrder, myPid, nextPid)
@@ -96,6 +115,8 @@ def runPersonReid(shm, processOrder, nextPid, select_reid_model, gpu_idx=0):
         personReid_la_transformer(shm, processOrder, nextPid, calculation_mode, gpu_idx)
     elif select_reid_model == 'fake':
         fakeReid(shm, processOrder, nextPid)
+    elif select_reid_model == 'fake2' : 
+        fakeReid2(shm, processOrder, nextPid)
     else:
         print("Plz Select PersonReid model")
         sys.exit()

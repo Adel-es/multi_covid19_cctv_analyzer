@@ -1,7 +1,7 @@
 import logging 
 
 # anaylsis time, file setting 
-input_video_path = 'data/input/totalVideo.mp4' # 'testVideo.mp4'
+input_video_path = 'data/input/08_14_2027_1_2.mp4' # 'testVideo.mp4'
 output_video_path = 'data/output/outvideo.avi' #'output_test_final.avi'
 output_json_path = 'data/output/output.json' 
 start_frame = 0
@@ -18,7 +18,7 @@ parallel_processing = False
 use_mask_voting = False 
 
 # reid model setting
-reid_model = 'fake' # 'fake' / 'topdb' / 'la'
+reid_model = 'fake2' # 'fake2' / 'fake' / 'topdb' / 'la'
 
 # allocate specific gpu device
 trackingGPU = 0
