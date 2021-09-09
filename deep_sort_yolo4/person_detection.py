@@ -106,6 +106,7 @@ def detectAndTrack(shm, processOrder, nextPid):
 
         tids = []
         bboxes = []
+        confidences = []
         for track in tracker.tracks:
             if not track.is_confirmed() or track.time_since_update > 1:
                 continue
@@ -117,12 +118,13 @@ def detectAndTrack(shm, processOrder, nextPid):
             
             tids.append(track.track_id)
             bboxes.append(bbox)
+            confidences.append(track.confidence)
             
         peopleNum = len(tids)
         frameIdx, personIdx = shm.get_ready_to_write(peopleNum)
         for i in range(peopleNum):
             # Write at people
-            shm.data.people[ personIdx[i] ].bbox = BBox(bboxes[i][0], bboxes[i][1], bboxes[i][2], bboxes[i][3])
+            shm.data.people[ personIdx[i] ].bbox = BBox(bboxes[i][0], bboxes[i][1], bboxes[i][2], bboxes[i][3], confidences[i])
             shm.data.people[ personIdx[i] ].tid = tids[i]
             
         shm.finish_a_frame()
