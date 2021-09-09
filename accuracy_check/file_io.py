@@ -51,7 +51,7 @@ def writeShmToJsonFile(data, start_frame, end_frame, input_video_path):
         for pIdx in personIdx:
             person = data.people[pIdx]
             aFramePeople.append({
-                "bbox": [person.bbox.minX, person.bbox.minY, person.bbox.maxX, person.bbox.maxY], 
+                "bbox": [person.bbox.minX, person.bbox.minY, person.bbox.maxX, person.bbox.maxY, person.bbox.confidence], 
                 "tid": person.tid, 
                 "isClose": person.isClose, 
                 "isMask": person.isMask
