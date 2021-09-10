@@ -25,15 +25,19 @@ def fakeReid2(shm, processOrder, nextPid):
     shm.init_process(processOrder, myPid, nextPid)
     
     # decide confirmed tid 
-    confirmed_tid = {6}
+    confirmed_tid = {1}
     
+    t_conf = 0.6
+    f_conf = 0.1
     # find confirmed_tid
     for fIdx in range(start_frame, end_frame):
         frameIdx, personIdx = shm.get_ready_to_read()
         shm.data.frames[frameIdx].reid = -1
+        shm.data.frames[frameIdx].confidence = f_conf
         for pIdx in personIdx:
             if shm.data.people[pIdx].tid in confirmed_tid:
                 shm.data.frames[frameIdx].reid = pIdx
+                shm.data.frames[frameIdx].confidence = t_conf
                 break
         shm.finish_a_frame()
         
@@ -43,6 +47,8 @@ def fakeReid(shm, processOrder, nextPid):
     myPid = 'fakeReid'
     shm.init_process(processOrder, myPid, nextPid)
     
+    t_conf = 0.6
+    f_conf = 0.1
     # select confirmed case randomly
     FRAME_NUM = end_frame - start_frame + 1
     doneFIdx = FRAME_NUM - 1
@@ -52,19 +58,23 @@ def fakeReid(shm, processOrder, nextPid):
             random_pIdx = random.choice(personIdx)
             confirmed_tid = shm.data.people[random_pIdx].tid
             shm.data.frames[frameIdx].reid = random_pIdx
+            shm.data.frames[frameIdx].confidence = t_conf
             shm.finish_a_frame()
             doneFIdx = fIdx
             break
         shm.data.frames[frameIdx].reid = -1
+        shm.data.frames[frameIdx].confidence = f_conf
         shm.finish_a_frame()
     
     # find confirmed_tid
     for fIdx in range(doneFIdx + 1, FRAME_NUM):
         frameIdx, personIdx = shm.get_ready_to_read()
         shm.data.frames[frameIdx].reid = -1
+        shm.data.frames[frameIdx].confidence = f_conf
         for pIdx in personIdx:
             if shm.data.people[pIdx].tid == confirmed_tid:
                 shm.data.frames[frameIdx].reid = pIdx
+                shm.data.frames[frameIdx].confidence = t_conf
                 break
         shm.finish_a_frame()
         
@@ -111,7 +121,7 @@ def runPersonReid(shm, processOrder, nextPid, select_reid_model, gpu_idx=0):
     if select_reid_model == 'topdb':
         personReid_topdb(shm, processOrder, nextPid, gpu_idx)
     elif select_reid_model == 'la':
-        calculation_mode = 'custom' # 'custom' or 'original'
+        calculation_mode = 'custom' # 이제 무조건 custom만 사용 가능 # 'custom' or 'original'
         personReid_la_transformer(shm, processOrder, nextPid, calculation_mode, gpu_idx)
     elif select_reid_model == 'fake':
         fakeReid(shm, processOrder, nextPid)

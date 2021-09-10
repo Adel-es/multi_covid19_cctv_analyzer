@@ -990,7 +990,10 @@ class Engine(object):
         top1_gpIdx = np.transpose(g_pIdx[dist_indices])[0] # top1 gallery ids를 오름차순 정렬 후, 빈도수를 반환.
         top1_gpIdx_bincount = np.bincount(top1_gpIdx)
         top1_gpIdx_max = top1_gpIdx_bincount.argmax() # 가장 빈도수가 높은 gallery의 pIdx를 가져옴
-        return top1_gpIdx_max
+        
+        top1_idx = dist_indices[0][0]
+        top1_conf = (distmat[0][top1_idx] + 1.) / 2. # cosine 결과값의 범위를 [-1,1] -> [0,1]
+        return top1_gpIdx_max, top1_conf
         
         # dist_indices = np.transpose(dist_indices) # qn X gn
         # return [ (i, j) for i, j in zip(dist_indices[0], q_pids) ] # query 의 top1의 index
