@@ -13,6 +13,7 @@ import random # for fakeReid
 from personReid.personReid import runPersonReid
 from maskdetect.maskProcess import runMaskDetection
 from write_video import writeVideo
+from accuracy_check.file_io import writeShmToJsonFile
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
@@ -33,14 +34,14 @@ MAX_PEOPLE_NUM = 10
 
 if __name__ == '__main__':
     # torch.multiprocessing.set_start_method('spawn')   
+    logger = make_logger(runInfo.logfile_name, 'root')
     if os.path.exists(runInfo.input_video_path) == False:
-        print("[IO Error] Input video path: {} is not exists".format(runInfo.input_video_path))
+        logger.critical("[IO Error] Input video path: {} is not exists".format(runInfo.input_video_path))
         exit(-1)
     if os.path.exists(runInfo.query_image_path) == False:
-        print("[IO Error] Query image directory path: {} is not exists".format(runInfo.query_image_path))
+        logger.critical("[IO Error] Query image directory path: {} is not exists".format(runInfo.query_image_path))
         exit(-1)
     
-    logger = make_logger(runInfo.logfile_name, 'root')
 
     startTime = time.time()
     if runInfo.parallel_processing:
@@ -64,3 +65,6 @@ if __name__ == '__main__':
     # writeVideo(shm, 3, detectTrackProc.pid)
     
     logger.info("Running time: {}".format(time.time() - startTime))
+
+    if (not runInfo.parallel_processing) and runInfo.write_result:
+        writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path)

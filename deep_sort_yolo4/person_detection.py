@@ -7,7 +7,6 @@ import os
 import sys
 root_path = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(root_path)
-sys.path.append(root_path + '/deep_sort_yolo4')
 
 import warnings
 import cv2
@@ -27,12 +26,10 @@ from utils.types import BBox
 
 warnings.filterwarnings('ignore')
 
-path = os.path.abspath(os.path.dirname(__file__))
-print(f"path: {path}")
-
 input_video_path = runInfo.input_video_path
 start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
+gpuNum = runInfo.trackingGPU
 
 def positioning_in_frame(bbox, f_width, f_height):
     if bbox[0] < 0:
@@ -50,8 +47,8 @@ def detectAndTrack(shm, processOrder, nextPid):
     if gpus:
         # Limit TensorFlow to use only the first GPU
         try:
-            tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
-            tf.config.experimental.set_memory_growth(gpus[0], True)
+            tf.config.experimental.set_visible_devices(gpus[gpuNum], 'GPU')
+            tf.config.experimental.set_memory_growth(gpus[gpuNum], True)
         except RuntimeError as e:
             print(e)
                 
@@ -64,7 +61,7 @@ def detectAndTrack(shm, processOrder, nextPid):
     nms_max_overlap = 1.0
     
     # Get tracker (Deep SORT)
-    model_filename = f'{path}/model_data/mars-small128.pb'
+    model_filename = f'{root_path}/model_data/mars-small128.pb'
     encoder = gdet.create_box_encoder(model_filename, batch_size=1)
     metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
     tracker = Tracker(metric)

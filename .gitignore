@@ -5,10 +5,12 @@ gpu_usage_check.py
 .vscode
 test
 *.pyc 
+log.txt
 
 # tempData
 log/*
 log
+log.txt
 # data
 data/*
 

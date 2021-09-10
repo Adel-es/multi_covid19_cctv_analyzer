@@ -1,14 +1,15 @@
 import sys
 import threading
 import math
-from PyQt5.QtWidgets import QApplication, QDialog, QDesktopWidget, QStackedWidget, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
+# from qtimeline import QTimeLine
 
 import cv2 # for test
 
-photo_path = '' # for test
+from App.contactorListUI import *
 
 class FirstWindow(QDialog):
     def __init__(self):
@@ -31,6 +32,10 @@ class DataInputWindow(QDialog):
         loadUi("./UI/dataInput.ui", self)
         self.path = 'C:'
         self.video_paths = []
+        # for test
+        # self.video_paths = [
+        #     'G:/내 드라이브/졸업과제/Deep-SORT-YOLOv4 출력 영상/output_yolov4_filtered.avi'
+        # ]
         self.addPhotoBtn.clicked.connect(self.addPhotoBtnClicked)
         self.addVideoBtn.clicked.connect(self.addVideoBtnClicked)
         self.startAnalysisBtn.clicked.connect(self.startAnalysisBtnClicked)
@@ -68,6 +73,7 @@ class AnalysisWindow(QDialog):
         self.labels = [self.videoLabel1, self.videoLabel2, self.videoLabel3, self.videoLabel4]
         self.timer = 0
         self.playTime = 3
+        self.showRsltBtn.clicked.connect(self.showRsltBtnClicked)
 
     def analysis(self, video_path, i):
         cap = cv2.VideoCapture(video_path)
@@ -129,6 +135,85 @@ class AnalysisWindow(QDialog):
             print("Timer stop")
             timerThread.cancel()
 
+    def showRsltBtnClicked(self):
+        '''분석 중단일 경우 정리할 것들 정리'''
+        # 결과 화면 목록창으로 전환
+        self.stop()
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
+class ResultListWindow(QDialog):
+    def __init__(self):
+        super().__init__()
+        loadUi("./UI/resultList.ui", self)
+        self.showRootRsltBtn.clicked.connect(self.showRootRsltBtnClicked)
+        self.showContactorLstBtn.clicked.connect(self.showContactorLstBtnClicked)
+
+    def showRootRsltBtnClicked(self):
+        # RootOfConfirmedCaseWindow로 전환
+        widget.setCurrentIndex(widget.currentIndex()+1)
+        #  결과 띄우기
+        widget.currentWidget().showResult()
+
+    
+    def showContactorLstBtnClicked(self):
+        # RootOfConfirmedCaseWindow로 전환
+        widget.setCurrentIndex(widget.currentIndex()+2)
+
+class RootOfConfirmedCaseWindow(QDialog):
+    
+    def __init__(self):
+        super().__init__()
+        loadUi("./UI/rootOfConfirmedCase.ui", self)
+        self.backBtn.clicked.connect(self.backBtnClicked)
+
+    def showResult(self):
+        print('in showResult')
+        result = [("input_video1.avi", "1", "00:03:30", "00:03:35"), ("input_video2.avi", "2", "00:04:30", "00:03:35"), ("input_video1.avi", "3", "00:05:30", "00:05:35")]
+        
+        self.tableWidget.setRowCount(len(result))
+        self.tableWidget.setColumnCount(4)
+        for row in range(len(result)):
+            for col in range(4):
+                self.tableWidget.setItem(row, col, QTableWidgetItem(result[row][col]))
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+    def backBtnClicked(self):
+        # 결과 화면 목록창으로 전환
+        widget.setCurrentIndex(widget.currentIndex()-1)
+
+class ContactorListWindow(QDialog):
+    '''
+        접촉자 목록을 띄워주는 Window
+
+        Args:
+            contactorInfoList: 접촉자들의 정보(사진, 영상 이름..)를 담고있는 ContactorInfo()의 리스트
+    '''
+    def __init__(self, contactorInfoList):
+        super().__init__()
+        loadUi("./UI/contactorList.ui", self)
+        self.contactorInfoList = contactorInfoList
+        self.showContactor()
+        self.backBtn.clicked.connect(self.backBtnClicked)
+        
+    def showContactor(self):
+        for info in self.contactorInfoList:
+            if os.path.exists(info.image_path):
+                # custom widget를 listWidgetItem으로 추상화하는 용도.
+                custom_widget = ContactorItem(info)
+                item = QListWidgetItem(self.contactorList)
+
+                # listWidgetItem은 custom widget의 크기를 모르므로 알려줘야 한다.
+                item.setSizeHint(custom_widget.sizeHint())
+                self.contactorList.setItemWidget(item, custom_widget)
+                self.contactorList.addItem(item)
+                
+            else:
+                print("Image is not exists: {}")
+
+    def backBtnClicked(self):
+        # 결과 화면 목록창으로 전환
+        widget.setCurrentIndex(widget.currentIndex()-2)
+        
 def center(self):
     qr = self.frameGeometry()
     cp = QDesktopWidget().availableGeometry().center()
@@ -142,15 +227,29 @@ if __name__ == '__main__':
     #화면 전환용 Widget 설정
     widget = QStackedWidget()
 
+    #test용 접촉자 정보 입력 리스트
+    image_paths = ["./tempData/query/1_0_0.png",
+                    "./tempData/query/2_0_0.PNG",
+                    ]
+    contactorInfoList = []
+    for path in image_paths:
+        contactorInfoList.append(ContactorInfo(path))
+
     #레이아웃 인스턴스 생성
     firstWindow = FirstWindow()
     dataInputWindow = DataInputWindow()
     analysisWindow = AnalysisWindow()
+    resultListWindow = ResultListWindow()
+    rootOfConfirmedCaseWindow = RootOfConfirmedCaseWindow()
+    contactorListWindow = ContactorListWindow(contactorInfoList)
 
     #Widget 추가
     widget.addWidget(firstWindow)
     widget.addWidget(dataInputWindow)
     widget.addWidget(analysisWindow)
+    widget.addWidget(resultListWindow)
+    widget.addWidget(rootOfConfirmedCaseWindow)
+    widget.addWidget(contactorListWindow)
 
     #프로그램 화면을 보여주는 코드
     widget.setWindowTitle('CCTV 영상 분석을 통한 코로나 확진자 동선 및 접촉자 판별 시스템')
