@@ -28395,3 +28395,130 @@
 [DEBUG|2021-09-05 21:07:51,221] - types.py(216) - checkDistance get_ready_to_read: Not yet.
 [DEBUG|2021-09-05 21:08:51,221] - types.py(216) - checkDistance get_ready_to_read: Not yet.
 [DEBUG|2021-09-05 21:09:51,222] - types.py(216) - checkDistance get_ready_to_read: Not yet.
+[CRITICAL|2021-09-10 11:19:36,007] - run.py(39) - [IO Error] Input video path: data/input/08_14_2020_1_1.mp4 is not exists
+[DEBUG|2021-09-10 11:21:44,671] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-10 11:21:44,678] - types.py(270) - fakeReid2 process_init: Not yet.
+[DEBUG|2021-09-10 11:21:44,703] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-10 11:21:51,764] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-10 11:21:51,765] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-10 11:21:51,765] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[INFO|2021-09-10 11:21:54,264] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-10 11:21:54,264] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-10 11:22:03,731] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-10 11:22:13,339] - types.py(272) - fakeReid2 init
+[DEBUG|2021-09-10 11:22:13,339] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-10 11:22:13,340] - types.py(287) - fakeReid2 send_ready_signal
+[DEBUG|2021-09-10 11:22:13,340] - types.py(272) - checkDistance init
+[DEBUG|2021-09-10 11:22:13,340] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-10 11:22:13,340] - types.py(272) - maskDetection init
+[DEBUG|2021-09-10 11:22:21,229] - types.py(272) - writeVideo init
+[DEBUG|2021-09-10 11:22:21,229] - types.py(287) - maskDetection send_ready_signal
+[INFO|2021-09-10 11:22:25,115] - run.py(67) - Running time: 40.45892953872681
+[DEBUG|2021-09-10 11:23:29,368] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-10 11:23:29,373] - types.py(270) - fakeReid2 process_init: Not yet.
+[DEBUG|2021-09-10 11:23:29,393] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-10 11:23:36,348] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-10 11:23:36,349] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-10 11:23:36,349] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[INFO|2021-09-10 11:23:38,806] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-10 11:23:38,806] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-10 11:23:48,824] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-10 11:23:58,694] - types.py(272) - fakeReid2 init
+[DEBUG|2021-09-10 11:23:58,694] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-10 11:23:58,695] - types.py(287) - fakeReid2 send_ready_signal
+[DEBUG|2021-09-10 11:23:58,695] - types.py(272) - checkDistance init
+[DEBUG|2021-09-10 11:23:58,696] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-10 11:23:58,696] - types.py(272) - maskDetection init
+[DEBUG|2021-09-10 11:24:06,463] - types.py(272) - writeVideo init
+[DEBUG|2021-09-10 11:24:06,463] - types.py(287) - maskDetection send_ready_signal
+[INFO|2021-09-10 11:24:10,619] - run.py(67) - Running time: 41.26500058174133
+[DEBUG|2021-09-10 11:27:08,447] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-10 11:27:08,453] - types.py(270) - fakeReid2 process_init: Not yet.
+[DEBUG|2021-09-10 11:27:08,474] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-10 11:27:15,200] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-10 11:27:15,200] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-10 11:27:15,200] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[INFO|2021-09-10 11:27:17,494] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-10 11:27:17,495] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-10 11:27:26,936] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-10 11:27:37,650] - types.py(272) - fakeReid2 init
+[DEBUG|2021-09-10 11:27:37,650] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-10 11:27:37,650] - types.py(287) - fakeReid2 send_ready_signal
+[DEBUG|2021-09-10 11:27:37,650] - types.py(272) - checkDistance init
+[DEBUG|2021-09-10 11:27:37,651] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-10 11:27:37,651] - types.py(272) - maskDetection init
+[DEBUG|2021-09-10 11:27:45,798] - types.py(272) - writeVideo init
+[DEBUG|2021-09-10 11:27:45,799] - types.py(287) - maskDetection send_ready_signal
+[INFO|2021-09-10 11:27:50,054] - run.py(67) - Running time: 41.621273040771484
+[DEBUG|2021-09-10 11:27:55,817] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-10 11:27:55,822] - types.py(270) - fakeReid2 process_init: Not yet.
+[DEBUG|2021-09-10 11:27:55,845] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-10 11:28:02,600] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-10 11:28:02,600] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-10 11:28:02,601] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[INFO|2021-09-10 11:28:05,004] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-10 11:28:05,004] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-10 11:28:15,079] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-10 11:28:26,171] - types.py(272) - fakeReid2 init
+[DEBUG|2021-09-10 11:28:26,171] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-10 11:28:26,172] - types.py(287) - fakeReid2 send_ready_signal
+[DEBUG|2021-09-10 11:28:26,172] - types.py(272) - checkDistance init
+[DEBUG|2021-09-10 11:28:26,173] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-10 11:28:26,173] - types.py(272) - maskDetection init
+[DEBUG|2021-09-10 11:28:33,754] - types.py(272) - writeVideo init
+[DEBUG|2021-09-10 11:28:33,754] - types.py(287) - maskDetection send_ready_signal
+[INFO|2021-09-10 11:28:37,918] - run.py(67) - Running time: 42.116270780563354
+[DEBUG|2021-09-10 11:30:44,299] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-10 11:30:44,329] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-10 11:30:51,770] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-10 11:30:51,771] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-10 11:30:51,771] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-10 11:30:53,390] - types.py(270) - topdbReid process_init: Not yet.
+[INFO|2021-09-10 11:30:54,149] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-10 11:30:54,150] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-10 11:31:03,906] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-10 11:31:14,864] - types.py(272) - topdbReid init
+[DEBUG|2021-09-10 11:31:14,864] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-10 11:31:23,596] - types.py(272) - checkDistance init
+[DEBUG|2021-09-10 11:31:23,596] - types.py(287) - topdbReid send_ready_signal
+[DEBUG|2021-09-10 11:31:23,597] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-10 11:31:23,597] - types.py(272) - maskDetection init
+[DEBUG|2021-09-10 11:31:27,417] - types.py(287) - maskDetection send_ready_signal
+[DEBUG|2021-09-10 11:31:27,417] - types.py(272) - writeVideo init
+[INFO|2021-09-10 11:31:31,579] - run.py(67) - Running time: 47.29766035079956
+[DEBUG|2021-09-10 11:32:39,511] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-10 11:32:39,539] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-10 11:32:46,891] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-10 11:32:46,891] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-10 11:32:46,891] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-10 11:32:48,532] - types.py(270) - topdbReid process_init: Not yet.
+[INFO|2021-09-10 11:32:49,452] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-10 11:32:49,453] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-10 11:32:58,029] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-10 11:33:08,617] - types.py(272) - topdbReid init
+[DEBUG|2021-09-10 11:33:08,617] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-10 11:33:17,513] - types.py(272) - checkDistance init
+[DEBUG|2021-09-10 11:33:17,513] - types.py(287) - topdbReid send_ready_signal
+[DEBUG|2021-09-10 11:33:17,514] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-10 11:33:17,514] - types.py(272) - maskDetection init
+[DEBUG|2021-09-10 11:33:21,205] - types.py(287) - maskDetection send_ready_signal
+[DEBUG|2021-09-10 11:33:21,205] - types.py(272) - writeVideo init
+[INFO|2021-09-10 11:33:25,347] - run.py(67) - Running time: 45.85115361213684
+[DEBUG|2021-09-10 11:35:26,590] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-10 11:35:26,618] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-10 11:35:33,967] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-10 11:35:33,968] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-10 11:35:33,968] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-10 11:35:35,629] - types.py(270) - topdbReid process_init: Not yet.
+[INFO|2021-09-10 11:35:36,344] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-10 11:35:36,345] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-10 11:35:45,502] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-10 11:35:55,974] - types.py(272) - topdbReid init
+[DEBUG|2021-09-10 11:35:55,974] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-10 11:36:05,147] - types.py(272) - checkDistance init
+[DEBUG|2021-09-10 11:36:05,147] - types.py(287) - topdbReid send_ready_signal
+[DEBUG|2021-09-10 11:36:05,148] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-10 11:36:05,148] - types.py(272) - maskDetection init
+[DEBUG|2021-09-10 11:36:08,943] - types.py(287) - maskDetection send_ready_signal
+[DEBUG|2021-09-10 11:36:08,944] - types.py(272) - writeVideo init
+[INFO|2021-09-10 11:36:13,148] - run.py(67) - Running time: 46.57341957092285
