@@ -2,12 +2,12 @@
    "video_name": "output_yolov4.avi",
    "target": [
        {
-          "in": 503,
-          "out": 507
+          "in": 200,
+          "out": 250
        },
        {
-          "in": 509,
-          "out": 854
+          "in": 700,
+          "out": 900
        }
     ],
 
