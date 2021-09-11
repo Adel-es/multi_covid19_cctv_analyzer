@@ -28,8 +28,6 @@ class FrameInfo(Structure):
 class BBox(Structure):
     _fields_ = [('minX', c_float), ('minY', c_float), ('maxX', c_float), ('maxY', c_float)]
 
-Masked, NotMasked, NotNear, FaceNotFound = 1, 2, 3, 4
-
 class PersonInfo(Structure):
     _fields_ = [('bbox', BBox), ('tid', c_int32), ('isClose', c_bool), ('isMask', c_uint8)]
 

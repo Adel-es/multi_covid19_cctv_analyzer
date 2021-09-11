@@ -1,7 +1,7 @@
 import cv2
 from typing import List
 from distance import getCentroid
-from utils.types import Masked, NotMasked, NotNear, FaceNotFound
+from utils.types import MaskToken
 from configs import runInfo
 from utils.resultManager import Contactor, ResultManager
 
@@ -72,14 +72,14 @@ def writeVideo(shm, processOrder, nextPid):
             for pIdx in personIdx:
                 person = shm.data.people[pIdx]
                 square = person.bbox
-                if person.isMask == NotNear : 
+                if person.isMask == MaskToken.NotNear : 
                     continue 
                 # save_contactor_images()
-                if person.isMask == NotMasked : 
+                if person.isMask == MaskToken.NotMasked : 
                     cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (127, 127, 255), 2) #light pink
-                elif person.isMask == Masked : 
+                elif person.isMask == MaskToken.Masked : 
                     cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (127, 255, 127), 2) #light green 
-                elif person.isMask == FaceNotFound : 
+                elif person.isMask == MaskToken.FaceNotFound : 
                     cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (0, 165, 255), 2) #orange 
         out.write(frame)
         shm.finish_a_frame()
