@@ -7,21 +7,6 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5 import QtGui
 from PIL import Image, ImageQt
 
-class ContactorInfo():
-    '''
-        test를 위한 임시 접촉자 정보 class
-
-        Args:
-            path: 접촉자 이미지의 경로
-    '''
-    def __init__(self,path):
-        self.image_path = path
-        self.video_name = "cctv1.avi"
-        self.date = "2021/09/09"
-        self.start_time = "12:00"
-        self.end_time = "13:01"
-        self.dangerous_score = "5"
-
 class OriginPictureWindow(QDialog):
     '''
         접촉자의 원본(전신) 이미지를 보여주는 Window class
@@ -93,17 +78,32 @@ class ContactorItem(QWidget):
         Args:
             info: 접촉자의 정보(사진, 영상 이름..)를 담고있는 ContactorInfo()
     '''
-    def __init__(self, info):
+    def __init__(self, info, videoName, fps):
         QWidget.__init__(self)
         loadUi("./UI/contactorItem.ui", self)
         
         # 접촉자 사진 추가하기
-        thumbnail = PictureWidget(info.image_path)
+        thumbnail = PictureWidget(info['image_path'])
         self.thumbnail_layout.addWidget(thumbnail)
 
         # 접촉자 정보 추가하기 (영상 이름, 나타난 시간, 위험도)
-        self.video_name_label.setText(info.video_name)
-        self.date_label.setText(info.date)
-        self.time_label.setText("{} ~ {}".format(info.start_time, info.end_time))
-        self.dangerous_score_label.setText(info.dangerous_score)
+        self.video_name_label.setText(videoName)
+        # self.date_label.setText(info.date)
+        self.time_label.setText("{} ~ {}".format(
+            getTimeFromFrame(info["start_time"], fps), 
+            getTimeFromFrame(info["end_time"], fps)
+            ))
+        if type(info['danger_level']) != str:
+            info['danger_level'] = str(info['danger_level'])
+        self.dangerous_score_label.setText(info["danger_level"])
         
+def getTimeFromFrame(frame, fps):
+    sec = frame/int(fps)
+
+    s = int(sec % 60)
+    sec /= 60
+    m = int(sec % 60)
+    h = int(sec / 60)
+
+    # return {'hour': h, 'minute': m, 'second': s}
+    return "{}:{}:{}".format(h,m,s)
