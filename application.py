@@ -6,10 +6,12 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
 # from qtimeline import QTimeLine
-
+import json
 import cv2 # for test
 
+from App import appInfo
 from App.contactorListUI import *
+from App.confirmedListUI import *
 
 class FirstWindow(QDialog):
     def __init__(self):
@@ -159,17 +161,22 @@ class ResultListWindow(QDialog):
         # RootOfConfirmedCaseWindow로 전환
         widget.setCurrentIndex(widget.currentIndex()+2)
 
+
 class RootOfConfirmedCaseWindow(QDialog):
-    
-    def __init__(self):
+    def __init__(self, videoResult):
         super().__init__()
         loadUi("./UI/rootOfConfirmedCase.ui", self)
+        self.videoName = videoResult.videoName
+        self.fps = videoResult.fps
+        self.targetInfoList = videoResult.targetInfoList
         self.backBtn.clicked.connect(self.backBtnClicked)
 
     def showResult(self):
         print('in showResult')
-        result = [("input_video1.avi", "1", "00:03:30", "00:03:35"), ("input_video2.avi", "2", "00:04:30", "00:03:35"), ("input_video1.avi", "3", "00:05:30", "00:05:35")]
-        
+        result = [ (self.videoName, str(info['index']), getTimeFromFrame(info['in'], self.fps), getTimeFromFrame(info['out'], self.fps) ) 
+                    for info in self.targetInfoList ]
+
+        # (위쪽 list에 항목 추가)
         self.tableWidget.setRowCount(len(result))
         self.tableWidget.setColumnCount(4)
         for row in range(len(result)):
@@ -177,9 +184,26 @@ class RootOfConfirmedCaseWindow(QDialog):
                 self.tableWidget.setItem(row, col, QTableWidgetItem(result[row][col]))
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
+        # Timeline widget 추가
+        timelineWidget = TimeLineWidget(videoResult)
+        self.insertWidgetInListWidget( timelineWidget, self.listWidget )
+
+        # (아래쪽 list) 영상 이름 추가
+        videoNameWidget = QLabel( self.videoName )
+        videoNameWidget.setAlignment(Qt.AlignCenter)
+        videoNameWidget.setFixedHeight( timelineWidget.height()+4 )
+        self.insertWidgetInListWidget( videoNameWidget, self.listWidget_2 )
+        
     def backBtnClicked(self):
         # 결과 화면 목록창으로 전환
         widget.setCurrentIndex(widget.currentIndex()-1)
+    
+    def insertWidgetInListWidget(self, widget, listWidget):
+        # QListWidget에 QWidget 객체를 삽입하는 함수
+        item = QListWidgetItem( listWidget )
+        item.setSizeHint( widget.sizeHint() )
+        listWidget.setItemWidget( item, widget )
+        listWidget.addItem( item )
 
 class ContactorListWindow(QDialog):
     '''
@@ -188,18 +212,21 @@ class ContactorListWindow(QDialog):
         Args:
             contactorInfoList: 접촉자들의 정보(사진, 영상 이름..)를 담고있는 ContactorInfo()의 리스트
     '''
-    def __init__(self, contactorInfoList):
+    def __init__(self, videoResult):
         super().__init__()
         loadUi("./UI/contactorList.ui", self)
-        self.contactorInfoList = contactorInfoList
+        self.contactorInfoList = videoResult.contactorInfoList
+        self.videoName = videoResult.videoName
+        self.fps = videoResult.fps
+
         self.showContactor()
         self.backBtn.clicked.connect(self.backBtnClicked)
         
     def showContactor(self):
-        for info in self.contactorInfoList:
-            if os.path.exists(info.image_path):
+        for contactorInfo in self.contactorInfoList:
+            if os.path.exists(contactorInfo['image_path']):
                 # custom widget를 listWidgetItem으로 추상화하는 용도.
-                custom_widget = ContactorItem(info)
+                custom_widget = ContactorItem(contactorInfo, self.videoName, self.fps)
                 item = QListWidgetItem(self.contactorList)
 
                 # listWidgetItem은 custom widget의 크기를 모르므로 알려줘야 한다.
@@ -214,34 +241,71 @@ class ContactorListWindow(QDialog):
         # 결과 화면 목록창으로 전환
         widget.setCurrentIndex(widget.currentIndex()-2)
         
+
+class VideoResult:
+    def __init__(self, videoName, targetInfoList, contactorInfoList, frameNo, fps):
+        self.videoName = videoName
+        self.targetInfoList = targetInfoList
+        self.contactorInfoList = contactorInfoList
+        self.frameNo = frameNo
+        self.fps = fps
+
+def loadJson():
+    '''
+        system 출력 결과 json파일 로드
+    '''
+    with open(appInfo.result_json) as json_path:
+        result_json = json.load(json_path)
+
+    targetInfoList, contactorInfoList = result_json['target'], result_json['contactor']
+    for idx, info in enumerate(targetInfoList):
+        info['index'] = idx
+
+    # danger level 순으로 sorting하기
+    contactorInfoList = sorted( contactorInfoList, key=lambda info : info['danger_level'], reverse=True)
+    for info in contactorInfoList:
+        info['image_path'] = appInfo.contactor_dir + "/fr{}_tid{}.png".format(info['capture_time'], info['tid'])
+    
+    video_name = result_json['video_name']
+    video_capture = cv2.VideoCapture( "{}/{}".format(appInfo.output_video_dir, result_json['video_name']))
+    video_frameno = video_capture.get( cv2.CAP_PROP_FRAME_COUNT )
+    video_fps = video_capture.get( cv2.CAP_PROP_FPS )
+
+    return VideoResult(video_name, targetInfoList, contactorInfoList, video_frameno, video_fps)
+
 def center(self):
     qr = self.frameGeometry()
     cp = QDesktopWidget().availableGeometry().center()
     qr.moveCenter(cp)
     self.move(qr.topLeft())
 
+def getTimeFromFrame(frame, fps):
+    sec = frame/int(fps)
+
+    s = int(sec % 60)
+    sec /= 60
+    m = int(sec % 60)
+    h = int(sec / 60)
+
+    # return {'hour': h, 'minute': m, 'second': s}
+    return "{}:{}:{}".format(h,m,s)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     #화면 전환용 Widget 설정
     widget = QStackedWidget()
-
-    #test용 접촉자 정보 입력 리스트
-    image_paths = ["./tempData/query/1_0_0.png",
-                    "./tempData/query/2_0_0.PNG",
-                    ]
-    contactorInfoList = []
-    for path in image_paths:
-        contactorInfoList.append(ContactorInfo(path))
+    
+    # system 출력 결과 json파일 로드
+    videoResult = loadJson()
 
     #레이아웃 인스턴스 생성
     firstWindow = FirstWindow()
     dataInputWindow = DataInputWindow()
     analysisWindow = AnalysisWindow()
     resultListWindow = ResultListWindow()
-    rootOfConfirmedCaseWindow = RootOfConfirmedCaseWindow()
-    contactorListWindow = ContactorListWindow(contactorInfoList)
+    rootOfConfirmedCaseWindow = RootOfConfirmedCaseWindow(videoResult)
+    contactorListWindow = ContactorListWindow(videoResult)
 
     #Widget 추가
     widget.addWidget(firstWindow)
