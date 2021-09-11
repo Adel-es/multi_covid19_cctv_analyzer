@@ -35,7 +35,7 @@ def maskToken_to_dangerLevel(target : MaskToken, contactor : MaskToken) -> Dange
         else : 
             return DangerLevel.BothUnknown 
     
-    elif target == MaskToken.Masked :
+    else : # target == MaskToken.Masked :
         if contactor == MaskToken.NotMasked :
             return DangerLevel.TargetMasked_ContactorUnmasked
         elif contactor == MaskToken.Masked : 
@@ -52,11 +52,15 @@ class Contactor :
         self.last_contact_frame     : int           = current_frame_num 
         self.is_contactor           : bool          = False
         self.most_danger            : DangerLevel   = DangerLevel.BothMasked
+        self.capture_frame          : int           = -1
         self.start_contact_frame    : int           = current_frame_num
         self.end_contact_frame      : int           = current_frame_num 
-        self.bbox                   : List[int]     = []
         
-    def update(self, current_frame_num : int, target_mask : MaskToken, contactor_mask : MaskToken, bbox : List[int]) : 
+        
+        
+    def update(self, current_frame_num : int, target_mask : MaskToken, contactor_mask : MaskToken) -> bool: 
+        haveto_save_image = False 
+        
         if self.last_contact_frame + 1 == current_frame_num : 
             self.continued_contact = self.continued_contact + 1 
         else : 
@@ -64,11 +68,14 @@ class Contactor :
         
         if self.continued_contact > Contactor.threshold :
             self.is_contactor = True 
-            self.most_danger = max(self.most_danger, maskToken_to_dangerLevel(target_mask, contactor_mask))
             self.end_contact_frame = current_frame_num
-            self.bbox = bbox
-            
+            new_danger_level = maskToken_to_dangerLevel(target_mask, contactor_mask) 
+            if int(self.most_danger) < int(new_danger_level) :
+                self.most_danger = new_danger_level 
+                self.capture_frame = current_frame_num
+                haveto_save_image = True 
         self.last_contact_frame = current_frame_num 
+        return haveto_save_image 
 
 
 class ResultManager : 
@@ -98,9 +105,7 @@ class ResultManager :
         if is_target == False and self.continued == True : 
             self.target_out = frame_num 
             self.continued = False 
-            self.result_dict["target"].append(
-                {"in" : self.target_in, 
-                 "out" : self.target_out})
+            self.result_dict["target"].append({"in" : self.target_in, "out" : self.target_out})
             
     def transfer_contactor_dict_format(self) : 
         contactor_list = [] 
@@ -109,23 +114,37 @@ class ResultManager :
                 continue 
             contactor_list.append({
                 "tid" : key, 
-                "danger_level" : value.most_danger, 
-                "bbox" : value.bbox, 
+                "danger_level" : value.most_danger,
+                "capture_time" : value.capture_frame,
                 "start_time" : value.start_contact_frame, 
                 "end_time" : value.end_contact_frame
                 })
         return contactor_list 
     
+    
     def update_contactorinfo(self, 
-                             frame_num : int, 
-                             tid : int, 
-                             target_mask : MaskToken, 
-                             contactor_mask : MaskToken,
-                             bbox : List[int]) : 
+                            frame_num : int, 
+                            tid : int, 
+                            target_mask : MaskToken, 
+                            contactor_mask : MaskToken) : 
+        
+        """ update contactor info and return list to indicate if the image should be saved or not. 
+        
+        Return : (bool, String) 
+            if string, save as image(cut-off image by bbox) as string name. 
+            if None, don't save image(just skip it)
+        """
+        
+        result_bool = False 
         if tid in self.contactor_dict.keys() : 
-            self.contactor_dict[tid].update(frame_num, target_mask, contactor_mask, bbox) 
+            result_bool = self.contactor_dict[tid].update(frame_num, target_mask, contactor_mask) 
         else : 
             self.contactor_dict[tid] = Contactor(frame_num) 
+    
+        if result_bool == True : 
+            return True, "fr{}_tid{}.jpg".format(frame_num, tid) 
+        else : 
+            return False, ""
     
     
     def write_jsonfile(self, filename : str) : 
