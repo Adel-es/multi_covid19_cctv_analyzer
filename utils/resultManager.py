@@ -153,10 +153,10 @@ class ResultManager :
         Args : 
             filename : filename output file 
         """
-        formatted_contactor = dict() 
-        formatted_contactor["contactor"] = self.transfer_contactor_dict_format(); 
+        # formatted_contactor = dict() 
+        self.result_dict["contactor"] = self.transfer_contactor_dict_format(); 
 
         with open(filename, 'w', encoding='utf-8') as write_file : 
             json.dump(self.result_dict, write_file, indent="\t")
-            json.dump(formatted_contactor, write_file, indent="\t")
+            # json.dump(formatted_contactor, write_file, indent="\t")
             
