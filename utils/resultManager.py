@@ -5,6 +5,7 @@ from enum import IntEnum
 import sys, os 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from utils.types import MaskToken
+import logging
 
 class DangerLevel(IntEnum) : 
     BothUnmasked                        = 15 
@@ -57,7 +58,6 @@ class Contactor :
         self.end_contact_frame      : int           = current_frame_num 
         
         
-        
     def update(self, current_frame_num : int, target_mask : MaskToken, contactor_mask : MaskToken) -> bool: 
         haveto_save_image = False 
         
@@ -79,7 +79,8 @@ class Contactor :
 
 
 class ResultManager : 
-    def __init__(self) :         
+    def __init__(self) :
+        self.logger                 = logging.getLogger('root')         
         self.target_in              : int           = 0 
         self.target_out             : int           = 0 
         self.continued              : bool          = False 
@@ -89,7 +90,7 @@ class ResultManager :
         
         self.contactor_dict         = {} #tid-contactor object pair 
         
-    def update_targetinfo(self, frame_num : int, is_target : bool) :
+    def update_targetinfo(self, frame_num : int, is_target : bool, is_lastframe : bool) :
         """ This function must be called when each frame is processed. 
             to check target appearence time and exit time. 
         
@@ -97,16 +98,25 @@ class ResultManager :
             frame_num : frame number
             is_target : whether target is appeard in frame(True) or not(False)
         """ 
-        
+        # print("[ResManager] frame : {} , target is here".format(frame_num))
         if is_target == True  and self.continued == False : 
             self.target_in = frame_num 
             self.continued = True 
+            self.logger.debug("resultmanager - target appeared at {}".format(frame_num))
         
         if is_target == False and self.continued == True : 
             self.target_out = frame_num 
             self.continued = False 
             self.result_dict["target"].append({"in" : self.target_in, "out" : self.target_out})
-            
+            self.logger.debug("resultmanager - target disappeared at {}".format(frame_num))
+        
+        if is_lastframe == True and self.continued == True : 
+            self.target_out = frame_num 
+            self.continued = False 
+            self.result_dict["target"].append({"in" : self.target_in, "out" : self.target_out})
+            self.logger.debug("resultmanager - video end at {}, so make sure target is disappeared.".format(frame_num)) 
+
+
     def transfer_contactor_dict_format(self) : 
         contactor_list = [] 
         for key, value in self.contactor_dict.items() : 
@@ -147,16 +157,15 @@ class ResultManager :
             return False, ""
     
     
-    def write_jsonfile(self, filename : str) : 
+    def write_jsonfile(self, filename : str, outputVideo : str) : 
         """ write result_dict as json format 
         
         Args : 
             filename : filename output file 
         """
-        # formatted_contactor = dict() 
-        self.result_dict["contactor"] = self.transfer_contactor_dict_format(); 
+        self.result_dict["video_name"] = outputVideo 
+        self.result_dict["contactor"] = self.transfer_contactor_dict_format()
 
         with open(filename, 'w', encoding='utf-8') as write_file : 
             json.dump(self.result_dict, write_file, indent="\t")
-            # json.dump(formatted_contactor, write_file, indent="\t")
             
