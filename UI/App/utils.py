@@ -33,7 +33,7 @@ def loadJson():
         _targetInfoList, _contactorInfoList = result_json['target'], result_json['contactor']
 
         # video의 frame no, fps 구하기    
-        video_capture = cv2.VideoCapture( "{}/{}".format(appInfo.output_video_dir, result_json['video_name']))
+        video_capture = cv2.VideoCapture( "{}/{}".format(appInfo.repo_path, result_json['video_name']))
         video_frameno = video_capture.get( cv2.CAP_PROP_FRAME_COUNT )
         video_fps = video_capture.get( cv2.CAP_PROP_FPS )
 
