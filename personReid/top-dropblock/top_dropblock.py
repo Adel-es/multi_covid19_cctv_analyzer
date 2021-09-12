@@ -267,7 +267,7 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
         top1_gpIdx, top1_conf = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
         shm.data.frames[frameIdx].reid = top1_gpIdx
         shm.data.frames[frameIdx].confidence = top1_conf
-        print("********** distance :", top1_conf)
+        # print("********** distance :", top1_conf)
         if writeVideo_flag: # and not asyncVideo_flag:
             # save a frame
             out.write(frame)
