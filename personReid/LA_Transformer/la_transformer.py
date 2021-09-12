@@ -236,12 +236,12 @@ def run_test_original(model, gallery_data, gallery_transforms,
     for query, id in zip(concatenated_query_vectors, qid):
         output = search(index, query, k=10) # rank10 까지 찾음
         print("output: ", output)
-        top1_gpIdx_list.append(output[1][0][0])
+        top1_gpIdx_list.append( (output[1][0][0], output[1][0][:-1]) )
         # output[1][0][0] == rank1의 label
         print(" #{}'s calculated result: ".format(id), end='')
         print(output[1][0][:-1])
     
-    return top1_gpIdx_list
+    return top1_gpIdx_list[0], top1_gpIdx_list[1] # gpIdx, gpConf
 def run_test_custom(model, gallery_data, gallery_transforms, 
              query_features, qid=[], 
              debug_logging_mode=False, debug_file=None):
@@ -255,7 +255,7 @@ def run_test_custom(model, gallery_data, gallery_transforms,
         
     gallery_features, gpIdx = get_gallery_features(model, gallery_data, gallery_transforms, 'custom')
     
-    dist_metric = 'euclidean'
+    dist_metric = 'cosine' #euclidean'
     distmat = compute_distance_matrix(query_features, gallery_features, dist_metric)
     distmat = distmat.numpy()
     # print("* distmat: ", distmat)
@@ -283,11 +283,12 @@ def run_test_custom(model, gallery_data, gallery_transforms,
         
         
     dist_indices = np.transpose(dist_indices) # dist_indices[0] = index list of top1-gallery
-    # top1_dist = distmat[0][ dist_indices[0][0] ]
     top1_gpIdx_list = []
+    top1_conf_list = []
     for idx in dist_indices[0]:
+        top1_conf_list.append((distmat[0][ dist_indices[0][0] ] + 1.) / 2.)
         top1_gpIdx_list.append(gpIdx[idx])
-    return top1_gpIdx_list
+    return top1_gpIdx_list, top1_conf_list
 
 def crop_frame_image(frame, bbox):
     # bbox[0,1,2,3] = [x,y,x+w,y+h]
@@ -300,7 +301,7 @@ def run_la_transformer(model, data_transforms,
                     start_frame, end_frame, 
                     input_video_path, output_video_path, 
                     shm, processOrder, myPid, nextPid,
-                    calculation_mode='original',
+                    calculation_mode='custom',
                     debug_enable=False,
                     debug_logging_file_path=""):
     #DEBUG
@@ -390,16 +391,17 @@ def run_la_transformer(model, data_transforms,
         
         # reid 수행
         # query가 여러 명 주어졌을 경우, 각 query에 대한 top1 gid들의 list가 주어짐
-        if calculation_mode == 'original':
-            top1_gpIdx_list = run_test_original(model = model, gallery_data = gallery, gallery_transforms = data_transforms['gallery'],
-                                query_features = query_features, qid=qid_list,
-                                debug_logging_mode=debug_logging_mode, debug_file=debug_file)
-        else:
-            top1_gpIdx_list = run_test_custom(model = model, gallery_data = gallery, gallery_transforms = data_transforms['gallery'],
-                                query_features = query_features, qid=qid_list,
-                                debug_logging_mode=debug_logging_mode, debug_file=debug_file)
+        # if calculation_mode == 'original':
+        #     top1_gpIdx_list, top1_conf_list = run_test_original(model = model, gallery_data = gallery, gallery_transforms = data_transforms['gallery'],
+        #                         query_features = query_features, qid=qid_list,
+        #                         debug_logging_mode=debug_logging_mode, debug_file=debug_file)
+        # else:
+        top1_gpIdx_list, top1_conf_list = run_test_custom(model = model, gallery_data = gallery, gallery_transforms = data_transforms['gallery'],
+                            query_features = query_features, qid=qid_list,
+                            debug_logging_mode=debug_logging_mode, debug_file=debug_file)
         top1_gpIdx = top1_gpIdx_list[0] # 첫번째 query의 gid를 임의로 reidRslt의 output으로 정함
         shm.data.frames[frameIdx].reid = top1_gpIdx
+        shm.data.frames[frameIdx].confidence = top1_conf_list[0]
         
         if debug_logging_mode == True:
             # 각 query마다 어떤 gid가 top1으로 가장 많이 나왔는지 counting 함.

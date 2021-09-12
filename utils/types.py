@@ -23,7 +23,7 @@ class MaskToken(IntEnum) :
     UnKnown = 5 
     
 class FrameInfo(Structure):
-    _fields_ = [('reid', c_int32)]
+    _fields_ = [('reid', c_int32), ('confidence', c_float)]
 
 class BBox(Structure):
     _fields_ = [('minX', c_float), ('minY', c_float), ('maxX', c_float), ('maxY', c_float), ('confidence', c_float)]
