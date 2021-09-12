@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import os, sys
-=======
 import os
 import sys
->>>>>>> origin/accuracy_KSA
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from multiprocessing import Process
@@ -63,10 +59,7 @@ if __name__ == '__main__':
     maskProc = Process(target=runMaskDetection, args=(shm, 3, os.getpid()))
     maskProc.start()
 
-<<<<<<< HEAD
-    
-=======
->>>>>>> origin/accuracy_KSA
+
     distanceProc = Process(target=checkDistance, args=(shm, 2, maskProc.pid))
     distanceProc.start()
     
@@ -79,12 +72,5 @@ if __name__ == '__main__':
     writeVideo(shm, 4, detectTrackProc.pid)
     
     logger.info("Running time: {}".format(time.time() - startTime))
-    
-<<<<<<< HEAD
+
     writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path)
-    
-=======
-    writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path, gTruthQuery)
-    
-            
->>>>>>> origin/accuracy_KSA
