@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import os
 import sys
-=======
-import os, sys
->>>>>>> accuracy_check : add basic mask accuracy check file
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from multiprocessing import Process
@@ -74,4 +70,6 @@ if __name__ == '__main__':
     writeVideo(shm, 4, detectTrackProc.pid)
     
     logger.info("Running time: {}".format(time.time() - startTime))
+
     writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path, gTruthQuery)
+
