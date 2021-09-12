@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import os, sys
+=======
+import os
+import sys
+>>>>>>> origin/accuracy_KSA
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from multiprocessing import Process
@@ -14,7 +19,10 @@ from maskdetect.maskProcess import runMaskDetection
 from write_video import writeVideo
 from accuracy_check.file_io import writeShmToJsonFile, gTruthDetectAndTrack
 
+# 따로 runInfo_accuracy.py를 만들까?
 fillBboxWithGTruth = True
+gTruthQuery = "P7"
+
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
@@ -55,7 +63,10 @@ if __name__ == '__main__':
     maskProc = Process(target=runMaskDetection, args=(shm, 3, os.getpid()))
     maskProc.start()
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> origin/accuracy_KSA
     distanceProc = Process(target=checkDistance, args=(shm, 2, maskProc.pid))
     distanceProc.start()
     
@@ -69,5 +80,11 @@ if __name__ == '__main__':
     
     logger.info("Running time: {}".format(time.time() - startTime))
     
+<<<<<<< HEAD
     writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path)
     
+=======
+    writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path, gTruthQuery)
+    
+            
+>>>>>>> origin/accuracy_KSA

@@ -1,6 +1,7 @@
 {
 	"start_frame": 750,
 	"end_frame": 760,
+	"confirmed_case": "P8",
 	"frames": [
 		{
 			"reid": 0,
