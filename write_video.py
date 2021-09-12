@@ -45,8 +45,9 @@ def writeVideo(shm, processOrder, nextPid):
         frameIdx, personIdx = shm.get_ready_to_read()
         
         #update result manager to write json file and contactor photos 
-        save_list = update_output_json(shm, res_manager, frame_index, frameIdx, personIdx) 
-        save_contactor_images(frame, shm, personIdx, save_list) 
+        if start_frame + 2 <= frame_index : 
+            save_list = update_output_json(shm, res_manager, frame_index, frameIdx, personIdx) 
+            save_contactor_images(frame, shm, personIdx, save_list) 
         
         # Draw detection and tracking result for a frame
         for pIdx in personIdx:
@@ -85,7 +86,7 @@ def writeVideo(shm, processOrder, nextPid):
         shm.finish_a_frame()
         
     shm.finish_process()
-    res_manager.write_jsonfile(runInfo.output_json_path)
+    res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path)
     out.release()
     video_capture.release()
 
@@ -123,7 +124,8 @@ def save_contactor_images(frame, shm, person_indices : List[int], save_list) :
 def update_output_json(shm, res_manager, frame_number:int, frame_index : int, person_indices : List[int]) -> List : 
     reid_index = shm.data.frames[frame_index].reid 
     is_target : bool = ( reid_index != -1 )
-    res_manager.update_targetinfo(frame_number, is_target)
+    is_lastframe : bool = (frame_number == end_frame)
+    res_manager.update_targetinfo(frame_number, is_target, is_lastframe)
     
     target = shm.data.people[reid_index]
     target_mask = target.isMask 
