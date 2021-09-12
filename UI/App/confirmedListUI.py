@@ -69,25 +69,30 @@ class TimeLineWidget(QWidget):
     '''
         use in RootOfConfirmedCaseWindow class
     '''
-    def __init__(self, videoResult):
+    def __init__(self, targetInfoListOfEachVideo):
         super().__init__()
         layout = QHBoxLayout()
 
-        self.frameNo = videoResult.frameNo
-        self.fps = videoResult.fps
-        self.targetInfoList = videoResult.targetInfoList
+        self.targetInfoListOfEachVideo = targetInfoListOfEachVideo
+
+        # self.frameNo = videoResult.frameNo
+        # self.fps = videoResult.fps
+        # self.targetInfoList = videoResult.targetInfoList
+        frameNo = self.targetInfoListOfEachVideo[0]['frame_no']
 
         prev_end_time = 0
-        for info in self.targetInfoList:
+        for info in self.targetInfoListOfEachVideo:
             in_time = info['in']
             out_time = info['out']
             
             lineRelWidth = in_time - prev_end_time + 1
             labelRelWidth = out_time - in_time + 1
             prev_end_time = out_time
-            print('***',lineRelWidth, ' ', labelRelWidth)
-
+            
+            # 시간축 가로선 추가
             line = HorizontalLine()
+
+            # 컬러 시간 블록 추가
             label = QLabel()
             label.setFixedHeight(20)
             label.setStyleSheet("background-color: orange;")
@@ -96,6 +101,6 @@ class TimeLineWidget(QWidget):
             layout.addWidget(label, stretch = labelRelWidth)
 
         line = HorizontalLine()
-        layout.addWidget(line, stretch = self.frameNo-prev_end_time+1)
+        layout.addWidget(line, stretch = frameNo-prev_end_time+1)
         layout.setSpacing(0) # widget 간 거리를 0으로 만듦 -> hline과 colorbar간의 거리를 없앰
         self.setLayout(layout)

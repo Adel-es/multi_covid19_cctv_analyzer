@@ -7,6 +7,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5 import QtGui
 from PIL import Image, ImageQt
 
+from .utils import *
+
 class OriginPictureWindow(QDialog):
     '''
         접촉자의 원본(전신) 이미지를 보여주는 Window class
@@ -96,14 +98,3 @@ class ContactorItem(QWidget):
         if type(info['danger_level']) != str:
             info['danger_level'] = str(info['danger_level'])
         self.dangerous_score_label.setText(info["danger_level"])
-        
-def getTimeFromFrame(frame, fps):
-    sec = frame/int(fps)
-
-    s = int(sec % 60)
-    sec /= 60
-    m = int(sec % 60)
-    h = int(sec / 60)
-
-    # return {'hour': h, 'minute': m, 'second': s}
-    return "{}:{}:{}".format(h,m,s)

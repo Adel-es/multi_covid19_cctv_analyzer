@@ -177,7 +177,7 @@ def get_query_features(model, query_data_dir, query_transforms, calculation_mode
         qid.append(id)
         
     query_features = torch.cat(query_features, 0)
-    print("* query features size", query_features.size())
+    # print("* query features size", query_features.size())
     return query_features, qid
 
 
@@ -235,10 +235,10 @@ def run_test_original(model, gallery_data, gallery_transforms,
     top1_gpIdx_list = []    
     for query, id in zip(concatenated_query_vectors, qid):
         output = search(index, query, k=10) # rank10 까지 찾음
-        print("output: ", output)
+        # print("output: ", output)
         top1_gpIdx_list.append( (output[1][0][0], output[1][0][:-1]) )
         # output[1][0][0] == rank1의 label
-        print(" #{}'s calculated result: ".format(id), end='')
+        # print(" #{}'s calculated result: ".format(id), end='')
         print(output[1][0][:-1])
     
     return top1_gpIdx_list[0], top1_gpIdx_list[1] # gpIdx, gpConf
@@ -270,7 +270,7 @@ def run_test_custom(model, gallery_data, gallery_transforms,
         dist_sorting = np.sort(distmat, axis=1)
         if dist_metric == 'cosine':
             dist_sorting = dist_sorting[:, ::-1]
-        print("* sorting distmat: ", dist_sorting)
+        # print("* sorting distmat: ", dist_sorting)
         debug_file.write("* sorting distmat: \n")
         str_distmat = ""
         for mat in distmat:
@@ -373,6 +373,7 @@ def run_la_transformer(model, data_transforms,
             continue
         if frame_no > end_frame:
             break
+        print("\tFrame no in la-transformer: {}".format(frame_no))
         frameIdx, personIdx = shm.get_ready_to_read()
         
         # frame에 사람이 없다면 pass
