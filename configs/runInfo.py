@@ -13,15 +13,12 @@ logfile_name = "log.txt"
 console_log_level = logging.INFO # select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL] 
 file_log_level = logging.DEBUG 
 
-# accuracy check setting
-write_result = True
-
 # system setting 
 parallel_processing = False
 use_mask_voting = False 
 
 # reid model setting
-reid_model = 'fake2' # 'fake2' / 'fake' / 'topdb' / 'la'
+reid_model = 'topdb' # 'fake2' / 'fake' / 'topdb' / 'la'
 
 # allocate specific gpu device
 trackingGPU = 0
