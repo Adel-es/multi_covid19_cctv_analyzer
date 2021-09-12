@@ -4,6 +4,7 @@ videoName = "08_14_2020_1_1.mp4"
 # Create shm_file_path based on runInfo.input_video_path
 shm_file_path = file_io.getShmFilePath(videoName) 
 shm = file_io.convertShmFileToJsonObject(shm_file_path)
+
 # Create gTruth_file_path based on runInfo.input_video_path
 gTruth_file_path = file_io.getGTruthFilePath(videoName) 
 gTruth = file_io.convertGTruthFileToJsonObject(gTruth_file_path)
