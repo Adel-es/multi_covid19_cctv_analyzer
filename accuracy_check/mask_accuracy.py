@@ -73,12 +73,18 @@ def get_precision() :
             if i == j : 
                 TF_per_class += confusion_matrix[j][i]
             positive_per_class += confusion_matrix[j][i]
-        precisions.append(TF_per_class / float(positive_per_class))
+        precision = 0 
+        if positive_per_class != 0 : 
+            precision = TF_per_class / float(positive_per_class)
+        precisions.append(precision)
     
     sum_precision = 0 
+    sum_count = 0 
     for p in precisions : 
+        if p != 0 : 
+            sum_count += 1 
         sum_precision += p  
-    average_percisions = sum_precision / len(confusion_matrix_index)
+    average_percisions = sum_precision / float(sum_count)
     return precisions, average_percisions 
 
 def get_recall() : 
@@ -90,13 +96,18 @@ def get_recall() :
             if i == j : 
                 TF_per_class += confusion_matrix[i][j] 
             true_per_class += confusion_matrix[i][j]
-        recalls.append(TF_per_class / float(true_per_class))
+        recall = 0 
+        if true_per_class != 0 : 
+            recall = TF_per_class / float(true_per_class)
+        recalls.append(recall)
     
     sum_recalls = 0 
-    for p in recalls : 
+    sum_count = 0
+    for p in recalls :
+        if p != 0 : 
+            sum_count += 1  
         sum_recalls += p  
-
-    average_recall = sum_recalls / len(confusion_matrix_index)
+    average_recall = sum_recalls / float(sum_count) 
     return recalls, average_recall
 
 def print_precisions() : 
@@ -141,6 +152,8 @@ def print_confusion_matrix() :
 def get_f1_score() : 
     _, avg_precision = get_precision() 
     _, avg_recall = get_recall() 
+    if(avg_precision + avg_recall) == 0 :
+        return 0  
     f1_score = 2 * (avg_precision * avg_recall) / (avg_precision + avg_recall)
     return f1_score 
 
@@ -179,20 +192,20 @@ def update_confusion_matrix (shm, gTruth, person_id : str, matching_tid : List[i
             confusion_matrix[gtruth_index][model_index] += 1
     # print_confusion_matrix() 
     
-def get_maskAccuracy(gTruth, shm, shmToGTruthMapping, start_frame : int, end_frame : int) :
+def get_maskAccuracy(gTruth, shm, shmToGTruthMapping) :
     ''' update shmToGTruthMapping.maskTP by comparing shm and gTruth 
     
     Args : 
         gTruth : gTruth list    (get from file_io.convertGTruthFileToJsonObject)
         shm    : shm list       (get from file_io.convertShmFileToJsonObject)
         shmToGTruthMapping :    
-        start_frame : int value, config.runInfo.start 
-        end_frame   : int value, config.runInfo.end 
     '''
     
+    start_frame = shm['start_frame']
+    end_frame = shm['end_frame']
     frame_num = end_frame - start_frame + 1
     
-    for fIdx in frame_num:
+    for fIdx in range(frame_num):
         for pIdx in range(len(shm['people'][fIdx])):
             # get masktoken from shm
             person_in_shm = shm['people'][fIdx][pIdx]
@@ -212,14 +225,12 @@ def get_maskAccuracy(gTruth, shm, shmToGTruthMapping, start_frame : int, end_fra
             shmToGTruthMapping[fIdx][pIdx]['maskTP'] = mask_TP
             
 if __name__ == "__main__" : 
-    videoName = "08_14_2020_1_1.mp4"
     # Create shm_file_path based on runInfo.input_video_path
-    
-    shm_file_path = file_io.getShmFilePath(videoName) 
+    shm_file_path = file_io.getShmFilePath(runInfo.input_video_path) 
     shm = file_io.convertShmFileToJsonObject(shm_file_path)
     
     # Create gTruth_file_path based on runInfo.input_video_path
-    gTruth_file_path = file_io.getGTruthFilePath(videoName) 
+    gTruth_file_path = file_io.getGTruthFilePath(runInfo.input_video_path) 
     gTruth = file_io.convertGTruthFileToJsonObject(gTruth_file_path)
     
     update_confusion_matrix(shm, gTruth, "P2", [1], 700, 710)

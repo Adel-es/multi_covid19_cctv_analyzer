@@ -20,6 +20,29 @@ start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 query_image_path = runInfo.query_image_path
 
+def fakeReid3(shm, processOrder, nextPid):
+    '''
+        pick the first one
+        if there is no one in frame, reid is -1 
+        this is usually used for mask system evaluation! (see code in run_mask_accuracy.py) 
+    '''
+    myPid = 'fakeReid3'
+    shm.init_process(processOrder, myPid, nextPid)
+    
+    t_conf = 0.6
+    f_conf = 0.1
+    # find confirmed_tid
+    for fIdx in range(start_frame, end_frame + 1):
+        frameIdx, personIdx = shm.get_ready_to_read()
+        if len(personIdx) == 0 : 
+            shm.data.frames[frameIdx].reid = -1
+            shm.data.frames[frameIdx].confidence = f_conf 
+        else : 
+            shm.data.frames[frameIdx].reid = shm.data.people[personIdx[0]].tid
+            shm.data.frames[frameIdx].confidence = t_conf
+        shm.finish_a_frame()
+    shm.finish_process()
+
 def fakeReid2(shm, processOrder, nextPid):
     myPid = 'fakeReid2'
     shm.init_process(processOrder, myPid, nextPid)

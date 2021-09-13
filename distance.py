@@ -54,3 +54,19 @@ def checkDistance(shm, processOrder, nextPid):
             
         shm.finish_a_frame()
     shm.finish_process()
+    
+def makeAllIsCloseTrue(shm, processOrder, nextPid):
+    myPid = 'makeAllIsCloseTrue'
+    shm.init_process(processOrder, myPid, nextPid)
+    
+    for fIdx in range(FRAME_NUM):
+        frameIdx, personIdx = shm.get_ready_to_read()
+        
+        reid = shm.data.frames[frameIdx].reid
+        # If there is the confirmed case in this frame
+        if reid != -1:
+            for pIdx in personIdx:
+                shm.data.people[pIdx].isClose = True
+            
+        shm.finish_a_frame()
+    shm.finish_process()

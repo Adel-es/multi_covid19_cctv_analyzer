@@ -27,7 +27,7 @@ def getGTruthFilePath(input_video_path):
     videoName = videoName.split('.')[0]
     return 'accuracy_check/gTruth_file/{}_gTruth.mat'.format(videoName)
 
-def writeShmToJsonFile(data, start_frame, end_frame, input_video_path, gTruth_query):
+def writeShmToJsonFile(data, start_frame, end_frame, input_video_path, gTruth_query='notCare'):
     '''
     Param: 
         - data: ShmSerialManger.data
