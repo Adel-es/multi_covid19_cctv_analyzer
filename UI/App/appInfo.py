@@ -6,8 +6,8 @@ repo_path = os.path.dirname(
     os.path.abspath(os.path.dirname(
         os.path.abspath(os.path.dirname(__file__)))))
 
-contactor_dir = repo_path + "/data/output/analysis/"
-result_json_dir = repo_path + "/data/output/analysis/"
+# contactor_dir = repo_path + "/data/output/analysis/"
+# result_json_dir = repo_path + "/data/output/analysis/"
 
 '''
 * only_app_test

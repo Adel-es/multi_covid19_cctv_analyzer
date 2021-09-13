@@ -29,7 +29,7 @@ class ErrorAlertMessage(QMessageBox):
 
     def setCustomText(self, message):
         self.setText(message)
-
+        
 class FirstWindow(QDialog):
     def __init__(self):
         super().__init__()
@@ -96,25 +96,38 @@ class FirstWindow(QDialog):
                         os.makedirs("{}/{}".format(self.proj_dir_path, "data/input/query"))
                     if not os.path.exists("{}/{}".format(self.proj_dir_path, "data/output/analysis")):
                         os.makedirs("{}/{}".format(self.proj_dir_path, "data/output/analysis"))
-                    # DataInputWindow로 전환
-                    widget.setCurrentIndex(widget.currentIndex()+1)
-                    # 프로젝트 디렉토리 이름dmf DataInputWindow에 전달
-                    widget.currentWidget().getProjectDirPath( self.proj_dir_path)
+                        
+                    # 이미 존재하는 프로젝트를 사용할 것인지 물음
+                    buttonReply = QMessageBox.question(self, 'Warning', u"이미 존재하는 프로젝트입니다. 계속하시겠습니까?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                    if buttonReply == QMessageBox.Yes:
+                        # DataInputWindow로 전환
+                        widget.setCurrentIndex(widget.currentIndex()+1)
+                        # 프로젝트 디렉토리 이름dmf DataInputWindow에 전달
+                        widget.currentWidget().getProjectDirPath( self.proj_dir_path)
+                        print('Yes clicked.')
+                    else:
+                        print('No clicked.')
                 # 선택한 파일이 디렉토리가 아니면 프로젝트로 사용할 수 없다. --> 사실 이런 경우가 없긴 함. 하지만 넣어서 나쁠건 없으니
                 else:
                     self.errorMessage.setCustomText("{}는 디렉토리가 아닙니다..".format(self.proj_dir_path))
                     self.errorMessage.show()
             ### 새로 생성한 디렉토리인 경우, 필요한 디렉토리들을 새로 생성.
             else:
-                os.makedirs("{}/{}".format(self.proj_dir_path, "data"))
-                os.makedirs("{}/{}".format(self.proj_dir_path, "data/input"))
-                os.makedirs("{}/{}".format(self.proj_dir_path, "data/output"))
-                os.makedirs("{}/{}".format(self.proj_dir_path, "data/input/query"))
-                os.makedirs("{}/{}".format(self.proj_dir_path, "data/output/analysis"))
-                # DataInputWindow로 전환
-                widget.setCurrentIndex(widget.currentIndex()+1)
-                # 프로젝트 디렉토리 이름dmf DataInputWindow에 전달
-                widget.currentWidget().getProjectDirPath( self.proj_dir_path)
+                # 프로젝트를 새로 생성할 것인지 물음
+                buttonReply = QMessageBox.question(self, 'Warning', u"프로젝트를 새로 생성합니다. 계속하시겠습니까?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if buttonReply == QMessageBox.Yes:
+                    os.makedirs("{}/{}".format(self.proj_dir_path, "data"))
+                    os.makedirs("{}/{}".format(self.proj_dir_path, "data/input"))
+                    os.makedirs("{}/{}".format(self.proj_dir_path, "data/output"))
+                    os.makedirs("{}/{}".format(self.proj_dir_path, "data/input/query"))
+                    os.makedirs("{}/{}".format(self.proj_dir_path, "data/output/analysis"))
+                    # DataInputWindow로 전환
+                    widget.setCurrentIndex(widget.currentIndex()+1)
+                    # 프로젝트 디렉토리 이름dmf DataInputWindow에 전달
+                    widget.currentWidget().getProjectDirPath( self.proj_dir_path)
+                    print('Yes clicked.')
+                else:
+                    print('No clicked.')
     @pyqtSlot()
     def findPathBtnClicked(self):
         self.proj_parent_dir_path = QFileDialog.getExistingDirectory(self, 'Select a Directory')
@@ -416,43 +429,61 @@ class ResultListWindow(QDialog):
         self.project_dir_path = ""
         self.video_dir_path = ""
         self.result_dir_path = ""
-        self.showRootRsltBtn.clicked.connect(self.showRootRsltBtnClicked)
+        self.targetInfoList = []
+        self.contactorInfoList = []
+        self.showRootRsltBtn.clicked.connect(self.showRouteRsltBtnClicked)
         self.showContactorLstBtn.clicked.connect(self.showContactorLstBtnClicked)
-
+        self.showRootRsltBtnClicked_Once = False
+        self.showContactorLstBtnClicked_Once = False
+        
     def getProjectDirPath(self, project_dir_path):
         self.project_dir_path = project_dir_path
         self.video_dir_path = "{}/{}".format(self.project_dir_path, "data/output")
         self.result_dir_path = "{}/{}".format(self.project_dir_path, "data/output/analysis")
+        self.targetInfoList, self.contactorInfoList = loadJson(contactor_dir= self.result_dir_path, 
+                                                               result_json_dir= self.result_dir_path)
 
-    def showRootRsltBtnClicked(self):
+    def showRouteRsltBtnClicked(self):
         # RouteOfConfirmedCaseWindow로 전환
         widget.setCurrentIndex(widget.currentIndex()+1)
-        widget.currentWidget().getProjectDirPath(self.project_dir_path)
+        # setting하는 함수가 한번만 수행되도록 함
+        if self.showRootRsltBtnClicked_Once == False:
+            widget.currentWidget().getProjectDirPath(self.project_dir_path, self.targetInfoList)
+            widget.currentWidget().showResult()
+            self.showRootRsltBtnClicked_Once = True
 
     def showContactorLstBtnClicked(self):
         # ContactorListWindow로 전환
         widget.setCurrentIndex(widget.currentIndex()+2)
-        widget.currentWidget().getProjectDirPath(self.project_dir_path)
+        # setting하는 함수가 한번만 수행되도록 함
+        if self.showContactorLstBtnClicked_Once == False:
+            widget.currentWidget().getProjectDirPath(self.project_dir_path, self.contactorInfoList)
+            widget.currentWidget().showContactor()
+            self.showContactorLstBtnClicked_Once = True
 
 class RouteOfConfirmedCaseWindow(QDialog):
-    def __init__(self, targetInfoList):
+    def __init__(self):
         super().__init__()
         loadUi("./UI/routeOfConfirmedCase.ui", self)
         self.project_dir_path = ""
         self.video_dir_path = ""
         self.result_dir_path = ""
-        self.targetInfoList = targetInfoList
-        self.showResult()
+        self.targetInfoList = []
+        # self.showResult()
         self.backBtn.clicked.connect(self.backBtnClicked)
 
-    def getProjectDirPath(self, project_dir_path):
+    def getProjectDirPath(self, project_dir_path, targetInfoList):
         self.project_dir_path = project_dir_path
         self.video_dir_path = "{}/{}".format(self.project_dir_path, "data/output")
         self.result_dir_path = "{}/{}".format(self.project_dir_path, "data/output/analysis")
+        self.targetInfoList = targetInfoList
 
     def showResult(self):
         # targetListInfo를 1차원 list로 합치기
-        targetInfoFlattenList = np.hstack(targetInfoList)
+        print(self.targetInfoList)
+        if len(self.targetInfoList) == 0:
+            print("There is no target information -> np.hstack(self.targetInfoList) is error")
+        targetInfoFlattenList = np.hstack(self.targetInfoList)
 
         # 위쪽 tableWidget setting
         self.tableWidget.setRowCount( len(targetInfoFlattenList) )
@@ -505,21 +536,22 @@ class ContactorListWindow(QDialog):
         Args:
             contactorInfoList: 접촉자들의 정보(사진, 영상 이름..)를 담고있는 ContactorInfo()의 리스트
     '''
-    def __init__(self, contactorInfoList):
+    def __init__(self):
         super().__init__()
         loadUi("./UI/contactorList.ui", self)
         self.project_dir_path = ""
         self.video_dir_path = ""
         self.result_dir_path = ""
-        self.contactorInfoList = contactorInfoList
-        self.showContactor()
+        self.contactorInfoList = []
+        # self.showContactor()
         self.backBtn.clicked.connect(self.backBtnClicked)
 
-    def getProjectDirPath(self, project_dir_path):
+    def getProjectDirPath(self, project_dir_path, contactorInfoList):
         self.project_dir_path = project_dir_path
         self.video_dir_path = "{}/{}".format(self.project_dir_path, "data/output")
         self.result_dir_path = "{}/{}".format(self.project_dir_path, "data/output/analysis")
-
+        self.contactorInfoList = contactorInfoList
+        
     def showContactor(self):
         for contactorInfo in self.contactorInfoList:
             if os.path.exists(contactorInfo['image_path']):
@@ -552,15 +584,15 @@ if __name__ == '__main__':
     widget = QStackedWidget()
     
     # system 출력 결과 json파일 로드
-    targetInfoList, contactorInfoList = loadJson()
+    # targetInfoList, contactorInfoList = loadJson()
 
     #레이아웃 인스턴스 생성
     firstWindow = FirstWindow()
     dataInputWindow = DataInputWindow()
     analysisWindow = AnalysisWindow()
     resultListWindow = ResultListWindow()
-    routeOfConfirmedCaseWindow = RouteOfConfirmedCaseWindow(targetInfoList)
-    contactorListWindow = ContactorListWindow(contactorInfoList)
+    routeOfConfirmedCaseWindow = RouteOfConfirmedCaseWindow()
+    contactorListWindow = ContactorListWindow()
 
     #Widget 추가
     widget.addWidget(firstWindow)
