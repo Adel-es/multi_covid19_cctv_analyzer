@@ -34,8 +34,9 @@ class FirstWindow(QDialog):
     def __init__(self):
         super().__init__()
         loadUi("./UI/first.ui", self)
-        self.proj_parent_dir_path = ""
+        self.proj_parent_dir_path = appInfo.repo_path # default로 현재 속한 repo의 경로를 설정
         self.proj_dir_path = ""
+        self.projParentDirLabel.setText( self.proj_parent_dir_path )
         self.findPathBtn.clicked.connect(self.findPathBtnClicked)
         if appInfo.only_app_test == False:
             self.errorMessage = ErrorAlertMessage() # 유효성 검사 에서 사용

@@ -21,12 +21,7 @@ parallel_processing     = False
 use_mask_voting         = False 
 
 # reid model setting
-<<<<<<< HEAD
-reid_model              = 'la' # 'fake2' / 'fake' / 'topdb' / 'la'
-=======
 reid_model              = 'fake2' # 'fake2' / 'fake' / 'topdb' / 'la'
->>>>>>> 2a50a039ee1f20c5ed88877cd1e7dd8e335b984a
-
 
 # allocate specific gpu device
 trackingGPU             = 0
