@@ -11,7 +11,7 @@ gTruth = file_io.convertGTruthFileToJsonObject(gTruth_file_path)
         
 print("shm: {}\n".format(shm))
 
-P2_tid = 1
+P2_tid = 2
 shm_P2 = []
 for aFramePeople in shm['people']:
     for person in aFramePeople:

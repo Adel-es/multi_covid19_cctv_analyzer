@@ -45,31 +45,20 @@ if __name__ == '__main__':
     if os.path.exists(runInfo.query_image_path) == False:
         logger.critical("[IO Error] Query image directory path: {} is not exists".format(runInfo.query_image_path))
         exit(-1)
-        
+    
     if fillBboxWithGTruth:
         detectProc = gTruthDetectAndTrack
     else:
         detectProc = detectAndTrack
-
+    
     startTime = time.time()
     
-    shm = ShmSerialManager(processNum=5, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
+    shm = ShmSerialManager(processNum=3, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
     
-    maskProc = Process(target=runMaskDetection, args=(shm, 3, os.getpid()))
-    maskProc.start()
-
-    distanceProc = Process(target=checkDistance, args=(shm, 2, maskProc.pid))
-    distanceProc.start()
-    
-    reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, runInfo.reid_model, runInfo.reidGPU)) # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
-    reidProc.start()
-        
-    detectTrackProc = Process(target=detectProc, args=(shm, 0, reidProc.pid))
-    detectTrackProc.start()
-
-    writeVideo(shm, 4, detectTrackProc.pid)
+    detectProc(shm, 0, os.getpid())
+    runPersonReid(shm, 1, os.getpid(), runInfo.reid_model, runInfo.reidGPU)  # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
+    writeVideo(shm, 2, os.getpid())
     
     logger.info("Running time: {}".format(time.time() - startTime))
 
     writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path, gTruthQuery)
-
