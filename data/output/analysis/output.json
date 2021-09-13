@@ -1,5 +1,5 @@
 {
-   "video_name": "output_test_final.avi",
+   "video_name": "data/output/output_test_final.avi",
    "target": [
        {
           "in": 503,

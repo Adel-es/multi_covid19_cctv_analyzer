@@ -11,7 +11,7 @@ output_contactors_path = runInfo.output_contactors_path
 start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 
-def writeVideo(shm, processOrder, nextPid):
+def writeVideo(shm, processOrder, nextPid, shmQueue = None):
     # prepare ResultManager to write output json file  
     res_manager = ResultManager() 
     
@@ -83,6 +83,8 @@ def writeVideo(shm, processOrder, nextPid):
                 elif person.isMask == MaskToken.FaceNotFound : 
                     cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (0, 165, 255), 2) #orange 
         out.write(frame)
+        if shmQueue != None: # app에 frame보내는 shared memory
+            shmQueue.put(frame)
         shm.finish_a_frame()
         
     shm.finish_process()

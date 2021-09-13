@@ -27,23 +27,6 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
-    <widget class="QTextBrowser" name="videoTextBrowser"/>
-   </item>
-   <item row="9" column="1">
-    <widget class="QPushButton" name="startAnalysisBtn">
-     <property name="text">
-      <string>분석 시작</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QTextBrowser" name="photoTextBrowser">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
@@ -56,36 +39,19 @@
      <item>
       <widget class="QPushButton" name="addPhotoBtn">
        <property name="text">
-        <string>추가</string>
+        <string>파일 추가</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>선택한 파일 삭제</string>
        </property>
       </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item row="7" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_9">
-     <item>
-      <widget class="QPushButton" name="addVideoBtn">
-       <property name="text">
-        <string>추가</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_8">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -106,18 +72,12 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2">
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+   <item row="9" column="1">
+    <widget class="QPushButton" name="startAnalysisBtn">
+     <property name="text">
+      <string>분석 시작</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
    <item row="10" column="0" colspan="2">
     <spacer name="verticalSpacer">
@@ -131,6 +91,56 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="7" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <item>
+      <widget class="QPushButton" name="addVideoBtn">
+       <property name="text">
+        <string>파일 추가</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>선택한 파일 삭제</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_8">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="8" column="1">
+    <widget class="QListWidget" name="videoListWidget"/>
+   </item>
+   <item row="5" column="1">
+    <widget class="QListWidget" name="photoListWidget"/>
    </item>
   </layout>
  </widget>

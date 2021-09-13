@@ -1,4 +1,5 @@
-import logging 
+
+import logging
 
 # anaylsis time, file setting 
 input_video_path        = 'data/input/08_14_2020_1_1.mp4'
@@ -11,14 +12,14 @@ query_image_path        = 'data/input/query/' # query image의 이름은 "숫자
 
 # log setting 
 logfile_name            = "log.txt"
-console_log_level       = logging.INFO # select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL] 
-file_log_level          = logging.DEBUG 
+console_log_level       = 20 # select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL] 
+file_log_level          = 10
 
 # accuracy check setting
-write_result            = True
+write_result            = False
 
 # system setting 
-parallel_processing     = False
+parallel_processing     = True
 use_mask_voting         = False 
 
 # reid model setting
@@ -29,3 +30,4 @@ trackingGPU             = 0
 reidGPU                 = 1
 faceGPU                 = 3
 maskGPU                 = 4
+    
