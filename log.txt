@@ -28753,3 +28753,21 @@
 [DEBUG|2021-09-12 14:37:40,598] - resultManager.py(105) - resultmanager - target appeared at 792
 [DEBUG|2021-09-12 14:37:40,774] - resultManager.py(117) - resultmanager - video end at 800, so make sure target is disappeared.
 [INFO|2021-09-12 14:37:40,807] - run.py(67) - Running time: 46.490888357162476
+[CRITICAL|2021-09-13 17:42:59,437] - run.py(42) - [IO Error] Query image directory path: proj/data/output/1_1.avi is not exists
+[CRITICAL|2021-09-13 17:49:30,087] - run.py(42) - [IO Error] Query image directory path: proj/data/output/1_1.avi is not exists
+[DEBUG|2021-09-13 17:51:30,239] - types.py(194) - checkDistance init
+[DEBUG|2021-09-13 17:51:30,240] - types.py(241) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-13 17:51:30,274] - types.py(194) - writeVideo init
+[DEBUG|2021-09-13 17:51:31,070] - types.py(241) - writeVideo get_ready_to_read: Not yet.
+[INFO|2021-09-13 17:51:37,884] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-13 17:51:37,884] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-13 17:51:37,884] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-13 17:51:39,522] - types.py(194) - topdbReid init
+[DEBUG|2021-09-13 17:51:40,286] - types.py(241) - topdbReid get_ready_to_read: Not yet.
+[INFO|2021-09-13 17:51:40,688] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-13 17:51:40,688] - types.py(194) - maskDetection init
+[DEBUG|2021-09-13 17:51:41,457] - types.py(241) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-13 17:52:30,240] - types.py(241) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-13 17:52:31,071] - types.py(241) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-13 17:52:40,287] - types.py(241) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-13 17:52:41,457] - types.py(241) - maskDetection get_ready_to_read: Not yet.

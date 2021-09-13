@@ -24,7 +24,7 @@ only_app_test = False
         True: 시스템과 App의 상호작용을 확인하고 싶을 때
         False: 시스템 동작 X
 '''
-sync_analysis_system = False
+sync_analysis_system = True
 
 ''' In runInfo setting '''
 start_frame  = 750
