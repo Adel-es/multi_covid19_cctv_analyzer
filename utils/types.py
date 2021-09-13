@@ -26,7 +26,7 @@ class FrameInfo(Structure):
     _fields_ = [('reid', c_int32), ('confidence', c_float)]
 
 class BBox(Structure):
-    _fields_ = [('minX', c_float), ('minY', c_float), ('maxX', c_float), ('maxY', c_float)]
+    _fields_ = [('minX', c_float), ('minY', c_float), ('maxX', c_float), ('maxY', c_float), ('confidence', c_float)]
 
 class PersonInfo(Structure):
     _fields_ = [('bbox', BBox), ('tid', c_int32), ('isClose', c_bool), ('isMask', c_uint8)]
