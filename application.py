@@ -220,10 +220,10 @@ class AnalysisWindow(QDialog):
         output_video_name   = input_video_name.split('.')[0] + ".avi"   # input video name에서 확장자만 avi로 변경
         
         contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
-                                            query_image_path        = project_name + '/data/output/' + output_video_name,
+                                            query_image_path        = project_name + '/data/input/query/',
                                             output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json', 
-                                            output_video_path       = project_name + '/data/output/analysis/', 
-                                            output_contactors_path  = project_name + '/data/input/query/',
+                                            output_video_path       = project_name + '/data/output/' + output_video_name, 
+                                            output_contactors_path  = project_name + '/data/output/analysis/',
                                             )
         setting_file.write(contents)
         setting_file.close()
@@ -234,7 +234,7 @@ class AnalysisWindow(QDialog):
             if appInfo.sync_analysis_system == True:
                 # covid system 시작
                 shm_queue = Queue()
-                covid_system_process = Process(target=run.main, args=(shm_queue))
+                covid_system_process = Process(target=run.main, args=(shm_queue,))
                 covid_system_process.start()
             else:
                 cap = cv2.VideoCapture(video_path)
@@ -402,8 +402,7 @@ class RouteOfConfirmedCaseWindow(QDialog):
 
     def showResult(self):
         # targetListInfo를 1차원 list로 합치기
-        targetInfoFlattenList = np.array(targetInfoList)
-        targetInfoFlattenList = targetInfoFlattenList.flatten()
+        targetInfoFlattenList = np.hstack(targetInfoList)
 
         # 위쪽 tableWidget setting
         self.tableWidget.setRowCount( len(targetInfoFlattenList) )
@@ -412,6 +411,7 @@ class RouteOfConfirmedCaseWindow(QDialog):
 
         # 위쪽 table -> 전체 video 결과에 대해 정렬해야함.
         for row, targetInfo in enumerate(targetInfoFlattenList):
+            print(targetInfo)
             result = [ targetInfo['video_name'],
                         str(targetInfo['index']),
                         getTimeFromFrame(targetInfo['in'], targetInfo['fps']), 
