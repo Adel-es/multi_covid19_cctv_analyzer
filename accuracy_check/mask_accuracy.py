@@ -1,7 +1,10 @@
+import math
 import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from utils.types import MaskToken 
+from utils.types import MaskToken, BBox 
 import file_io 
+import configs.runInfo as runInfo 
+import logging
 from typing import List
 
 confusion_matrix_index = {
@@ -10,10 +13,48 @@ confusion_matrix_index = {
     MaskToken.NotMasked : 2 
 }
 confusion_matrix = [
+    # => predicition 
+    # | groundTruth 
     [0, 0, 0], 
     [0, 0, 0], 
     [0, 0, 0]
 ]
+
+def copy_from_gtruth (shm, processOrder, nextPid) : 
+    myPid = 'mask_accuracy.copy_from_gtruth'
+    shm.init_process(processOrder, myPid, nextPid)
+    logger = logging.getLogger('root') 
+    
+    # Create gTruth_file_path based on runInfo.input_video_path
+    gTruth_file_path = file_io.getGTruthFilePath(runInfo.input_video_path) 
+    gTruth = file_io.convertGTruthFileToJsonObject(gTruth_file_path)
+    
+    FRAME_NUM = runInfo.end_frame - runInfo.start_frame + 1
+    
+    for fIdx in range(FRAME_NUM):
+        logger.debug("frame {}".format(fIdx))
+        frameNumber = fIdx + runInfo.start_frame 
+        tids = []
+        bboxes = []
+        confidences = []
+        for pKey in gTruth:
+            person = gTruth[pKey][frameNumber]
+            if type(person) == dict:
+                tids.append(int(pKey[-1])) # 수정
+                bboxes.append(person['Position'])
+                confidences.append(1.0)
+        
+        peopleNum = len(tids)
+        frameIdx, personIdx = shm.get_ready_to_write(peopleNum)
+        for i in range(peopleNum):
+            # Write at people
+            shm.data.people[ personIdx[i] ].bbox = BBox(bboxes[i][0], bboxes[i][1], bboxes[i][2], bboxes[i][3], confidences[i])
+            shm.data.people[ personIdx[i] ].tid = tids[i]
+            shm.data.people[ personIdx[i] ].isClose = True 
+            
+        shm.finish_a_frame()
+    shm.finish_process()
+
 
 def string_to_maskToken(mask_string : str) -> MaskToken : 
     if mask_string == "mask" :
@@ -22,6 +63,85 @@ def string_to_maskToken(mask_string : str) -> MaskToken :
         return MaskToken.NotMasked
     else : 
         return MaskToken.FaceNotFound  
+
+def get_precision() : 
+    precisions = [] 
+    for i in range(0, len(confusion_matrix_index)) : 
+        positive_per_class = 0 
+        TF_per_class = 0 
+        for j in range(0, len(confusion_matrix_index)) : 
+            if i == j : 
+                TF_per_class += confusion_matrix[j][i]
+            positive_per_class += confusion_matrix[j][i]
+        precisions.append(TF_per_class / float(positive_per_class))
+    
+    sum_precision = 0 
+    for p in precisions : 
+        sum_precision += p  
+    average_percisions = sum_precision / 4 
+    return precisions, average_percisions 
+
+def get_recall() : 
+    recalls = [] 
+    for i in range(0, len(confusion_matrix_index)) : 
+        true_per_class = 0 
+        TF_per_class = 0 
+        for j in range(0, len(confusion_matrix_index)) : 
+            if i == j : 
+                TF_per_class += confusion_matrix[i][j] 
+            true_per_class += confusion_matrix[i][j]
+        recalls.append(TF_per_class / float(true_per_class))
+    
+    sum_recalls = 0 
+    for p in recalls : 
+        sum_recalls += p  
+    average_recall = sum_recalls / 4 
+    return recalls, average_recall
+
+def print_precisions() : 
+    label = [MaskToken.FaceNotFound, MaskToken.Masked, MaskToken.NotMasked]
+    pres, avg = get_precision()  
+    print("============ PRECISION =================")
+    for index, l in enumerate(label) : 
+        print(l, end ='')
+        print(" : {}".format(pres[index]))
+    print("average precision : {}".format(avg)) 
+    print("=========================================")
+
+
+def print_recalls() : 
+    label = [MaskToken.FaceNotFound, MaskToken.Masked, MaskToken.NotMasked]
+    recalls, avg = get_recall()  
+    print("============ RECALLS =================")
+    for index, l in enumerate(label) : 
+        print(l, end ='')
+        print(" : {}".format(recalls[index]))
+    print("average recall : {}".format(avg)) 
+    print("=========================================")
+
+
+def print_confusion_matrix() : 
+    label = [MaskToken.FaceNotFound, MaskToken.Masked, MaskToken.NotMasked]
+    
+    print("=================================")
+    for l in label : 
+        print("\t\t", end = '')
+        print(l, end = '')
+    print("\n")
+    
+    for l in label : 
+        print(l, end = '')
+        for i in confusion_matrix[confusion_matrix_index[l]] : 
+            print("\t\t{}".format(i), end = '')
+        print("\n") 
+    
+    print("==================================")
+    
+def get_f1_score() : 
+    _, avg_precision = get_precision() 
+    _, avg_recall = get_recall() 
+    f1_score = 2 * (avg_precision * avg_recall) / (avg_precision + avg_recall)
+    return f1_score 
 
 def update_confusion_matrix (shm, gTruth, person_id : str, matching_tid : List[int], start_frame : int, end_frame : int) :  
     ''' update confusion matrix about one person 
@@ -55,7 +175,8 @@ def update_confusion_matrix (shm, gTruth, person_id : str, matching_tid : List[i
         else : 
             gtruth_index = confusion_matrix_index[gtruth_mask]
             model_index = confusion_matrix_index[model_mask]
-            confusion_matrix[gtruth_index][model_index] += 1 
+            confusion_matrix[gtruth_index][model_index] += 1
+    # print_confusion_matrix() 
             
 if __name__ == "__main__" : 
     videoName = "08_14_2020_1_1.mp4"
