@@ -10,24 +10,23 @@ contactor_dir = repo_path + "/data/output/analysis/"
 result_json_dir = repo_path + "/data/output/analysis/"
 
 '''
-only_app_test
+* only_app_test
     - Value
         True: App ui의 동작만 보고 싶을 때 (프로젝트 생성 및 데이터 입력 동작 생략)
         False: 프로젝트 & 파일 생성 동작 확인하고 싶을 때
-
-sync_system
+'''
+only_app_test = False
+'''
+* sync_system
     - Condition
         only_app_test = True
     - Value
         True: 시스템과 App의 상호작용을 확인하고 싶을 때
         False: 시스템 동작 X
 '''
-only_app_test = False
-sync_system = False
+sync_analysis_system = False
 
-'''
-    *** In runInfo setting ***
-'''
+''' In runInfo setting '''
 start_frame  = 750
 end_frame = 800
 

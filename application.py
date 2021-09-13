@@ -16,8 +16,9 @@ import numpy as np
 
 if appInfo.only_app_test == False:
     import shutil
-    # from multiprocessing import Process, Queue
-    # import run
+    if appInfo.sync_analysis_system == True:
+        from multiprocessing import Process, Queue
+        import run
 
 class ErrorAlertMessage(QMessageBox):
     def __init__(self):
@@ -230,12 +231,13 @@ class AnalysisWindow(QDialog):
     def analysis(self, video_path, i):
         if appInfo.only_app_test == False:
             self.writeRunInfoFile()
-        
-            # covid system 시작
-            # shm_queue = Queue()
-            # covid_system_process = Process(target=run.main, args=(shm_queue))
-            # covid_system_process.start()
-            cap = cv2.VideoCapture(video_path)
+            if appInfo.sync_analysis_system == True:
+                # covid system 시작
+                shm_queue = Queue()
+                covid_system_process = Process(target=run.main, args=(shm_queue))
+                covid_system_process.start()
+            else:
+                cap = cv2.VideoCapture(video_path)
         else:
             cap = cv2.VideoCapture(video_path)
 
@@ -248,54 +250,54 @@ class AnalysisWindow(QDialog):
         height = qrect.height()
 
         if appInfo.only_app_test == False:
-            # while self.running:
-            #     if shm_queue.empty():
-            #         continue
-            #     img = shm_queue.get()
-            #     ret = True
-            #     # ret, img = cap.read()
-            #     if ret:
-            #         isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
-            #         if isMyTurnToDisplay:
-            #             img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
-            #             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-            #             h,w,c = img.shape
-            #             qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
-            #             pixmap = QtGui.QPixmap.fromImage(qImg)
-            #             label.setPixmap(pixmap)
-            #             if displaying == False:
-            #                 displaying = True
-            #         elif displaying == True:
-            #             label.setText("empty")
-            #             displaying = False
-            #     else:
-            #         break
-            # # cap.release()
-            # label.setText("empty")
-            
-            # # covid system 종료까지 waiting
-            # covid_system_process.join()
-            
-            while self.running:
-                ret, img = cap.read()
-                if ret:
-                    isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
-                    if isMyTurnToDisplay:
-                        img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
-                        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-                        h,w,c = img.shape
-                        qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
-                        pixmap = QtGui.QPixmap.fromImage(qImg)
-                        label.setPixmap(pixmap)
-                        if displaying == False:
-                            displaying = True
-                    elif displaying == True:
-                        label.setText("empty")
-                        displaying = False
-                else:
-                    break
-            cap.release()
-            label.setText("empty")
+            if appInfo.sync_analysis_system == True:
+                while self.running:
+                    if shm_queue.empty():
+                        continue
+                    img = shm_queue.get()
+                    ret = True
+                    # ret, img = cap.read()
+                    if ret:
+                        isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
+                        if isMyTurnToDisplay:
+                            img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
+                            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+                            h,w,c = img.shape
+                            qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
+                            pixmap = QtGui.QPixmap.fromImage(qImg)
+                            label.setPixmap(pixmap)
+                            if displaying == False:
+                                displaying = True
+                        elif displaying == True:
+                            label.setText("empty")
+                            displaying = False
+                    else:
+                        break
+                label.setText("empty")
+                covid_system_process.join() # covid system 종료까지 waiting
+            else:
+                # covid system 사용 X
+                # video path에서 읽어진 비디오가 제대로 출력되는지 확인하는 용도
+                while self.running:
+                    ret, img = cap.read()
+                    if ret:
+                        isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
+                        if isMyTurnToDisplay:
+                            img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
+                            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+                            h,w,c = img.shape
+                            qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
+                            pixmap = QtGui.QPixmap.fromImage(qImg)
+                            label.setPixmap(pixmap)
+                            if displaying == False:
+                                displaying = True
+                        elif displaying == True:
+                            label.setText("empty")
+                            displaying = False
+                    else:
+                        break
+                cap.release()
+                label.setText("empty")
 
             print(f"({i}) Thread end.")
         else:
