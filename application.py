@@ -66,10 +66,45 @@ class FirstWindow(QDialog):
             self.proj_dir_path = "{}/{}".format(self.proj_parent_dir_path
                                                 , self.projNameLineEdit.text())
             
-            if os.path.exists(self.proj_dir_path) and \
-                os.path.isdir(self.proj_dir_path):
-                self.errorMessage.setCustomText("{}는 이미 존재하는 디렉토리 입니다.".format(self.proj_dir_path))
-                self.errorMessage.show()
+            # 매번 새로운 프로젝트를 생성하기 귀찮으므로 잠시 생략함.
+            # if os.path.exists(self.proj_dir_path) and \
+            #     os.path.isdir(self.proj_dir_path):
+            #     self.errorMessage.setCustomText("{}는 이미 존재하는 디렉토리 입니다.".format(self.proj_dir_path))
+            #     self.errorMessage.show()
+            # else:
+            #     os.makedirs("{}/{}".format(self.proj_dir_path, "data"))
+            #     os.makedirs("{}/{}".format(self.proj_dir_path, "data/input"))
+            #     os.makedirs("{}/{}".format(self.proj_dir_path, "data/output"))
+            #     os.makedirs("{}/{}".format(self.proj_dir_path, "data/input/query"))
+            #     os.makedirs("{}/{}".format(self.proj_dir_path, "data/output/analysis"))
+            #     # DataInputWindow로 전환
+            #     widget.setCurrentIndex(widget.currentIndex()+1)
+            #     # 프로젝트 디렉토리 이름dmf DataInputWindow에 전달
+            #     widget.currentWidget().getProjectDirPath( self.proj_dir_path)
+            
+            ### (임시) 이미 존재하는 디렉토리인 경우, 그냥 그 프로젝트를 사용하기로 수정.
+            if os.path.exists(self.proj_dir_path):
+                if os.path.isdir(self.proj_dir_path):
+                    # 프로젝트에 필요한 디렉토리가 없는 경우 새로 생성.
+                    if not os.path.exists("{}/{}".format(self.proj_dir_path, "data")):
+                        os.makedirs("{}/{}".format(self.proj_dir_path, "data"))
+                    if not os.path.exists("{}/{}".format(self.proj_dir_path, "data/input")):
+                        os.makedirs("{}/{}".format(self.proj_dir_path, "data/input"))
+                    if not os.path.exists("{}/{}".format(self.proj_dir_path, "data/output")):
+                        os.makedirs("{}/{}".format(self.proj_dir_path, "data/output"))
+                    if not os.path.exists("{}/{}".format(self.proj_dir_path, "data/input/query")):
+                        os.makedirs("{}/{}".format(self.proj_dir_path, "data/input/query"))
+                    if not os.path.exists("{}/{}".format(self.proj_dir_path, "data/output/analysis")):
+                        os.makedirs("{}/{}".format(self.proj_dir_path, "data/output/analysis"))
+                    # DataInputWindow로 전환
+                    widget.setCurrentIndex(widget.currentIndex()+1)
+                    # 프로젝트 디렉토리 이름dmf DataInputWindow에 전달
+                    widget.currentWidget().getProjectDirPath( self.proj_dir_path)
+                # 선택한 파일이 디렉토리가 아니면 프로젝트로 사용할 수 없다. --> 사실 이런 경우가 없긴 함. 하지만 넣어서 나쁠건 없으니
+                else:
+                    self.errorMessage.setCustomText("{}는 디렉토리가 아닙니다..".format(self.proj_dir_path))
+                    self.errorMessage.show()
+            ### 새로 생성한 디렉토리인 경우, 필요한 디렉토리들을 새로 생성.
             else:
                 os.makedirs("{}/{}".format(self.proj_dir_path, "data"))
                 os.makedirs("{}/{}".format(self.proj_dir_path, "data/input"))
@@ -80,7 +115,6 @@ class FirstWindow(QDialog):
                 widget.setCurrentIndex(widget.currentIndex()+1)
                 # 프로젝트 디렉토리 이름dmf DataInputWindow에 전달
                 widget.currentWidget().getProjectDirPath( self.proj_dir_path)
-
     @pyqtSlot()
     def findPathBtnClicked(self):
         self.proj_parent_dir_path = QFileDialog.getExistingDirectory(self, 'Select a Directory')
@@ -109,6 +143,21 @@ class DataInputWindow(QDialog):
         self.project_dir_path = project_dir_path
         self.query_dir_path = "{}/{}".format(self.project_dir_path, "data/input/query")
         self.video_dir_path = "{}/{}".format(self.project_dir_path, "data/input")
+        # 기존에 있던 프로젝트의 경우, 이미 옮겨놓은 파일들을 ListWidget에 띄워준다.
+        self.photo_paths = [ self.query_dir_path+'/'+_ for _ in os.listdir(self.query_dir_path)]
+        for ppath in self.photo_paths:
+            filepath_label = QLabel( ppath )
+            filepath_label.setFixedHeight(20)
+            self.insertWidgetInListWidget( filepath_label, self.photoListWidget )
+            
+        # print('existing photos: ', self.photo_paths)
+        self.video_paths = [ self.video_dir_path+'/'+_ for _ in os.listdir(self.video_dir_path) if not os.path.isdir( self.video_dir_path+'/'+_ )]
+        for vpath in self.video_paths:
+            filepath_label = QLabel( vpath )
+            filepath_label.setFixedHeight(20)
+            self.insertWidgetInListWidget( filepath_label, self.videoListWidget )
+        # print('existing videos: ', self.video_paths)
+        
         
     def addPhotoBtnClicked(self):
         '''사진 파일만 받도록'''
