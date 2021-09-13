@@ -22,7 +22,7 @@ parallel_processing     = True
 use_mask_voting         = False 
 
 # reid model setting
-reid_model              = 'topdb' # 'fake2' / 'fake' / 'topdb' / 'la'
+reid_model              = 'la' # 'fake2' / 'fake' / 'topdb' / 'la'
 
 
 # allocate specific gpu device
