@@ -22,7 +22,6 @@ from torchreid.utils import read_image
 import glob
 
 import cv2
-from videocaptureasync import VideoCaptureAsync
 import imutils.video
 from PIL import Image
 import numpy as np
@@ -209,23 +208,13 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     print(end_frame)
     print("+++++++++++++++++++++++++++++++++++")
     writeVideo_flag = True
-    asyncVideo_flag = False
 
-    if asyncVideo_flag :
-        video_capture = VideoCaptureAsync(input_video_path)
-    else:
-        video_capture = cv2.VideoCapture(input_video_path)
+    video_capture = cv2.VideoCapture(input_video_path)
 
-    if asyncVideo_flag:
-        video_capture.start()
 
     if writeVideo_flag:
-        if asyncVideo_flag:
-            w = int(video_capture.cap.get(3))
-            h = int(video_capture.cap.get(4))
-        else:
-            w = int(video_capture.get(3))
-            h = int(video_capture.get(4))
+        w = int(video_capture.get(3))
+        h = int(video_capture.get(4))
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         out = cv2.VideoWriter(output_video_path, fourcc, 30, (w, h))
         frame_index = -1
@@ -267,8 +256,10 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
         top1_gpIdx, top1_conf = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
         shm.data.frames[frameIdx].reid = top1_gpIdx
         shm.data.frames[frameIdx].confidence = top1_conf
+
         # print("********** distance :", top1_conf)
         if writeVideo_flag: # and not asyncVideo_flag:
+
             # save a frame
             out.write(frame)
             frame_index = frame_index + 1
@@ -279,10 +270,7 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     fps_imutils.stop()
     print('imutils FPS: {}'.format(fps_imutils.fps()))
 
-    if asyncVideo_flag:
-        video_capture.stop()
-    else:
-        video_capture.release()
+    video_capture.release()
 
     if writeVideo_flag:
         out.release()

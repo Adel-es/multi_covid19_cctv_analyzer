@@ -16,15 +16,15 @@ class TrackToken:
         self.tid = tid
 
 class MaskToken(IntEnum) : 
-    Masked = 1 
-    NotMasked = 2 
-    FaceNotFound = 3
-    NotNear = 4
-    UnKnown = 5 
+    Masked = 0
+    NotMasked = 1 
+    FaceNotFound = 2
+    NotNear = 3
+    UnKnown = 4 
     
 class FrameInfo(Structure):
     _fields_ = [('reid', c_int32), ('confidence', c_float)]
-
+        
 class BBox(Structure):
     _fields_ = [('minX', c_float), ('minY', c_float), ('maxX', c_float), ('maxY', c_float), ('confidence', c_float)]
 
@@ -36,6 +36,8 @@ class Data():
     def __init__(self, processNum, framesSize, peopleSize):
         # 프레임 단위의 정보를 저장하는 배열.
         self.frames = Array(FrameInfo, framesSize, lock=False)
+        for i in range(framesSize):
+            self.frames[i].reid = -1
         # 사람 단위의 정보를 저장하는 배열.
         self.people = Array(PersonInfo, peopleSize, lock=False)
         # 각 프레임에 존재하는 사람의 수를 누적해서 저장하는 배열. 

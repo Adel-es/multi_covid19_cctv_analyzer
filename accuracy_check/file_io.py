@@ -27,13 +27,13 @@ def getGTruthFilePath(input_video_path):
     videoName = videoName.split('.')[0]
     return 'accuracy_check/gTruth_file/{}_gTruth.mat'.format(videoName)
 
-def writeShmToJsonFile(data, start_frame, end_frame, input_video_path, gTruth_query):
+def writeShmToJsonFile(data, start_frame, end_frame, input_video_path, gTruth_query='notCare'):
     '''
     Param: 
         - data: ShmSerialManger.data
         - start_frame, end_frame: int type
         - input_video_path: string type
-        - gTruth_query: groundtruth in reid. ex) "P1" (P1 ~ P8)
+        - gTruth_query: groundtruth in reid. (P1 ~ P8) ex) "P1"
     Return: 
         None
     Output: 
@@ -54,13 +54,11 @@ def writeShmToJsonFile(data, start_frame, end_frame, input_video_path, gTruth_qu
         frameIdx, personIdx = data.get_index_of_frame(fIdx+1)
     
         reid_pIdx = data.frames[frameIdx].reid
-
         if reid_pIdx < 0:
             reid_value = reid_pIdx
         else:
-            reid_value = reid_pIdx - personIdx[0] 
-        
-        reid_value = 0 
+            reid_value = reid_pIdx-personIdx[0]
+            
         frames.append( {"reid": reid_value, "confidence": data.frames[frameIdx].confidence} )
         aFramePeople = []
         for pIdx in personIdx:
@@ -91,9 +89,9 @@ def convertShmFileToJsonObject(shm_file_path):
             "start_frame": 0,
             "end_frame": 9,
             "frames": [
-                {"reid": -1}, 
+                {"reid": -1, "confidence": 0.9}, 
                 ... , 
-                {"reid": 8}
+                {"reid": 8, "confidence": 0.9}
             ],
             "people": [
                 [],
@@ -147,20 +145,20 @@ def gTruthDetectAndTrack(shm, processOrder, nextPid):
     # Create gTruth_file_path based on runInfo.input_video_path
     gTruth_file_path = getGTruthFilePath(runInfo.input_video_path) 
     gTruth = convertGTruthFileToJsonObject(gTruth_file_path)
+    num_of_frames = runInfo.end_frame - runInfo.start_frame + 1
     
-    FRAME_NUM = runInfo.end_frame - runInfo.start_frame + 1
-    
-    for fIdx in range(FRAME_NUM):
-        print("frame {}".format(fIdx))
+    for fIdx in range(num_of_frames):
+        frameNum = runInfo.start_frame + fIdx
         tids = []
         bboxes = []
         confidences = []
-        for pKey in gTruth:
-            person = gTruth[pKey][fIdx]
-            if type(person) == dict:
-                tids.append(int(pKey[-1])) # 수정
-                bboxes.append(person['Position'])
-                confidences.append(1.0)
+        if fIdx >= 2:
+            for pKey in gTruth:
+                person = gTruth[pKey][frameNum]
+                if type(person) == dict:
+                    tids.append(int(pKey[-1])) # 수정
+                    bboxes.append(person['Position'])
+                    confidences.append(1.0)
             
         peopleNum = len(tids)
         frameIdx, personIdx = shm.get_ready_to_write(peopleNum)
