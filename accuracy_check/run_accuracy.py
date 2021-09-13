@@ -57,7 +57,7 @@ if __name__ == '__main__':
     
     maskProc = Process(target=runMaskDetection, args=(shm, 3, os.getpid()))
     maskProc.start()
-    
+
     distanceProc = Process(target=checkDistance, args=(shm, 2, maskProc.pid))
     distanceProc.start()
     

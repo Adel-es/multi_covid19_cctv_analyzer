@@ -78,7 +78,7 @@ def get_precision() :
     sum_precision = 0 
     for p in precisions : 
         sum_precision += p  
-    average_percisions = sum_precision / 4 
+    average_percisions = sum_precision / len(confusion_matrix_index)
     return precisions, average_percisions 
 
 def get_recall() : 
@@ -95,7 +95,8 @@ def get_recall() :
     sum_recalls = 0 
     for p in recalls : 
         sum_recalls += p  
-    average_recall = sum_recalls / 4 
+
+    average_recall = sum_recalls / len(confusion_matrix_index)
     return recalls, average_recall
 
 def print_precisions() : 
@@ -177,6 +178,38 @@ def update_confusion_matrix (shm, gTruth, person_id : str, matching_tid : List[i
             model_index = confusion_matrix_index[model_mask]
             confusion_matrix[gtruth_index][model_index] += 1
     # print_confusion_matrix() 
+    
+def get_maskAccuracy(gTruth, shm, shmToGTruthMapping, start_frame : int, end_frame : int) :
+    ''' update shmToGTruthMapping.maskTP by comparing shm and gTruth 
+    
+    Args : 
+        gTruth : gTruth list    (get from file_io.convertGTruthFileToJsonObject)
+        shm    : shm list       (get from file_io.convertShmFileToJsonObject)
+        shmToGTruthMapping :    
+        start_frame : int value, config.runInfo.start 
+        end_frame   : int value, config.runInfo.end 
+    '''
+    
+    frame_num = end_frame - start_frame + 1
+    
+    for fIdx in frame_num:
+        for pIdx in range(len(shm['people'][fIdx])):
+            # get masktoken from shm
+            person_in_shm = shm['people'][fIdx][pIdx]
+            model_mask_token = MaskToken(person_in_shm["isMask"]) 
+            
+            # get gTruth Person id(like P2) from shmToGTruthMapping 
+            gTruth_person_num : str = shmToGTruthMapping[fIdx][pIdx]['pKey'] 
+            
+            # get masktoken from gTruth 
+            gTruth_per_person : List = gTruth[gTruth_person_num]
+            gTruth_mask_str : str = gTruth_per_person[start_frame + fIdx]["ismask"] #"mask" / "unmask" ... 
+            gTruth_mask_token = string_to_maskToken(gTruth_mask_str) 
+            
+            # compare masktoken from shm and gTruth 
+            # update shmToGTruthMapping 
+            mask_TP = (model_mask_token == gTruth_mask_token)
+            shmToGTruthMapping[fIdx][pIdx]['maskTP'] = mask_TP
             
 if __name__ == "__main__" : 
     videoName = "08_14_2020_1_1.mp4"

@@ -56,7 +56,7 @@ def main(shm_queue=None):
         
     detectTrackProc = Process(target=detectAndTrack, args=(shm, 0, reidProc.pid))
     detectTrackProc.start()
-    
+
     writeVideo(shm, 4, detectTrackProc.pid, shm_queue)
     # writeVideo(shm, 3, detectTrackProc.pid)
     
@@ -67,3 +67,4 @@ def main(shm_queue=None):
 
 if __name__ == '__main__':
     main()
+

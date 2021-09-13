@@ -24,6 +24,7 @@ use_mask_voting         = False
 # reid model setting
 reid_model              = 'topdb' # 'fake2' / 'fake' / 'topdb' / 'la'
 
+
 # allocate specific gpu device
 trackingGPU             = 0
 reidGPU                 = 1
