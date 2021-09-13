@@ -54,7 +54,14 @@ def writeShmToJsonFile(data, start_frame, end_frame, input_video_path, gTruth_qu
         frameIdx, personIdx = data.get_index_of_frame(fIdx+1)
     
         reid_pIdx = data.frames[frameIdx].reid
-        frames.append( {"reid": reid_pIdx-personIdx[0], "confidence": data.frames[frameIdx].confidence} )
+
+        if reid_pIdx < 0:
+            reid_value = reid_pIdx
+        else:
+            reid_value = reid_pIdx - personIdx[0] 
+        
+        reid_value = 0 
+        frames.append( {"reid": reid_value, "confidence": data.frames[frameIdx].confidence} )
         aFramePeople = []
         for pIdx in personIdx:
             person = data.people[pIdx]
