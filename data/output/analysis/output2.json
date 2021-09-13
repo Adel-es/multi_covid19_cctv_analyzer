@@ -1,5 +1,5 @@
 {
-   "video_name": "output_yolov4.avi",
+   "video_name": "data/output/output_yolov4.avi",
    "target": [
        {
           "in": 200,
