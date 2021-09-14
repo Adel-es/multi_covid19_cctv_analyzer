@@ -242,6 +242,7 @@ def run_test_original(model, gallery_data, gallery_transforms,
         print(output[1][0][:-1])
     
     return top1_gpIdx_list[0], top1_gpIdx_list[1] # gpIdx, gpConf
+
 def run_test_custom(model, gallery_data, gallery_transforms, 
              query_features, qid=[], 
              debug_logging_mode=False, debug_file=None):
@@ -291,8 +292,6 @@ def run_test_custom(model, gallery_data, gallery_transforms,
     return top1_gpIdx_list, top1_conf_list
 
 def crop_frame_image(frame, bbox):
-    # bbox[0,1,2,3] = [x,y,x+w,y+h]
-    # return Image.fromarray(frame).crop( (int(bbox[0]),int(bbox[1]), int(bbox[2]),int(bbox[3])) ) # (start_x, start_y, start_x + width, start_y + height) 
     return Image.fromarray(frame).crop( (int(bbox.minX),int(bbox.minY), 
                                          int(bbox.maxX),int(bbox.maxY)) ) # (start_x, start_y, start_x + width, start_y + height) 
    
@@ -334,30 +333,9 @@ def run_la_transformer(model, data_transforms,
     if debug_logging_mode == True:
         for qid in qid_list:
             top1_counting_dict[ str(qid) ] = {}
-        
-    writeVideo_flag = True
-    asyncVideo_flag = False
 
-    if asyncVideo_flag :
-        video_capture = VideoCaptureAsync(input_video_path)
-    else:
-        video_capture = cv2.VideoCapture(input_video_path)
+    video_capture = cv2.VideoCapture(input_video_path)
 
-    if asyncVideo_flag:
-        video_capture.start()
-
-    if writeVideo_flag:
-        if asyncVideo_flag:
-            w = int(video_capture.cap.get(3))
-            h = int(video_capture.cap.get(4))
-        else:
-            w = int(video_capture.get(3))
-            h = int(video_capture.get(4))
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter(output_video_path, fourcc, 30, (w, h))
-        frame_index = -1
-
-    fps = 0.0
     fps_imutils = imutils.video.FPS().start()
 
     cam_id = 0;     # 임의로 cam_no 정의
@@ -424,11 +402,6 @@ def run_la_transformer(model, data_transforms,
                     cv2.imwrite(root_path+"/deep-sort-yolo4/tempData/video_gallery/"
                     +str( data[1] )+'_'+str(frame_no)+'.jpg', #gpid_frameno.jpg
                     np.asarray( data[0] , dtype=np.uint8) )
-                    
-        if writeVideo_flag: # and not asyncVideo_flag:
-            # save a frame
-            out.write(frame)
-            frame_index = frame_index + 1
             
         fps_imutils.update()
         shm.finish_a_frame()
@@ -436,13 +409,7 @@ def run_la_transformer(model, data_transforms,
     fps_imutils.stop()
     print('imutils FPS: {}'.format(fps_imutils.fps()))
 
-    if asyncVideo_flag:
-        video_capture.stop()
-    else:
-        video_capture.release()
-
-    if writeVideo_flag:
-        out.release()
+    video_capture.release()
         
     if debug_logging_mode == True:
         for qid in top1_counting_dict:

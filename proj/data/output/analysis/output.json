@@ -1,0 +1,37 @@
+{
+   "video_name": "data/output/output_test_final.avi",
+   "target": [
+       {
+          "in": 503,
+          "out": 507
+       },
+       {
+          "in": 509,
+          "out": 854
+       }
+    ],
+
+   "contactor": [
+      {
+         "tid": 15,
+         "danger_level": 15,
+         "capture_time": 1025,
+         "start_time": 503,
+         "end_time": 790
+      },
+      {
+         "tid": 15,
+         "danger_level": 5,
+         "capture_time": 1025,
+         "start_time": 716,
+         "end_time": 853
+      },
+      {
+         "tid": 34,
+         "danger_level": 10,
+         "capture_time": 1466,
+         "start_time": 726,
+         "end_time": 853
+      }
+   ]
+}

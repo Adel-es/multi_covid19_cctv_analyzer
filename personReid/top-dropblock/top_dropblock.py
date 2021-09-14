@@ -193,8 +193,6 @@ def config_for_topdb(root_path, query_image_path, gpu_idx):
     return main_concat_with_track(config_file_path, data_root_path, query_image_path, gpu_idx)
 
 def crop_frame_image(frame, bbox):
-    # bbox[0,1,2,3] = [x,y,x+w,y+h]
-    # return Image.fromarray(frame).crop( (int(bbox[0]),int(bbox[1]), int(bbox[2]),int(bbox[3])) ) # (start_x, start_y, start_x + width, start_y + height) 
     return Image.fromarray(frame).crop( (int(bbox.minX),int(bbox.minY), 
                                          int(bbox.maxX),int(bbox.maxY)) ) # (start_x, start_y, start_x + width, start_y + height) 
      
@@ -207,19 +205,9 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     print(start_frame)
     print(end_frame)
     print("+++++++++++++++++++++++++++++++++++")
-    writeVideo_flag = True
 
     video_capture = cv2.VideoCapture(input_video_path)
 
-
-    if writeVideo_flag:
-        w = int(video_capture.get(3))
-        h = int(video_capture.get(4))
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter(output_video_path, fourcc, 30, (w, h))
-        frame_index = -1
-
-    fps = 0.0
     fps_imutils = imutils.video.FPS().start()
 
     cam_id = 0;     # 임의로 cam_no 정의
@@ -235,7 +223,8 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             continue
         if frame_no > end_frame:
             break
-        print("\tFrame no in topdb: {}".format(frame_no))
+        if frame_no % 10 == 0:
+            print("\tFrame no in topdb: {}".format(frame_no))
         frameIdx, personIdx = shm.get_ready_to_read()
         
         # frame에 사람이 없다면 pass
@@ -258,11 +247,6 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
         shm.data.frames[frameIdx].confidence = top1_conf
 
         # print("********** distance :", top1_conf)
-        if writeVideo_flag: # and not asyncVideo_flag:
-
-            # save a frame
-            out.write(frame)
-            frame_index = frame_index + 1
             
         fps_imutils.update()
         shm.finish_a_frame()
@@ -271,8 +255,5 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     print('imutils FPS: {}'.format(fps_imutils.fps()))
 
     video_capture.release()
-
-    if writeVideo_flag:
-        out.release()
     
     shm.finish_process()

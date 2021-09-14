@@ -17,15 +17,15 @@ def getTimeFromFrame(frame, fps):
     return "{}:{}:{}".format(h,m,s)
 
         
-def loadJson():
+def loadJson(contactor_dir, result_json_dir):
     '''
         system 출력 결과 json파일 로드
     '''
     # 접촉자 이미지 디렉토리 경로 유효성 검사
-    input_file_validation_test(appInfo.contactor_dir)
+    input_file_validation_test(contactor_dir) 
 
     # 지정된 dir에서 result json 파일들을 찾는다.
-    result_json_dir = appInfo.result_json_dir
+    result_json_dir = result_json_dir
     result_json_path = [ "{}/{}".format(result_json_dir, _) for _ in os.listdir(result_json_dir) if _.endswith(".json")]    
 
     targetInfoList, contactorInfoList = [], []
@@ -55,7 +55,7 @@ def loadJson():
             info['video_name'] = result_json['video_name']
             info['frame_no'] = video_frameno
             info['fps'] = video_fps
-            info['image_path'] = appInfo.contactor_dir + "/fr{}_tid{}.png".format(info['capture_time'], info['tid'])
+            info['image_path'] = contactor_dir + "/fr{}_tid{}.jpg".format(info['capture_time'], info['tid'])
 
         # targetInfoList는 video간 timeline을 그려야 하므로 append
         targetInfoList.append(_targetInfoList)
@@ -128,7 +128,7 @@ end_frame               = {}
 
 # log setting 
 logfile_name            = "{}"
-console_log_level       = {} # select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL] 
+console_log_level       = {} # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
 file_log_level          = {}
 
 # accuracy check setting
