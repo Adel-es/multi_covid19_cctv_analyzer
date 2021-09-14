@@ -312,55 +312,31 @@ class AnalysisWindow(QDialog):
         width = qrect.width()
         height = qrect.height()
 
-        if appInfo.only_app_test == False:
-            if appInfo.sync_analysis_system == True:
-                while self.running:
-                    if shm_queue.empty():
-                        continue
-                    img = shm_queue.get()
-                    ret = True
-                    # ret, img = cap.read()
-                    if ret:
-                        isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
-                        if isMyTurnToDisplay:
-                            img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
-                            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-                            h,w,c = img.shape
-                            qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
-                            pixmap = QtGui.QPixmap.fromImage(qImg)
-                            label.setPixmap(pixmap)
-                            if displaying == False:
-                                displaying = True
-                        elif displaying == True:
-                            label.setText("empty")
-                            displaying = False
-                    else:
-                        break
-                label.setText("empty")
-                covid_system_process.join() # covid system 종료까지 waiting
-            else:
-                # covid system 사용 X
-                # video path에서 읽어진 비디오가 제대로 출력되는지 확인하는 용도
-                while self.running:
-                    ret, img = cap.read()
-                    if ret:
-                        isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
-                        if isMyTurnToDisplay:
-                            img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
-                            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-                            h,w,c = img.shape
-                            qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
-                            pixmap = QtGui.QPixmap.fromImage(qImg)
-                            label.setPixmap(pixmap)
-                            if displaying == False:
-                                displaying = True
-                        elif displaying == True:
-                            label.setText("empty")
-                            displaying = False
-                    else:
-                        break
-                cap.release()
-                label.setText("empty")
+        if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
+            while self.running:
+                if shm_queue.empty():
+                    continue
+                img = shm_queue.get()
+                ret = True
+                # ret, img = cap.read()
+                if ret:
+                    isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
+                    if isMyTurnToDisplay:
+                        img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
+                        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+                        h,w,c = img.shape
+                        qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
+                        pixmap = QtGui.QPixmap.fromImage(qImg)
+                        label.setPixmap(pixmap)
+                        if displaying == False:
+                            displaying = True
+                    elif displaying == True:
+                        label.setText("empty")
+                        displaying = False
+                else:
+                    break
+            label.setText("empty")
+            # covid_system_process.join() # covid system 종료까지 waiting
 
             print(f"({i}) Thread end.")
         else:
@@ -400,6 +376,7 @@ class AnalysisWindow(QDialog):
         for i, path in enumerate(video_paths):
             th = threading.Thread(target=self.analysis, args=(path, i))
             th.start()
+        # self.analysis(video_paths[0], 0)
         print("started..")
 
     def onExit(self):

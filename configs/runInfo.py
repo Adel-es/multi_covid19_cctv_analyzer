@@ -12,7 +12,7 @@ end_frame               = 800
 
 # log setting 
 logfile_name            = "log.txt"
-console_log_level       = 20 # select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL] 
+console_log_level       = 20 # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
 file_log_level          = 10
 
 # accuracy check setting

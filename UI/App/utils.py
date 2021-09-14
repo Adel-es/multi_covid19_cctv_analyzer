@@ -128,7 +128,7 @@ end_frame               = {}
 
 # log setting 
 logfile_name            = "{}"
-console_log_level       = {} # select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL] 
+console_log_level       = {} # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
 file_log_level          = {}
 
 # accuracy check setting
