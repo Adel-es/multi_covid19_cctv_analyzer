@@ -22,7 +22,6 @@ from torchreid.utils import read_image
 import glob
 
 import cv2
-from videocaptureasync import VideoCaptureAsync
 import imutils.video
 from PIL import Image
 import numpy as np
@@ -194,8 +193,6 @@ def config_for_topdb(root_path, query_image_path, gpu_idx):
     return main_concat_with_track(config_file_path, data_root_path, query_image_path, gpu_idx)
 
 def crop_frame_image(frame, bbox):
-    # bbox[0,1,2,3] = [x,y,x+w,y+h]
-    # return Image.fromarray(frame).crop( (int(bbox[0]),int(bbox[1]), int(bbox[2]),int(bbox[3])) ) # (start_x, start_y, start_x + width, start_y + height) 
     return Image.fromarray(frame).crop( (int(bbox.minX),int(bbox.minY), 
                                          int(bbox.maxX),int(bbox.maxY)) ) # (start_x, start_y, start_x + width, start_y + height) 
      
@@ -208,29 +205,9 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     print(start_frame)
     print(end_frame)
     print("+++++++++++++++++++++++++++++++++++")
-    writeVideo_flag = True
-    asyncVideo_flag = False
 
-    if asyncVideo_flag :
-        video_capture = VideoCaptureAsync(input_video_path)
-    else:
-        video_capture = cv2.VideoCapture(input_video_path)
+    video_capture = cv2.VideoCapture(input_video_path)
 
-    if asyncVideo_flag:
-        video_capture.start()
-
-    if writeVideo_flag:
-        if asyncVideo_flag:
-            w = int(video_capture.cap.get(3))
-            h = int(video_capture.cap.get(4))
-        else:
-            w = int(video_capture.get(3))
-            h = int(video_capture.get(4))
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter(output_video_path, fourcc, 30, (w, h))
-        frame_index = -1
-
-    fps = 0.0
     fps_imutils = imutils.video.FPS().start()
 
     cam_id = 0;     # 임의로 cam_no 정의
@@ -246,6 +223,8 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             continue
         if frame_no > end_frame:
             break
+        if frame_no % 10 == 0:
+            print("\tFrame no in topdb: {}".format(frame_no))
         frameIdx, personIdx = shm.get_ready_to_read()
         
         # frame에 사람이 없다면 pass
@@ -263,13 +242,11 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             gallery.append( (image, tid, cam_id, pIdx))
         
         # reid 수행
-        top1_gpIdx = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
+        top1_gpIdx, top1_conf = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
         shm.data.frames[frameIdx].reid = top1_gpIdx
+        shm.data.frames[frameIdx].confidence = top1_conf
 
-        if writeVideo_flag: # and not asyncVideo_flag:
-            # save a frame
-            out.write(frame)
-            frame_index = frame_index + 1
+        # print("********** distance :", top1_conf)
             
         fps_imutils.update()
         shm.finish_a_frame()
@@ -277,12 +254,6 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     fps_imutils.stop()
     print('imutils FPS: {}'.format(fps_imutils.fps()))
 
-    if asyncVideo_flag:
-        video_capture.stop()
-    else:
-        video_capture.release()
-
-    if writeVideo_flag:
-        out.release()
+    video_capture.release()
     
     shm.finish_process()

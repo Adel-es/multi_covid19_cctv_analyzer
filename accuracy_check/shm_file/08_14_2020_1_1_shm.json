@@ -1,39 +1,51 @@
 {
 	"start_frame": 750,
 	"end_frame": 760,
+	"gTruth_query": "P2",
 	"frames": [
 		{
-			"reid": -1
+			"reid": -1,
+			"confidence": 0.0
 		},
 		{
-			"reid": -1
+			"reid": -1,
+			"confidence": 0.0
 		},
 		{
-			"reid": -1
+			"reid": 1,
+			"confidence": 0.535853385925293
 		},
 		{
-			"reid": -1
+			"reid": 1,
+			"confidence": 0.5365872383117676
 		},
 		{
-			"reid": -1
+			"reid": 1,
+			"confidence": 0.5356221199035645
 		},
 		{
-			"reid": -1
+			"reid": 1,
+			"confidence": 0.5352403521537781
 		},
 		{
-			"reid": -1
+			"reid": 1,
+			"confidence": 0.536381721496582
 		},
 		{
-			"reid": -1
+			"reid": 1,
+			"confidence": 0.5367468595504761
 		},
 		{
-			"reid": -1
+			"reid": 1,
+			"confidence": 0.5351405143737793
 		},
 		{
-			"reid": -1
+			"reid": 1,
+			"confidence": 0.538469672203064
 		},
 		{
-			"reid": 0
+			"reid": 1,
+			"confidence": 0.5386543273925781
 		}
 	],
 	"people": [
@@ -353,8 +365,8 @@
 					0.9926272034645081
 				],
 				"tid": 1,
-				"isClose": true,
-				"isMask": 2
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -365,8 +377,8 @@
 					0.9918863773345947
 				],
 				"tid": 2,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			},
 			{
 				"bbox": [
@@ -377,8 +389,8 @@
 					0.9773747324943542
 				],
 				"tid": 3,
-				"isClose": true,
-				"isMask": 1
+				"isClose": false,
+				"isMask": 0
 			}
 		]
 	]

@@ -68,6 +68,8 @@ def detectAndTrack(shm, processOrder, nextPid):
 
     # Prepare input videovideo_path
     video_capture = cv2.VideoCapture(input_video_path)
+    frame_width  = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+    frame_height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
     frame_index = -1
     
     myPid = 'detectAndTrack'
@@ -112,9 +114,7 @@ def detectAndTrack(shm, processOrder, nextPid):
                 continue
             bbox = track.to_tlbr()
             
-            f_width  = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)   # float `width`
-            f_height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float `height`
-            positioning_in_frame(bbox, f_width, f_height)
+            positioning_in_frame(bbox, frame_width, frame_height)
             
             tids.append(track.track_id)
             bboxes.append(bbox)

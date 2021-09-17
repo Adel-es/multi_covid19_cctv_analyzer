@@ -34,3 +34,6 @@ referenced from https://github.com/RQuispeC/top-dropblock
 
 # LA-transformer
 referenced from https://github.com/SiddhantKapil/LA-Transformer
+
+# Calculate AP
+referenced from https://github.com/herbwood/mAP
