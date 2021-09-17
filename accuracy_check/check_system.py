@@ -5,21 +5,14 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from configs import runInfo
 import file_io
 from check_bbox import getBboxAccuracyAndMapping
-from check_reid import getReidAccuracy
+from check_reid import getReidAccuracy, FilterFramesWithConfirmedCases
 from mask_accuracy import get_maskAccuracy
 from utils.logger import make_logger
-
-logger = make_logger(runInfo.logfile_name, 'root')
-
-def removeData(shm, gTruth, fIdx):
-    shm['frames'][fIdx] = {"reid": -1,	"confidence": 0.0}
-    shm['people'][fIdx] = []
-    
-    frameNum = shm['start_frame'] + fIdx
-    for pKey in gTruth:
-        gTruth[pKey][frameNum] = []
+import logging
 
 def getSystemAccuracy(shm, gTruth):
+    logger = logging.getLogger('root') 
+    
     start_frame = shm['start_frame']
     end_frame = shm['end_frame']
     num_of_frames = end_frame - start_frame + 1
@@ -27,13 +20,7 @@ def getSystemAccuracy(shm, gTruth):
     if len(shm['people']) != num_of_frames:
         sys.exit("accuracy_system.py line 45: The number of frames doesn't match.")
 
-    query = shm['gTruth_query']
-
-    # Remove frame data without confirmed cases
-    for fIdx in range(2, num_of_frames):  # First and second frames are skipped since there are no detections in shm (for tracking)
-        frameNum = start_frame + fIdx
-        if type(gTruth[query][frameNum]) == list: # if not labeled
-            removeData(shm, gTruth, fIdx)
+    FilterFramesWithConfirmedCases(shm, gTruth)
 
     # Count groundTruthsNum
     groundTruthsNum = 0
@@ -104,6 +91,8 @@ def getSystemAccuracy(shm, gTruth):
 
 
 if __name__ == '__main__':
+    logger = make_logger(runInfo.logfile_name, 'root')
+
     # Prepare shm and gTruth
     videoName = "08_14_2020_1_1.mp4"
     # Create shm_file_path based on runInfo.input_video_path

@@ -13,7 +13,7 @@ query_image_path        = 'data/input/query/' # query image의 이름은 "숫자
 
 # log setting 
 logfile_name            = "log.txt"
-console_log_level       = logging.INFO # select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL] 
+console_log_level       = logging.INFO # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
 file_log_level          = logging.DEBUG 
 
 # system setting 
