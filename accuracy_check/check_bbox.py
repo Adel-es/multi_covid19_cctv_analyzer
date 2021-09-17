@@ -6,13 +6,9 @@ from configs import runInfo
 import file_io
 import numpy as np
 from collections import Counter
+from AP_utils import calculateAveragePrecision, ElevenPointInterpolatedAP
 from utils.logger import make_logger
 import logging 
-
-if __name__ == '__main__':
-    logger = make_logger(runInfo.logfile_name, 'root')
-else:
-    logger = logging.getLogger('root')
 
 def boundingBoxes(shm, gTruth):
     detections, groundtruths = [], []
@@ -94,27 +90,7 @@ def iou(boxA, boxB):
     assert result >= 0
     return result
 
-def calculateAveragePrecision(rec, prec):
-    
-    mrec = [0] + [e for e in rec] + [1]
-    mpre = [0] + [e for e in prec] + [0]
-
-    for i in range(len(mpre)-1, 0, -1):
-        mpre[i-1] = max(mpre[i-1], mpre[i])
-
-    ii = []
-
-    for i in range(len(mrec)-1):
-        if mrec[1:][i] != mrec[0:-1][i]:
-            ii.append(i+1)
-
-    ap = 0
-    for i in ii:
-        ap = ap + np.sum((mrec[i] - mrec[i-1]) * mpre[i])
-    
-    return [ap, mpre[0:len(mpre)-1], mrec[0:len(mpre)-1], ii]
-
-def AP(detections, groundtruths, shmToGTruthMapping, IOUThreshold = 0.3):
+def AP(detections, groundtruths, shmToGTruthMapping, IOUThreshold = 0.3, Interpolated11Points = True):
     
     npos = len(groundtruths)
 
@@ -159,7 +135,10 @@ def AP(detections, groundtruths, shmToGTruthMapping, IOUThreshold = 0.3):
     rec = acc_TP / npos
     prec = np.divide(acc_TP, (acc_FP + acc_TP))
 
-    [ap, mpre, mrec, ii] = calculateAveragePrecision(rec, prec)
+    if Interpolated11Points:
+        [ap, mpre, mrec, _] = ElevenPointInterpolatedAP(rec, prec)
+    else:
+        [ap, mpre, mrec, ii] = calculateAveragePrecision(rec, prec)
 
     result = {
         'precision' : prec,
@@ -174,6 +153,8 @@ def AP(detections, groundtruths, shmToGTruthMapping, IOUThreshold = 0.3):
     return result
 
 def getBboxAccuracyAndMapping(shm, gTruth, shmToGTruthMapping=[], makeLog=True):
+    logger = logging.getLogger('root')
+
     detections, groundtruths = boundingBoxes(shm, gTruth)
     
     if len(detections) == 0 and len(groundtruths) == 0:
@@ -208,6 +189,8 @@ def getBboxAccuracyAndMapping(shm, gTruth, shmToGTruthMapping=[], makeLog=True):
             logger.info("===========================")
 
 if __name__ == '__main__':
+    logger = make_logger(runInfo.logfile_name, 'root')
+    
     # Prepare shm and gTruth
     videoName = "08_14_2020_1_1.mp4"
     # Create shm_file_path based on runInfo.input_video_path

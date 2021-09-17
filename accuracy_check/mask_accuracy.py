@@ -215,14 +215,15 @@ def get_maskAccuracy(gTruth, shm, shmToGTruthMapping) :
             gTruth_person_num : str = shmToGTruthMapping[fIdx][pIdx]['pKey'] 
             
             # get masktoken from gTruth 
-            gTruth_per_person : List = gTruth[gTruth_person_num]
-            gTruth_mask_str : str = gTruth_per_person[start_frame + fIdx]["ismask"] #"mask" / "unmask" ... 
-            gTruth_mask_token = string_to_maskToken(gTruth_mask_str) 
-            
-            # compare masktoken from shm and gTruth 
-            # update shmToGTruthMapping 
-            mask_TP = (model_mask_token == gTruth_mask_token)
-            shmToGTruthMapping[fIdx][pIdx]['maskTP'] = mask_TP
+            if gTruth_person_num != '':
+                gTruth_per_person : List = gTruth[gTruth_person_num]
+                gTruth_mask_str : str = gTruth_per_person[start_frame + fIdx]["ismask"] #"mask" / "unmask" ... 
+                gTruth_mask_token = string_to_maskToken(gTruth_mask_str) 
+                
+                # compare masktoken from shm and gTruth 
+                # update shmToGTruthMapping 
+                mask_TP = (model_mask_token == gTruth_mask_token)
+                shmToGTruthMapping[fIdx][pIdx]['maskTP'] = mask_TP
             
 if __name__ == "__main__" : 
     # Create shm_file_path based on runInfo.input_video_path
