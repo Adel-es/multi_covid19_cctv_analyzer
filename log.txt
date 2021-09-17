@@ -33663,3 +33663,15 @@
 [DEBUG|2021-09-14 11:56:47,496] - types.py(194) - maskDetection init
 [DEBUG|2021-09-14 11:56:50,419] - types.py(241) - topdbReid get_ready_to_read: Not yet.
 [DEBUG|2021-09-14 11:56:51,496] - types.py(241) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-15 20:20:33,073] - types.py(196) - checkDistance init
+[DEBUG|2021-09-15 20:20:33,074] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-15 20:20:33,109] - types.py(196) - writeVideo init
+[DEBUG|2021-09-15 20:20:36,895] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[INFO|2021-09-15 20:20:40,696] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-15 20:20:40,696] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-15 20:20:40,696] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-15 20:20:42,534] - types.py(196) - topdbReid init
+[INFO|2021-09-15 20:20:43,246] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-15 20:20:43,246] - types.py(196) - maskDetection init
+[DEBUG|2021-09-15 20:20:46,532] - types.py(243) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-15 20:20:47,064] - types.py(243) - maskDetection get_ready_to_read: Not yet.

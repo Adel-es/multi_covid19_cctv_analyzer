@@ -417,7 +417,8 @@ class ResultListWindow(QDialog):
         self.project_dir_path = project_dir_path
         self.video_dir_path = "{}/{}".format(self.project_dir_path, "data/output")
         self.result_dir_path = "{}/{}".format(self.project_dir_path, "data/output/analysis")
-        self.targetInfoList, self.contactorInfoList = loadJson(contactor_dir= self.result_dir_path, 
+        self.targetInfoList, self.contactorInfoList = loadJson(video_dir_path=self.video_dir_path,
+                                                               contactor_dir= self.result_dir_path, 
                                                                result_json_dir= self.result_dir_path)
 
     def showRouteRsltBtnClicked(self):

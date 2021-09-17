@@ -17,7 +17,7 @@ def getTimeFromFrame(frame, fps):
     return "{}:{}:{}".format(h,m,s)
 
         
-def loadJson(contactor_dir, result_json_dir):
+def loadJson(video_dir_path, contactor_dir, result_json_dir):
     '''
         system 출력 결과 json파일 로드
     '''
@@ -37,11 +37,13 @@ def loadJson(contactor_dir, result_json_dir):
         _targetInfoList, _contactorInfoList = result_json['target'], result_json['contactor']
 
         # video의 frame no, fps 구하기
-        output_video_path = "{}/{}".format(appInfo.repo_path, result_json['video_name'])
+        video_file_name = result_json['video_name'].split('/')[-1]
+        output_video_path = "{}/{}".format(video_dir_path, video_file_name)
+        print(output_video_path)
         output_file_validation_test(output_video_path) # 출력 영상 경로 유효성 검사
         video_capture = cv2.VideoCapture(output_video_path)
-        video_frameno = video_capture.get( cv2.CAP_PROP_FRAME_COUNT )
-        video_fps = video_capture.get( cv2.CAP_PROP_FPS )
+        video_frameno = int(video_capture.get( cv2.CAP_PROP_FRAME_COUNT ))
+        video_fps = int(video_capture.get( cv2.CAP_PROP_FPS ))
 
         # targetInfoList에 video 정보 추가하기
         for idx, info in enumerate(_targetInfoList):
