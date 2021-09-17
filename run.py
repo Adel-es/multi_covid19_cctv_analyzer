@@ -2,7 +2,7 @@ import os
 from multiprocessing import Process
 from utils.types import ShmManager, ShmSerialManager
 from utils.logger import make_logger 
-from configs import runInfo
+from configs import runInfo, appInfo
 from timeit import time
 
 from deep_sort_yolo4.person_detection import detectAndTrack

@@ -82,7 +82,7 @@ class ContactorItem(QWidget):
     '''
     def __init__(self, info, videoName, fps):
         QWidget.__init__(self)
-        loadUi("./UI/contactorItem.ui", self)
+        loadUi("./UI/ui/contactorItem.ui", self)
         
         # 접촉자 사진 추가하기
         thumbnail = PictureWidget(info['image_path'])

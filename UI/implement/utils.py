@@ -3,8 +3,15 @@ import os
 import cv2
 import logging
 
-from . import appInfo
+from PyQt5.QtWidgets import *
+from configs import appInfo
 
+def center(self):
+    qr = self.frameGeometry()
+    cp = QDesktopWidget().availableGeometry().center()
+    qr.moveCenter(cp)
+    self.move(qr.topLeft())
+    
 def getTimeFromFrame(frame, fps):
     sec = frame/int(fps)
 
