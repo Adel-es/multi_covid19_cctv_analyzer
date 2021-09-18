@@ -21,11 +21,12 @@ from personReid.personReid import fakeReid3
 
 from utils.types import MaskToken
 
-TEST_BBOX = True
-TEST_REID = False
+TEST_BBOX = False
+TEST_REID = True
 TEST_MASK = False
-TEST_SYSTEM = False
-QUERY_GROUND_TRUTH = "P2"
+TEST_SYSTEM = True
+QUERY_GROUND_TRUTH = "P7"
+WRITE_VIDEO = False
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
@@ -62,20 +63,20 @@ if __name__ == '__main__':
     if TEST_BBOX:
         shm = ShmSerialManager(processNum=2, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)        
         detectAndTrack(shm, 0, os.getpid())
-        writeVideo(shm, 1, os.getpid())
+        writeVideoProcessOrder = 1
     
     elif TEST_REID:
         shm = ShmSerialManager(processNum=3, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
         gTruthDetectAndTrack(shm, 0, os.getpid())   # gtruth => shm
         runPersonReid(shm, 1, os.getpid(), runInfo.reid_model, runInfo.reidGPU)
-        writeVideo(shm, 2, os.getpid())         #write video
+        writeVideoProcessOrder = 2
          
     elif TEST_MASK:
         shm = ShmSerialManager(processNum=4, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
         copy_from_gtruth(shm, 0, os.getpid())   # gtruth => shm
         fakeReid3(shm, 1, os.getpid())          # fakeReid3 random pick one if there is a person 
         runMaskDetection(shm, 2, os.getpid())   # shm 바탕 mask detection 
-        writeVideo(shm, 3, os.getpid())         #write video 
+        writeVideoProcessOrder = 3
         
     elif TEST_SYSTEM:
         shm = ShmSerialManager(processNum=5, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
@@ -83,11 +84,13 @@ if __name__ == '__main__':
         runPersonReid(shm, 1, os.getpid(), runInfo.reid_model, runInfo.reidGPU)  # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
         makeAllIsCloseTrue(shm, 2, os.getpid())
         runMaskDetection(shm, 3, os.getpid())
-        writeVideo(shm, 4, os.getpid())
-        
+        writeVideoProcessOrder = 4
     else:
         logger.critical("[VariableSettingError] One of TEST_BBOX, TEST_REID, TEST_MASK, or TEST_SYSTEM must be True.")
         exit(-1)
+    
+    if WRITE_VIDEO:
+        writeVideo(shm, writeVideoProcessOrder, os.getpid())
         
     logger.info("Running time: {}".format(time.time() - startTime))
 

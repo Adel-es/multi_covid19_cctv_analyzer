@@ -13,10 +13,7 @@ end_frame               = 800
 # log setting 
 logfile_name            = "log.txt"
 console_log_level       = logging.INFO # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
-file_log_level          = logging.DEBUG
-
-# accuracy check setting
-write_result            = False
+file_log_level          = logging.DEBUG 
 
 # system setting 
 parallel_processing     = True

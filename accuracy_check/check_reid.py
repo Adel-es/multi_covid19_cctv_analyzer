@@ -8,13 +8,28 @@ import file_io
 import numpy as np
 from collections import Counter
 from check_bbox import getBboxAccuracyAndMapping
+from AP_utils import calculateAveragePrecision, ElevenPointInterpolatedAP
 from utils.logger import make_logger
 import logging 
 
-if __name__ == '__main__':
-    logger = make_logger(runInfo.logfile_name, 'root')
-else:
-    logger = logging.getLogger('root')
+def removeData(shm, gTruth, fIdx):
+    shm['frames'][fIdx] = {"reid": -1,	"confidence": 0.0}
+    shm['people'][fIdx] = []
+    
+    frameNum = shm['start_frame'] + fIdx
+    for pKey in gTruth:
+        gTruth[pKey][frameNum] = []
+        
+def FilterFramesWithConfirmedCases(shm, gTruth):
+    # Remove frame data without confirmed cases
+    query = shm['gTruth_query']
+    start_frame = shm['start_frame']
+    end_frame = shm['end_frame']
+    num_of_frames = end_frame - start_frame + 1
+    for fIdx in range(2, num_of_frames):  # First and second frames are skipped since there are no detections in shm (for tracking)
+        frameNum = start_frame + fIdx
+        if type(gTruth[query][frameNum]) == list: # if not labeled
+            removeData(shm, gTruth, fIdx)
 
 def reidResult(shm, gTruth):
     detections, groundtruths = [], []
@@ -45,27 +60,7 @@ def reidResult(shm, gTruth):
                 
     return detections, groundtruths
 
-def calculateAveragePrecision(rec, prec):
-    
-    mrec = [0] + [e for e in rec] + [1]
-    mpre = [0] + [e for e in prec] + [0]
-
-    for i in range(len(mpre)-1, 0, -1):
-        mpre[i-1] = max(mpre[i-1], mpre[i])
-
-    ii = []
-
-    for i in range(len(mrec)-1):
-        if mrec[1:][i] != mrec[0:-1][i]:
-            ii.append(i+1)
-
-    ap = 0
-    for i in ii:
-        ap = ap + np.sum((mrec[i] - mrec[i-1]) * mpre[i])
-    
-    return [ap, mpre[0:len(mpre)-1], mrec[0:len(mpre)-1], ii]
-
-def AP(detections, groundtruths, shmToGTruthMapping, pKeyQuery):
+def AP(detections, groundtruths, shmToGTruthMapping, pKeyQuery, Interpolated11Points = True):
     
     npos = len(groundtruths)
 
@@ -90,7 +85,10 @@ def AP(detections, groundtruths, shmToGTruthMapping, pKeyQuery):
     rec = acc_TP / npos
     prec = np.divide(acc_TP, (acc_FP + acc_TP))
 
-    [ap, mpre, mrec, ii] = calculateAveragePrecision(rec, prec)
+    if Interpolated11Points:
+        [ap, mpre, mrec, _] = ElevenPointInterpolatedAP(rec, prec)
+    else:
+        [ap, mpre, mrec, ii] = calculateAveragePrecision(rec, prec)
 
     result = {
         'precision' : prec,
@@ -105,7 +103,10 @@ def AP(detections, groundtruths, shmToGTruthMapping, pKeyQuery):
     return result
 
 
-def getReidAccuracy(shm, gTruth, shmToGTruthMapping=[], makeLog=True):        
+def getReidAccuracy(shm, gTruth, shmToGTruthMapping=[], makeLog=True):
+    logger = logging.getLogger('root')
+    
+    FilterFramesWithConfirmedCases(shm, gTruth)
     detections, groundtruths = reidResult(shm, gTruth)
 
     if len(detections) == 0 and len(groundtruths) == 0:
@@ -139,6 +140,8 @@ def getReidAccuracy(shm, gTruth, shmToGTruthMapping=[], makeLog=True):
             logger.info("===========================")
     
 if __name__ == '__main__':
+    logger = make_logger(runInfo.logfile_name, 'root')
+    
     # Prepare shm and gTruth
     videoName = "08_14_2020_1_1.mp4"
     # Create shm_file_path based on runInfo.input_video_path
