@@ -202,7 +202,7 @@ class DataInputWindow(QDialog):
             self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
             # 분석 thread 시작
             self.stackedWidget.currentWidget().getProjectDirPath(self.project_dir_path, self.photo_paths, self.video_paths)
-            self.stackedWidget.currentWidget().start(self.video_paths)
+            self.stackedWidget.currentWidget().start()
 
     def startAnalysisBtnClickedNoValid(self):
         '''입력 파일에 대한 유효성 검사(비어있지 않은지 등)'''
@@ -210,7 +210,7 @@ class DataInputWindow(QDialog):
         self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
         # 분석 thread 시작
         self.stackedWidget.currentWidget().getProjectDirPath(self.project_dir_path, self.photo_paths, self.video_paths)
-        self.stackedWidget.currentWidget().start(self.video_paths)
+        self.stackedWidget.currentWidget().start()
 
     def insertWidgetInListWidget(self, widget, listWidget):
         '''
@@ -239,11 +239,11 @@ class AnalysisWindow(QDialog):
         self.video_paths = []
 
         self.running = False
-        self.labels = [self.videoLabel1, self.videoLabel2, self.videoLabel3, self.videoLabel4]
         self.timer = 0
         self.playTime = 3
+        self.currrentVideoCnt = 0
         self.showRsltBtn.clicked.connect(self.showRsltBtnClicked)
-        
+        self.nextVideoBtn.clicked.connect(self.nextVideoRunBtnClicked)
         
     def getProjectDirPath(self, project_dir_path, photo_paths, video_paths):
         self.project_dir_path = project_dir_path
@@ -281,42 +281,6 @@ class AnalysisWindow(QDialog):
         setting_file.write(contents)
         setting_file.close()
 
-    def analysis(self, video_path, i):
-        if appInfo.only_app_test == False:
-            self.writeRunInfoFile()
-        cap = cv2.VideoCapture(video_path)
-
-        label = self.labels[i % len(self.labels)]
-        group = i // len(self.labels)
-        displaying = False
-        # get label geometry
-        qrect = label.geometry()
-        width = qrect.width()
-        height = qrect.height()
-
-        while self.running:
-            ret, img = cap.read()
-            if ret:
-                isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
-                if isMyTurnToDisplay:
-                    img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
-                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-                    h,w,c = img.shape
-                    qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
-                    pixmap = QtGui.QPixmap.fromImage(qImg)
-                    label.setPixmap(pixmap)
-                    if displaying == False:
-                        displaying = True
-                elif displaying == True:
-                    label.setText("empty")
-                    displaying = False
-            else:
-                break
-        cap.release()
-        label.setText("empty")
-
-        print(f"({i}) Thread end.")
-
     @pyqtSlot()
     def analysisWithoutThread(self, video_path):
         if appInfo.only_app_test == False:
@@ -324,7 +288,8 @@ class AnalysisWindow(QDialog):
             
         cap = cv2.VideoCapture(video_path)
         
-        label = self.labels[0] #i % len(self.labels)]
+        self.videoNameLabel.setText(video_path)
+        label = self.videoShowLabel
         # get label geometry
         qrect = label.geometry()
         width = qrect.width()
@@ -353,16 +318,12 @@ class AnalysisWindow(QDialog):
             self.running = False
         print("stoped..")
 
-    def start(self, video_paths):
+    def start(self):
         self.running = True
-        self.displaySetNum = math.ceil(len(video_paths) / 4)
+        self.displaySetNum = math.ceil(len(self.video_paths) / 4)
         self.startTimer()
 
-        # for i, path in enumerate(video_paths):
-        #     th = threading.Thread(target=self.analysis, args=(path, i))
-        #     th.start()
-        # self.analysis(video_paths[1], 0)
-        self.analysisWithoutThread(video_paths[1])
+        self.analysisWithoutThread(self.video_paths[ self.currrentVideoCnt ])
         print("started..")
 
     def onExit(self):
@@ -371,7 +332,7 @@ class AnalysisWindow(QDialog):
 
     def startTimer(self):
         self.timer += 1
-        self.testLabel.setText(str(self.timer))
+        self.timeLabel.setText(str(self.timer) + " sec")
         timerThread = threading.Timer(1, self.startTimer)
         timerThread.start()
         if self.running == False:
@@ -385,6 +346,14 @@ class AnalysisWindow(QDialog):
         self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
         self.stackedWidget.currentWidget().getProjectDirPath(self.project_dir_path)
 
+    def nextVideoRunBtnClicked(self):
+        self.stop()
+        self.currrentVideoCnt += 1
+        if self.currrentVideoCnt < len(self.video_paths):
+            self.start()
+        else:
+            QMessageBox.information(self, 'Complete', '모든 영상 분석이 완료되었습니다.')
+            
 class ResultListWindow(QDialog):
     def __init__(self, widget):
         super().__init__()
