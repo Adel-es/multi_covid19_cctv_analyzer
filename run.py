@@ -29,7 +29,7 @@ FRAME_NUM = end_frame - start_frame + 1
 MAX_PEOPLE_NUM = 8
 
 
-def main(shm_queue=None):
+def main():
     # torch.multiprocessing.set_start_method('spawn')   
     logger = make_logger(runInfo.logfile_name, 'root')
     if os.path.exists(runInfo.input_video_path) == False:
@@ -57,7 +57,7 @@ def main(shm_queue=None):
     detectTrackProc = Process(target=detectAndTrack, args=(shm, 0, reidProc.pid))
     detectTrackProc.start()
 
-    writeVideo(shm, 4, detectTrackProc.pid, shm_queue)
+    writeVideo(shm, 4, detectTrackProc.pid)
     # writeVideo(shm, 3, detectTrackProc.pid)
     
     logger.info("Running time: {}".format(time.time() - startTime))
