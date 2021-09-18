@@ -59,13 +59,14 @@ def writeShmToJsonFile(data, start_frame, end_frame, input_video_path, gTruth_qu
         else:
             reid_value = reid_pIdx-personIdx[0]
             
-        frames.append( {"reid": reid_value, "confidence": data.frames[frameIdx].confidence} )
+        frames.append( {"reid": reid_value} )
         aFramePeople = []
         for pIdx in personIdx:
             person = data.people[pIdx]
             aFramePeople.append({
                 "bbox": [person.bbox.minX, person.bbox.minY, person.bbox.maxX, person.bbox.maxY, person.bbox.confidence], 
                 "tid": person.tid, 
+                "reidConf": person.reidConf,
                 "isClose": person.isClose, 
                 "isMask": person.isMask
             })
@@ -89,14 +90,14 @@ def convertShmFileToJsonObject(shm_file_path):
             "start_frame": 0,
             "end_frame": 9,
             "frames": [
-                {"reid": -1, "confidence": 0.9}, 
+                {"reid": -1},   # Confirmed case not in this frame
                 ... , 
-                {"reid": 8, "confidence": 0.9}
+                {"reid": 8}
             ],
             "people": [
-                [],
+                [],             # No one in this frame
                 ... , 
-                [{"bbox": [5.5,7.9,7.8,7.0], "tid": 1, "isClose": false, "isMask": 4}, ...]
+                [{"bbox": [5.5,7.9,7.8,7.0], "tid": 1, "reidConf": 0.9, "isClose": false, "isMask": 4}, ...]
             ]
         }
     '''

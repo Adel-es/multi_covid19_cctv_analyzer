@@ -197,7 +197,7 @@ def crop_frame_image(frame, bbox):
                                          int(bbox.maxX),int(bbox.maxY)) ) # (start_x, start_y, start_x + width, start_y + height) 
      
 def run_top_db_test(engine, cfg, start_frame, end_frame, 
-                    input_video_path, output_video_path,
+                    input_video_path,
                     shm, processOrder, myPid, nextPid,
                     query_image_path):
     #DEBUG
@@ -223,8 +223,8 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             continue
         if frame_no > end_frame:
             break
-        if frame_no % 10 == 0:
-            print("\tFrame no in topdb: {}".format(frame_no))
+        # if frame_no % 10 == 0:
+            # print("\tFrame no in topdb: {}".format(frame_no))
         frameIdx, personIdx = shm.get_ready_to_read()
         
         # frame에 사람이 없다면 pass
@@ -242,9 +242,10 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             gallery.append( (image, tid, cam_id, pIdx))
         
         # reid 수행
-        top1_gpIdx, top1_conf = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
+        top1_gpIdx, confidenceList = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
         shm.data.frames[frameIdx].reid = top1_gpIdx
-        shm.data.frames[frameIdx].confidence = top1_conf
+        for i, pIdx in enumerate(personIdx):
+            shm.data.people[pIdx].reidConf = confidenceList[i]
 
         # print("********** distance :", top1_conf)
             

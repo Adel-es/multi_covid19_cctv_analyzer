@@ -5,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from configs import runInfo
 import file_io
 from check_bbox import getBboxAccuracyAndMapping
-from check_reid import getReidAccuracy, FilterFramesWithConfirmedCases
+from check_reid import getReidAccuracy
 from mask_accuracy import get_maskAccuracy
 from utils.logger import make_logger
 import logging
@@ -13,27 +13,44 @@ import logging
 def getSystemAccuracy(shm, gTruth):
     logger = logging.getLogger('root') 
     
+    queryKey = shm['gTruth_query']
     start_frame = shm['start_frame']
     end_frame = shm['end_frame']
     num_of_frames = end_frame - start_frame + 1
 
     if len(shm['people']) != num_of_frames:
-        sys.exit("accuracy_system.py line 45: The number of frames doesn't match.")
-
-    FilterFramesWithConfirmedCases(shm, gTruth)
+        logger.critical("The number of frames doesn't match.")
+        sys.exit(-1)
+    
+    # Remove data from gTruth except for query
+    for pKey in gTruth:
+        if pKey == queryKey:
+            continue
+        for fIdx in range(2, num_of_frames):  # First and second frames are skipped since there are no detections in shm (for tracking)
+            frameNum = start_frame + fIdx
+            if type(gTruth[pKey][frameNum]) != list: # If labeled
+                gTruth[pKey][frameNum] = []     # Remove
+    
+    # Remove data from shm except for inferred query
+    for fIdx in range(num_of_frames):
+        inferredQueryPIdx = shm['frames'][fIdx]['reid']
+        if inferredQueryPIdx == -1:
+            shm['people'][fIdx] = []
+            continue
+        shm['people'][fIdx] = [ shm['people'][fIdx][inferredQueryPIdx] ]
 
     # Count groundTruthsNum
     groundTruthsNum = 0
-    for pKey in gTruth:
-        for i in range(2, num_of_frames):
-            frameNum = start_frame + i
-            if type(gTruth[pKey][frameNum]) == dict:
-                groundTruthsNum += 1
+    for i in range(2, num_of_frames):
+        frameNum = start_frame + i
+        if type(gTruth[queryKey][frameNum]) == dict:
+            groundTruthsNum += 1
 
     # Count detectionsNum
     detectionsNum = 0
     for i in range(num_of_frames):
-        detectionsNum += len(shm['people'][i])
+        if shm['frames'][i]['reid'] != -1:
+            detectionsNum += 1
 
     if groundTruthsNum == 0 and detectionsNum == 0:
         logger.info("========== System ===========")
