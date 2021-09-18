@@ -11,9 +11,6 @@ def runUI():
 
     #화면 전환용 Widget 설정
     widget = QStackedWidget()
-    
-    # system 출력 결과 json파일 로드
-    # targetInfoList, contactorInfoList = loadJson()
 
     #레이아웃 인스턴스 생성
     firstWindow = FirstWindow(widget)

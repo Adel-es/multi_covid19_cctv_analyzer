@@ -2,7 +2,7 @@ import os, sys
 import threading
 import math
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import Qt, pyqtSlot, pyqtSignal, QEventLoop, QTimer
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
 # from qtimeline import QTimeLine
@@ -138,6 +138,7 @@ class DataInputWindow(QDialog):
             self.startAnalysisBtn.clicked.connect(self.startAnalysisBtnClicked)
         else:
             self.startAnalysisBtn.clicked.connect(self.startAnalysisBtnClickedNoValid)
+        
 
     def getProjectDirPath(self, project_dir_path):
         self.project_dir_path = project_dir_path
@@ -243,6 +244,7 @@ class AnalysisWindow(QDialog):
         self.playTime = 3
         self.showRsltBtn.clicked.connect(self.showRsltBtnClicked)
         
+        
     def getProjectDirPath(self, project_dir_path, photo_paths, video_paths):
         self.project_dir_path = project_dir_path
         self.query_dir_path = "{}/{}".format(self.project_dir_path, "data/input/query")
@@ -282,15 +284,7 @@ class AnalysisWindow(QDialog):
     def analysis(self, video_path, i):
         if appInfo.only_app_test == False:
             self.writeRunInfoFile()
-            if appInfo.sync_analysis_system == True:
-                # covid system 시작
-                shm_queue = Queue()
-                covid_system_process = Process(target=run.main, args=(shm_queue,))
-                covid_system_process.start()
-            else:
-                cap = cv2.VideoCapture(video_path)
-        else:
-            cap = cv2.VideoCapture(video_path)
+        cap = cv2.VideoCapture(video_path)
 
         label = self.labels[i % len(self.labels)]
         group = i // len(self.labels)
@@ -300,56 +294,66 @@ class AnalysisWindow(QDialog):
         width = qrect.width()
         height = qrect.height()
 
-        if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
-            while self.running:
-                if shm_queue.empty():
-                    continue
-                img = shm_queue.get()
-                ret = True
-                # ret, img = cap.read()
-                if ret:
-                    isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
-                    if isMyTurnToDisplay:
-                        img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
-                        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-                        h,w,c = img.shape
-                        qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
-                        pixmap = QtGui.QPixmap.fromImage(qImg)
-                        label.setPixmap(pixmap)
-                        if displaying == False:
-                            displaying = True
-                    elif displaying == True:
-                        label.setText("empty")
-                        displaying = False
-                else:
-                    break
-            label.setText("empty")
-            # covid_system_process.join() # covid system 종료까지 waiting
-
-            print(f"({i}) Thread end.")
-        else:
-            while self.running:
-                ret, img = cap.read()
-                if ret:
-                    isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
-                    if isMyTurnToDisplay:
-                        img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
-                        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-                        h,w,c = img.shape
-                        qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
-                        pixmap = QtGui.QPixmap.fromImage(qImg)
-                        label.setPixmap(pixmap)
-                        if displaying == False:
-                            displaying = True
-                    elif displaying == True:
-                        label.setText("empty")
-                        displaying = False
-                else:
-                    break
-            cap.release()
-            label.setText("empty")
+        while self.running:
+            ret, img = cap.read()
+            if ret:
+                isMyTurnToDisplay = self.timer // self.playTime % self.displaySetNum == group
+                if isMyTurnToDisplay:
+                    img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
+                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+                    h,w,c = img.shape
+                    qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
+                    pixmap = QtGui.QPixmap.fromImage(qImg)
+                    label.setPixmap(pixmap)
+                    if displaying == False:
+                        displaying = True
+                elif displaying == True:
+                    label.setText("empty")
+                    displaying = False
+            else:
+                break
+        cap.release()
+        label.setText("empty")
 
         print(f"({i}) Thread end.")
+
+    @pyqtSlot()
+    def analysisWithoutThread(self, video_path):
+        if appInfo.only_app_test == False:
+            self.writeRunInfoFile()
+            
+        cap = cv2.VideoCapture(video_path)
+        
+        label = self.labels[0] #i % len(self.labels)]
+        # group = 1 #// len(self.labels)
+        displaying = False
+        # get label geometry
+        qrect = label.geometry()
+        width = qrect.width()
+        height = qrect.height()
+
+        while self.running:
+            ret, img = cap.read()
+            if ret:
+                img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+                h,w,c = img.shape
+                qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
+                pixmap = QtGui.QPixmap.fromImage(qImg)
+                label.setPixmap(pixmap)
+                if displaying == False:
+                    displaying = True
+                elif displaying == True:
+                    label.setText("empty")
+                    displaying = False
+            else:
+                break
+            loop = QEventLoop()
+            QTimer.singleShot(10, loop.quit) #25ms
+            loop.exec_()
+            
+        cap.release()
+        label.setText("empty")        
         
     def stop(self):
         if self.running != False:
@@ -361,10 +365,11 @@ class AnalysisWindow(QDialog):
         self.displaySetNum = math.ceil(len(video_paths) / 4)
         self.startTimer()
 
-        for i, path in enumerate(video_paths):
-            th = threading.Thread(target=self.analysis, args=(path, i))
-            th.start()
-        # self.analysis(video_paths[0], 0)
+        # for i, path in enumerate(video_paths):
+        #     th = threading.Thread(target=self.analysis, args=(path, i))
+        #     th.start()
+        # self.analysis(video_paths[1], 0)
+        self.analysisWithoutThread(video_paths[1])
         print("started..")
 
     def onExit(self):
