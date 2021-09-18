@@ -325,8 +325,6 @@ class AnalysisWindow(QDialog):
         cap = cv2.VideoCapture(video_path)
         
         label = self.labels[0] #i % len(self.labels)]
-        # group = 1 #// len(self.labels)
-        displaying = False
         # get label geometry
         qrect = label.geometry()
         width = qrect.width()
@@ -341,11 +339,6 @@ class AnalysisWindow(QDialog):
                 qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
                 pixmap = QtGui.QPixmap.fromImage(qImg)
                 label.setPixmap(pixmap)
-                if displaying == False:
-                    displaying = True
-                elif displaying == True:
-                    label.setText("empty")
-                    displaying = False
             else:
                 break
             loop = QEventLoop()
@@ -353,7 +346,7 @@ class AnalysisWindow(QDialog):
             loop.exec_()
             
         cap.release()
-        label.setText("empty")        
+        label.setText("finish")        
         
     def stop(self):
         if self.running != False:
