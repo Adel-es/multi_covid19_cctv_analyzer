@@ -2,14 +2,13 @@
 import logging
 
 # anaylsis time, file setting 
-input_video_path        = 'data/input/08_14_2020_1_1.mp4'
-output_video_path       = 'data/output/08_14_2020_1_1.avi'
-
-output_json_path        = 'data/output/analysis/output.json'
-output_contactors_path  = 'data/output/analysis/' 
+input_video_path        = "proj/data/input/08_14_2027_1_2.mp4"
+query_image_path        = "proj/data/input/query/" # query image의 이름은 "숫자_숫자_숫자" 로 설정. ex) 1_0_0.jpg
+output_video_path       = "proj/data/output/08_14_2027_1_2.avi"
+output_json_path        = "proj/data/output/analysis/08_14_2027_1_2.json"
+output_contactors_path  = "proj/data/output/analysis/" 
 start_frame             = 750
-end_frame               = 760
-query_image_path        = 'data/input/query/' # query image의 이름은 "숫자_숫자_숫자" 로 설정. ex) 1_0_0.jpg
+end_frame               = 800
 
 # log setting 
 logfile_name            = "log.txt"

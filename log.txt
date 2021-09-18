@@ -33663,3 +33663,1389 @@
 [DEBUG|2021-09-14 11:56:47,496] - types.py(194) - maskDetection init
 [DEBUG|2021-09-14 11:56:50,419] - types.py(241) - topdbReid get_ready_to_read: Not yet.
 [DEBUG|2021-09-14 11:56:51,496] - types.py(241) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-15 20:20:33,073] - types.py(196) - checkDistance init
+[DEBUG|2021-09-15 20:20:33,074] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-15 20:20:33,109] - types.py(196) - writeVideo init
+[DEBUG|2021-09-15 20:20:36,895] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[INFO|2021-09-15 20:20:40,696] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-15 20:20:40,696] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-15 20:20:40,696] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-15 20:20:42,534] - types.py(196) - topdbReid init
+[INFO|2021-09-15 20:20:43,246] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-15 20:20:43,246] - types.py(196) - maskDetection init
+[DEBUG|2021-09-15 20:20:46,532] - types.py(243) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-15 20:20:47,064] - types.py(243) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:15:12,864] - types.py(196) - checkDistance init
+[DEBUG|2021-09-17 16:15:12,864] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:15:12,878] - types.py(196) - writeVideo init
+[INFO|2021-09-17 16:15:13,211] - run.py(63) - Running time: 0.36107778549194336
+[INFO|2021-09-17 16:15:20,649] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:15:20,649] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:15:20,649] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-17 16:15:22,599] - types.py(196) - topdbReid init
+[INFO|2021-09-17 16:15:23,145] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:15:23,145] - types.py(196) - maskDetection init
+[CRITICAL|2021-09-17 16:15:23,445] - maskProcess.py(49) - mask detection process last frame :)
+[DEBUG|2021-09-17 16:15:32,566] - types.py(196) - detectAndTrack init
+[DEBUG|2021-09-17 16:16:12,865] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:17:12,865] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:18:12,866] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:19:12,867] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:20:39,617] - types.py(196) - checkDistance init
+[DEBUG|2021-09-17 16:20:39,618] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:20:39,630] - types.py(196) - writeVideo init
+[INFO|2021-09-17 16:20:39,934] - run.py(63) - Running time: 0.3323369026184082
+[INFO|2021-09-17 16:20:47,780] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:20:47,781] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:20:47,781] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-17 16:20:49,343] - types.py(196) - topdbReid init
+[INFO|2021-09-17 16:20:50,302] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:20:50,303] - types.py(196) - maskDetection init
+[CRITICAL|2021-09-17 16:20:50,592] - maskProcess.py(49) - mask detection process last frame :)
+[DEBUG|2021-09-17 16:20:59,751] - types.py(196) - detectAndTrack init
+[DEBUG|2021-09-17 16:21:39,618] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:25:31,196] - types.py(196) - checkDistance init
+[DEBUG|2021-09-17 16:25:31,196] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:25:31,208] - types.py(196) - writeVideo init
+[INFO|2021-09-17 16:25:31,519] - run.py(63) - Running time: 0.33740758895874023
+[INFO|2021-09-17 16:25:39,012] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:25:39,012] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:25:39,012] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-17 16:25:41,469] - types.py(196) - topdbReid init
+[INFO|2021-09-17 16:25:41,496] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:25:41,497] - types.py(196) - maskDetection init
+[CRITICAL|2021-09-17 16:25:41,792] - maskProcess.py(49) - mask detection process last frame :)
+[DEBUG|2021-09-17 16:25:51,931] - types.py(196) - detectAndTrack init
+[DEBUG|2021-09-17 16:26:31,197] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[CRITICAL|2021-09-17 16:26:49,484] - run.py(39) - [IO Error] Query image directory path: tempData/query/ is not exists
+[DEBUG|2021-09-17 16:27:08,493] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-17 16:27:08,500] - types.py(270) - fakeReid2 process_init: Not yet.
+[DEBUG|2021-09-17 16:27:08,537] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-17 16:27:15,595] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:27:15,596] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:27:15,596] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[INFO|2021-09-17 16:27:18,327] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:27:18,328] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-17 16:27:27,842] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-17 16:27:45,187] - types.py(272) - fakeReid2 init
+[DEBUG|2021-09-17 16:27:45,187] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:27:45,188] - types.py(287) - fakeReid2 send_ready_signal
+[DEBUG|2021-09-17 16:27:45,188] - types.py(272) - checkDistance init
+[DEBUG|2021-09-17 16:27:45,191] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:27:45,191] - types.py(272) - maskDetection init
+[DEBUG|2021-09-17 16:28:01,408] - types.py(272) - writeVideo init
+[DEBUG|2021-09-17 16:28:01,408] - types.py(287) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:28:05,290] - resultManager.py(105) - resultmanager - target appeared at 752
+[DEBUG|2021-09-17 16:28:06,355] - resultManager.py(111) - resultmanager - target disappeared at 800
+[INFO|2021-09-17 16:28:06,394] - run.py(63) - Running time: 57.91980290412903
+[DEBUG|2021-09-17 16:28:43,035] - types.py(270) - checkDistance process_init: Not yet.
+[DEBUG|2021-09-17 16:28:43,065] - types.py(270) - writeVideo process_init: Not yet.
+[INFO|2021-09-17 16:28:50,739] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:28:50,740] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:28:50,740] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-17 16:28:52,366] - types.py(270) - topdbReid process_init: Not yet.
+[INFO|2021-09-17 16:28:53,237] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:28:53,238] - types.py(270) - maskDetection process_init: Not yet.
+[DEBUG|2021-09-17 16:29:02,960] - types.py(272) - detectAndTrack init
+[DEBUG|2021-09-17 16:29:19,655] - types.py(272) - topdbReid init
+[DEBUG|2021-09-17 16:29:19,655] - types.py(287) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:29:38,827] - types.py(272) - checkDistance init
+[DEBUG|2021-09-17 16:29:38,827] - types.py(287) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:29:38,828] - types.py(287) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:29:38,828] - types.py(272) - maskDetection init
+[DEBUG|2021-09-17 16:29:54,569] - types.py(272) - writeVideo init
+[DEBUG|2021-09-17 16:29:54,569] - types.py(287) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:29:58,596] - resultManager.py(105) - resultmanager - target appeared at 752
+[DEBUG|2021-09-17 16:29:59,629] - resultManager.py(117) - resultmanager - video end at 800, so make sure target is disappeared.
+[INFO|2021-09-17 16:29:59,668] - run.py(63) - Running time: 76.64976119995117
+[DEBUG|2021-09-17 16:30:10,488] - types.py(196) - checkDistance init
+[DEBUG|2021-09-17 16:30:10,489] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:10,520] - types.py(196) - writeVideo init
+[DEBUG|2021-09-17 16:30:14,769] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[INFO|2021-09-17 16:30:18,542] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:30:18,543] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:30:18,543] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-17 16:30:20,026] - types.py(196) - topdbReid init
+[INFO|2021-09-17 16:30:21,318] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:30:21,319] - types.py(196) - maskDetection init
+[DEBUG|2021-09-17 16:30:24,212] - types.py(243) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:25,453] - types.py(243) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:32,574] - types.py(196) - detectAndTrack init
+[DEBUG|2021-09-17 16:30:41,703] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:41,704] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:41,704] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:41,704] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:41,704] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:41,705] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:41,705] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:41,705] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:41,705] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:41,705] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:41,713] - types.py(243) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:41,714] - types.py(243) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:41,734] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:41,741] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:41,848] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:41,848] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:41,849] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:41,849] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:41,849] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:41,849] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:41,849] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:41,849] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:41,850] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:41,850] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:41,859] - types.py(243) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:41,859] - types.py(243) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:41,877] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:41,885] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:41,993] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:41,994] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:41,994] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:42,168] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:42,169] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:42,416] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:42,416] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:42,580] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:42,580] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:42,736] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:42,737] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:42,899] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:42,900] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:43,054] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:43,054] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:43,200] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:43,201] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:43,378] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:43,378] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:43,545] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:43,546] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:43,711] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:43,711] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:43,864] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:43,865] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:44,016] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:44,017] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:44,176] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:44,176] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:44,330] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:44,331] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:44,487] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:44,487] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:44,647] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:44,647] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:44,812] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:44,812] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:44,975] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:44,976] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:45,131] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:45,132] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:45,285] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:45,285] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:45,442] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:45,443] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:45,595] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:45,595] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:45,772] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:45,772] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:45,923] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:45,924] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:46,068] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:46,068] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:46,224] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:46,225] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:46,383] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:46,383] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:46,516] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:46,516] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:46,516] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:46,516] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:46,516] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:46,533] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:46,536] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:46,536] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:46,697] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:46,697] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:46,766] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:46,766] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:46,767] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:46,767] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:46,777] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:46,836] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:46,837] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:46,975] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:46,975] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:47,000] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:47,001] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,001] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:47,001] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:47,008] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,115] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:47,115] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:47,234] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:47,234] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,234] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:47,234] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:47,241] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,255] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:47,256] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:47,394] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:47,395] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:47,455] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:47,455] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,456] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:47,456] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:47,462] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,534] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:47,534] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:47,670] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:47,670] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:47,693] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:47,693] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,693] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:47,693] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:47,701] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,827] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:47,828] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:47,921] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:47,922] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,922] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:47,922] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:47,930] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:47,974] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:47,974] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:48,130] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:48,130] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:48,143] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:48,143] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:48,143] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:48,143] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:48,150] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:48,284] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:48,284] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:48,362] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:48,362] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:48,362] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:48,363] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:48,375] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:48,435] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:48,435] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:48,587] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:48,588] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:48,599] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:48,599] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:48,599] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:48,600] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:48,606] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:48,753] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:48,753] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:48,851] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:48,851] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:48,851] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:48,851] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:48,858] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:48,908] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:48,908] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:49,073] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:49,073] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:49,079] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:49,079] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,079] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:49,080] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:49,086] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,261] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:49,261] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:49,297] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:49,298] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,298] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:49,298] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:49,310] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,411] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:49,411] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:49,494] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:49,494] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,495] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:49,495] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:49,502] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,578] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:30:49,578] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:30:49,687] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:49,687] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,687] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:49,688] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:49,694] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,874] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:49,874] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:49,875] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:49,875] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:49,881] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,065] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:50,065] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,065] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:50,066] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:50,072] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,246] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:50,246] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,246] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:50,246] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:50,252] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,426] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:50,426] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,427] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:50,427] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:50,433] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,603] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:50,603] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,603] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:50,604] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:50,615] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,790] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:50,790] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,790] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:50,791] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:50,797] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,969] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:50,969] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:50,970] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:50,970] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:50,981] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,159] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:51,159] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,160] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:51,160] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:51,169] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,344] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:51,344] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,344] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:51,344] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:51,356] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,439] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,440] - resultManager.py(105) - resultmanager - target appeared at 752
+[DEBUG|2021-09-17 16:30:51,439] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:51,461] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,477] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:51,491] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:51,543] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:51,543] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,543] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:51,544] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:51,550] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,649] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:51,649] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,655] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,680] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:51,686] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:51,727] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:51,727] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,728] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:51,728] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:51,740] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,856] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:51,857] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,863] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,890] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:51,895] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:51,915] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:51,915] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:51,915] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:51,915] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:51,927] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,065] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:52,065] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,076] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,098] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:52,108] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:52,108] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,108] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:52,108] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,108] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,117] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,278] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:52,278] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,293] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:52,294] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,289] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,294] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:52,294] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,301] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,306] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:52,315] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,483] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:52,483] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,483] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:52,483] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,490] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:52,490] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,490] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,499] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,522] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:52,530] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,666] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:52,667] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,667] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:52,667] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,674] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,705] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:52,706] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,712] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,736] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:52,747] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,857] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:52,857] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,857] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:52,857] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:52,863] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,898] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,898] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:52,905] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:52,928] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:52,937] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,040] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:53,040] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,041] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:53,041] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,046] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,073] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:53,073] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,079] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,103] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:53,111] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,225] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:53,225] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,226] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:53,226] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,233] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,281] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:53,281] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,290] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,311] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:53,321] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,408] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:53,408] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,408] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:53,408] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,414] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,457] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:53,457] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,463] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,489] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:53,502] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,603] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:53,603] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,604] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:53,604] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,609] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,658] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:53,658] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,665] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,686] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:53,697] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,788] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:53,788] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,788] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:53,788] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,794] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,847] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:53,847] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,854] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,872] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:53,878] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,980] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:53,980] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,980] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:53,980] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,981] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:53,981] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:53,986] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:53,987] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,006] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:54,013] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,108] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:54,108] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,114] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,132] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:54,138] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,167] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:54,167] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,167] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:54,167] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,173] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,241] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:54,241] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,247] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,265] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:54,271] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,315] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:54,315] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,316] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:54,316] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,321] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,378] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:54,378] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,384] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,404] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:54,410] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,468] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:54,468] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,468] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:54,469] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,474] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,542] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:54,542] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,552] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,569] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:54,575] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,653] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:54,654] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,654] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:54,654] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,659] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,693] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,693] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:54,707] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,725] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:54,731] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,837] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:54,837] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,837] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:54,838] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:54,843] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,851] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:54,851] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,858] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:54,881] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:54,888] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,004] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:55,004] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,011] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,032] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:55,032] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,033] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:55,033] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,038] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:55,040] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,045] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,166] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:55,166] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,173] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,194] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:55,202] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,220] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:55,220] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,220] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:55,220] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,227] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,330] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:55,330] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,336] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,359] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:55,366] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,408] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:55,408] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,409] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:55,409] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,415] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,486] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:55,486] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,492] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,515] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:55,522] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,596] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:55,596] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,597] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:55,597] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,603] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,641] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:55,641] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,647] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,672] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:55,679] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,785] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:55,785] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,785] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:55,786] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,790] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:55,791] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,792] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,800] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,822] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:55,828] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:55,939] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:55,939] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,944] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,972] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:55,973] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:30:55,974] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:55,974] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:30:55,979] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:56,103] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:56,103] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,108] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,131] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:56,140] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:56,243] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:56,243] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,249] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,271] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:56,279] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:56,412] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:56,412] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,417] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,441] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:56,448] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:56,575] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:56,575] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,581] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,606] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:56,613] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:56,696] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:56,696] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,701] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,724] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:56,731] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:56,858] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:56,858] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,863] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,885] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:56,891] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:56,992] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:56,992] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:56,997] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,020] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:57,027] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:57,128] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:57,128] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,133] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,166] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:57,174] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:57,266] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:57,266] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,271] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,298] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:57,304] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:57,403] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:57,403] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,408] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,430] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:57,438] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:57,538] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:57,538] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,542] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,567] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:57,573] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:57,669] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:57,669] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,674] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,701] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:57,713] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:57,782] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:57,782] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,787] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,813] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:57,820] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:57,894] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:57,894] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,899] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:57,921] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:57,928] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:58,052] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:58,052] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,057] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,084] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:58,091] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:58,213] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:58,213] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,217] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,242] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:58,249] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:58,377] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:58,377] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,381] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,407] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:58,415] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:58,522] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:58,522] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,527] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,553] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:58,560] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:58,689] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:58,690] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,695] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,725] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:58,732] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:58,840] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:58,840] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,845] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:58,870] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:58,877] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:59,004] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:59,004] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:59,009] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:59,035] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:30:59,043] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:30:59,162] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:30:59,162] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:30:59,162] - resultManager.py(117) - resultmanager - video end at 800, so make sure target is disappeared.
+[DEBUG|2021-09-17 16:30:59,190] - types.py(209) - writeVideo send_ready_signal
+[INFO|2021-09-17 16:30:59,213] - run.py(63) - Running time: 48.74207139015198
+[DEBUG|2021-09-17 16:32:56,263] - types.py(196) - checkDistance init
+[DEBUG|2021-09-17 16:32:56,264] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:32:56,278] - types.py(196) - writeVideo init
+[INFO|2021-09-17 16:32:56,281] - run.py(63) - Running time: 0.033539772033691406
+[INFO|2021-09-17 16:33:03,738] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:33:03,738] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:33:03,738] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-17 16:33:05,320] - types.py(196) - topdbReid init
+[INFO|2021-09-17 16:33:06,357] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:33:06,358] - types.py(196) - maskDetection init
+[CRITICAL|2021-09-17 16:33:06,359] - maskProcess.py(49) - mask detection process last frame :)
+[DEBUG|2021-09-17 16:33:16,722] - types.py(196) - detectAndTrack init
+[DEBUG|2021-09-17 16:33:56,264] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:34:56,265] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:36:12,571] - types.py(196) - checkDistance init
+[DEBUG|2021-09-17 16:36:12,571] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:36:12,585] - types.py(196) - writeVideo init
+[INFO|2021-09-17 16:36:12,588] - run.py(63) - Running time: 0.03212761878967285
+[INFO|2021-09-17 16:36:20,309] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:36:20,309] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:36:20,309] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-17 16:36:21,918] - types.py(196) - topdbReid init
+[INFO|2021-09-17 16:36:23,010] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:36:23,011] - types.py(196) - maskDetection init
+[CRITICAL|2021-09-17 16:36:23,012] - maskProcess.py(49) - mask detection process last frame :)
+[DEBUG|2021-09-17 16:36:32,943] - types.py(196) - detectAndTrack init
+[DEBUG|2021-09-17 16:37:12,572] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:38:12,572] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:39:12,573] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:40:12,573] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[CRITICAL|2021-09-17 16:40:49,864] - run.py(36) - [IO Error] Input video path: data/input/08_14_2020_1_1.avi is not exists
+[DEBUG|2021-09-17 16:43:26,876] - types.py(196) - checkDistance init
+[DEBUG|2021-09-17 16:43:26,877] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:26,906] - types.py(196) - writeVideo init
+[DEBUG|2021-09-17 16:43:31,190] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[INFO|2021-09-17 16:43:35,074] - openpifpaf.py(27) - openpifpaf based face detection run on GPU : 3
+[INFO|2021-09-17 16:43:35,075] - openpifpaf.py(28) - openpifpaf based face detector input image width : 30
+[INFO|2021-09-17 16:43:35,075] - openpifpaf.py(29) - openpifpaf based face detector input imgae height : 80
+[DEBUG|2021-09-17 16:43:36,411] - types.py(196) - topdbReid init
+[INFO|2021-09-17 16:43:38,034] - maskProcess.py(35) - mask detection process starts
+[DEBUG|2021-09-17 16:43:38,035] - types.py(196) - maskDetection init
+[DEBUG|2021-09-17 16:43:40,350] - types.py(243) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:42,300] - types.py(243) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:47,694] - types.py(196) - detectAndTrack init
+[DEBUG|2021-09-17 16:43:56,236] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:56,237] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:56,237] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,237] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:43:56,237] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,237] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:43:56,238] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:56,238] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,238] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:43:56,238] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,246] - types.py(243) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:56,249] - types.py(243) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:56,269] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:43:56,277] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:56,380] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:56,380] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:56,381] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,381] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:43:56,381] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,381] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:43:56,381] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:56,381] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,382] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:43:56,382] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,390] - types.py(243) - topdbReid get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:56,392] - types.py(243) - maskDetection get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:56,414] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:43:56,422] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:43:56,515] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:56,515] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:56,515] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:43:56,654] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:56,655] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:56,872] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:56,872] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:57,026] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:57,026] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:57,217] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:57,217] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:57,371] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:57,371] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:57,524] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:57,525] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:57,683] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:57,684] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:57,832] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:57,833] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:57,991] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:57,992] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:58,155] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:58,155] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:58,297] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:58,297] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:58,438] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:58,439] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:58,581] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:58,582] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:58,720] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:58,720] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:58,909] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:58,910] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:59,058] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:59,058] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:59,199] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:59,199] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:59,336] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:59,337] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:59,474] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:59,474] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:59,616] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:59,616] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:59,757] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:59,757] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:43:59,895] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:43:59,895] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:00,030] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:00,030] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:00,169] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:00,169] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:00,299] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:00,299] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:00,438] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:00,438] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:00,612] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:00,612] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:00,780] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:00,780] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:00,801] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:00,801] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:00,802] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:00,802] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:00,802] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:00,810] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:00,970] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:00,970] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:01,035] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:01,035] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,035] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:01,035] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:01,041] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,130] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:01,131] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:01,261] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:01,261] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,261] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:01,261] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:01,267] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,307] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:01,308] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:01,463] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:01,463] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:01,487] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:01,487] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,488] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:01,488] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:01,494] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,621] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:01,621] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:01,709] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,709] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:01,710] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:01,710] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:01,716] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,800] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:01,800] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:01,935] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:01,935] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,935] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:01,935] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:01,942] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:01,951] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:01,951] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:02,114] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:02,114] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:02,160] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:02,160] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:02,160] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:02,160] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:02,167] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:02,272] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:02,272] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:02,387] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:02,387] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:02,388] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:02,388] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:02,394] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:02,428] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:02,429] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:02,594] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:02,595] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:02,612] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:02,612] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:02,612] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:02,613] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:02,618] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:02,743] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:02,743] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:02,840] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:02,840] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:02,840] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:02,840] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:02,847] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:02,906] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:02,906] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:03,057] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:03,057] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:03,080] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:03,080] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,081] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:03,081] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:03,088] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,205] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:03,206] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:03,309] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:03,309] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,310] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:03,310] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:03,315] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,362] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:03,362] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:03,519] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:03,519] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:03,539] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:03,539] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,539] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:03,539] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:03,544] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,672] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:03,672] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:03,736] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:03,736] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,736] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:03,736] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:03,742] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,834] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:03,834] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:03,928] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:03,928] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,929] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:03,929] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:03,935] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:03,990] - types.py(232) - detectAndTrack get_ready_to_write: I'm ready!
+[DEBUG|2021-09-17 16:44:03,990] - types.py(209) - detectAndTrack send_ready_signal
+[DEBUG|2021-09-17 16:44:04,124] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:04,124] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,124] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:04,124] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:04,131] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,305] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:04,305] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,306] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:04,306] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:04,312] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,489] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:04,489] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,489] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:04,489] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:04,495] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,668] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:04,668] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,668] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:04,668] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:04,674] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,846] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:04,846] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:04,847] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:04,847] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:04,852] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,022] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:05,022] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,022] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:05,022] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:05,028] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,199] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:05,199] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,199] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:05,199] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:05,204] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,375] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:05,375] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,376] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:05,376] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:05,382] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,553] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:05,553] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,553] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:05,554] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:05,559] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,729] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:05,729] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,730] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:05,730] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:05,736] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,903] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:05,903] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:05,903] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:05,903] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:05,908] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,074] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:06,074] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,074] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:06,074] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:06,080] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,311] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:06,311] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,312] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:06,312] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:06,322] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,414] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,414] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:06,414] - resultManager.py(105) - resultmanager - target appeared at 752
+[DEBUG|2021-09-17 16:44:06,434] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,452] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:06,473] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:06,537] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:06,537] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,537] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:06,537] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:06,544] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,646] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:06,647] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,657] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,691] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:06,701] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:06,745] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:06,746] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,746] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:06,746] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:06,755] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,875] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:06,875] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,884] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,906] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:06,915] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:06,980] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:06,980] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:06,980] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:06,980] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:06,987] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,071] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:07,071] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,082] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,100] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:07,107] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,208] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:07,208] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,208] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:07,208] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,213] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,260] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:07,260] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,267] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,288] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:07,296] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,392] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:07,392] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,392] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:07,392] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,398] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,443] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:07,443] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,455] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,472] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:07,481] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,575] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:07,575] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,575] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:07,576] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,581] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,629] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:07,630] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,641] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,661] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:07,667] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,754] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:07,754] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,755] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:07,755] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,760] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,822] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:07,822] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,832] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,851] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:07,857] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,933] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:07,933] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,933] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:07,933] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:07,938] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,992] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:07,992] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:07,998] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,021] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:08,029] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,114] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:08,114] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,114] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:08,114] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,119] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,201] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:08,201] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,212] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,230] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:08,237] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,294] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:08,294] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,295] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:08,295] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,300] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,387] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:08,387] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,397] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,417] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:08,426] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,478] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,478] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:08,478] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:08,478] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,484] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,575] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:08,575] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,586] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,607] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:08,613] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,629] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:08,629] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,629] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:08,629] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,634] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,757] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:08,758] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,764] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,777] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:08,777] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,778] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:08,778] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,783] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,785] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:08,794] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:08,895] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:08,895] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,901] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:08,924] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:08,932] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,020] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:09,020] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,020] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:09,020] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,023] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:09,023] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,025] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,033] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,050] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:09,057] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,171] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:09,171] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,188] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,200] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:09,207] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,277] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:09,277] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,277] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:09,277] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,282] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,330] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:09,330] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,338] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,358] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:09,364] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,480] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:09,480] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,480] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:09,480] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,486] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,518] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:09,518] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,530] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,546] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:09,554] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,673] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:09,673] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,680] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,688] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:09,688] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,688] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:09,688] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,694] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,702] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:09,709] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,822] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:09,822] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,829] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,851] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:09,859] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,904] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:09,904] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,904] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:09,905] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:09,912] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,981] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:09,981] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:09,988] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,009] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:10,015] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:10,105] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:10,105] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,105] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:10,106] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:10,110] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,146] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:10,146] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,154] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,177] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:10,184] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:10,319] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:10,319] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,331] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,342] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:10,342] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,342] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:10,342] - types.py(243) - checkDistance get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:10,349] - types.py(249) - topdbReid get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,351] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:10,358] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:10,488] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:10,488] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,499] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,520] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:10,528] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:10,548] - types.py(209) - topdbReid send_ready_signal
+[DEBUG|2021-09-17 16:44:10,548] - types.py(249) - checkDistance get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,548] - types.py(209) - checkDistance send_ready_signal
+[DEBUG|2021-09-17 16:44:10,652] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:10,653] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,663] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,682] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:10,688] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:10,811] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:10,811] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,817] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,848] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:10,855] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:10,961] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:10,962] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,969] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:10,993] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:10,999] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:11,142] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:11,142] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,151] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,175] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:11,195] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:11,283] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:11,283] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,289] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,311] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:11,322] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:11,450] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:11,450] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,456] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,480] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:11,492] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:11,621] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:11,621] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,633] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,650] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:11,658] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:11,752] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:11,752] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,756] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,782] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:11,790] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:11,923] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:11,923] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,928] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:11,948] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:11,953] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:12,066] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:12,066] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,082] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,096] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:12,108] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:12,219] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,219] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:12,225] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,254] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:12,262] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:12,398] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:12,398] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,403] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,428] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:12,435] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:12,538] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:12,538] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,543] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,566] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:12,572] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:12,676] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:12,676] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,681] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,703] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:12,716] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:12,814] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:12,814] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,824] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,843] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:12,850] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:12,933] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:12,933] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,945] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:12,962] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:12,969] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:13,059] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:13,060] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,071] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,089] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:13,095] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:13,227] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:13,227] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,238] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,259] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:13,266] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:13,394] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:13,394] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,405] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,426] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:13,439] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:13,569] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,569] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:13,580] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,600] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:13,613] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:13,731] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,731] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:13,742] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,761] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:13,767] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:13,906] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:13,906] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,916] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:13,937] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:13,951] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:14,061] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:14,061] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:14,072] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:14,091] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:14,097] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:14,228] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:14,228] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:14,239] - types.py(249) - maskDetection get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:14,260] - types.py(209) - writeVideo send_ready_signal
+[DEBUG|2021-09-17 16:44:14,266] - types.py(243) - writeVideo get_ready_to_read: Not yet.
+[DEBUG|2021-09-17 16:44:14,391] - types.py(209) - maskDetection send_ready_signal
+[DEBUG|2021-09-17 16:44:14,391] - types.py(249) - writeVideo get_ready_to_read: I'm ready!
+[DEBUG|2021-09-17 16:44:14,391] - resultManager.py(117) - resultmanager - video end at 800, so make sure target is disappeared.
+[DEBUG|2021-09-17 16:44:14,420] - types.py(209) - writeVideo send_ready_signal
+[INFO|2021-09-17 16:44:14,447] - run.py(63) - Running time: 47.58415722846985

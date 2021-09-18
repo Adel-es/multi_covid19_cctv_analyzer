@@ -1,37 +1,10 @@
 {
-   "video_name": "data/output/output_test_final.avi",
-   "target": [
-       {
-          "in": 503,
-          "out": 507
-       },
-       {
-          "in": 509,
-          "out": 854
-       }
-    ],
-
-   "contactor": [
-      {
-         "tid": 2,
-         "danger_level": 15,
-         "capture_time": 584,
-         "start_time": 503,
-         "end_time": 790
-      },
-      {
-         "tid": 15,
-         "danger_level": 5,
-         "capture_time": 792,
-         "start_time": 716,
-         "end_time": 853
-      },
-      {
-         "tid": 17,
-         "danger_level": 10,
-         "capture_time": 807,
-         "start_time": 726,
-         "end_time": 853
-      }
-   ]
+	"target": [
+		{
+			"in": 752,
+			"out": 800
+		}
+	],
+	"video_name": "data/output/08_14_2020_1_2.avi",
+	"contactor": []
 }
