@@ -69,11 +69,11 @@ def AP(detections, groundtruths, shmToGTruthMapping, pKeyQuery, Interpolated11Po
         pIdx = detections[d]['pIdx']
         pKey = shmToGTruthMapping[fIdx][pIdx]['pKey']
         conf = np.round(detections[d]['confidence'],5)
-        confList.append( (TP[d], conf, pKey) )
+        confList.append( [TP[d], conf, pKey] )
     print(confList)
-    
     acc_FP = np.cumsum(FP)
     acc_TP = np.cumsum(TP)
+
     rec = acc_TP / npos
     prec = np.divide(acc_TP, (acc_FP + acc_TP))
     
@@ -143,4 +143,3 @@ if __name__ == '__main__':
     gTruth = file_io.convertGTruthFileToJsonObject(gTruth_file_path)
 
     getReidAccuracy(shm, gTruth)
-    
