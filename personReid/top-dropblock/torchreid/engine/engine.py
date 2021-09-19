@@ -10,6 +10,7 @@ import datetime
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+import logging 
 
 import torch
 import torch.nn as nn
@@ -982,36 +983,23 @@ class Engine(object):
                 topk=visrank_topk
             )
 
+        # Get pIdx of the person with the smallest distance
         top_1_indices = np.transpose(dist_indices)[0] # 각 query에 대해 top1으로 꼽히는 gallery들의 list
-        top1_indices_bincount = np.bincount(top_1_indices)
-        top1_indices_max = top1_indices_bincount.argmax()
-        
-        # 가장 많이 나타난 gallery의 pIdx를 counting
-        # print('dist_indices: \n{}'.format(dist_indices))
-        # print("distmat: \n{}".format(distmat))
-        top1_gpIdx = np.transpose(g_pIdx[dist_indices])[0] # top1 gallery ids를 오름차순 정렬 후, 빈도수를 반환.
-        top1_gpIdx_bincount = np.bincount(top1_gpIdx)
-        top1_gpIdx_max = top1_gpIdx_bincount.argmax() # 가장 빈도수가 높은 gallery의 pIdx를 가져옴
-        
-        if top1_gpIdx_max != g_pIdx[top1_indices_max]:
-            print('reid error')
-            exit(-1)
-        
-        # top1_idx = dist_indices[0][0]
-        # top1_conf = (distmat[0][top1_idx] + 1.) / 2. # cosine 결과값의 범위를 [-1,1] -> [0,1]
-        
-        top1_conf = distmat[0][top1_indices_max] / 2.
+        top_1_indices_idx = np.argmin(distmat[query][idx] for query, idx in enumerate(top_1_indices))
+        top_1_idx = top_1_indices[top_1_indices_idx]
+        smallest_dist_pIdx = g_pIdx[top_1_idx]
         
         # Get smallest distance per person
         minDistanceList = np.amin(distmat, axis=0)
         confidenceList = ( 2 - minDistanceList ) / 2
+        
+        # for debug
+        # print('dist_indices: \n{}'.format(dist_indices))
+        # print('top_1_indices: \n{}'.format(top_1_indices))
+        # print("distmat: \n{}".format(distmat))
+        # print('g_pIdx: \n{}'.format(g_pIdx))
+        # print('smallest_dist_pIdx: \n{}'.format(smallest_dist_pIdx))
         # print("minDistanceList: \n{}".format(minDistanceList))
         # print("confidenceList: \n{}".format(confidenceList))
         
-        return top1_gpIdx_max, confidenceList
-        
-        # dist_indices = np.transpose(dist_indices) # qn X gn
-        # return [ (i, j) for i, j in zip(dist_indices[0], q_pids) ] # query 의 top1의 index
-        
-        # return dist_indices[0][0] # query0 의 top1의 index
-        # return cmc[0]
+        return smallest_dist_pIdx, confidenceList
