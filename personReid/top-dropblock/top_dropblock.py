@@ -167,8 +167,14 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path,
     num_params, flops = compute_model_complexity(model, (1, 3, cfg.data.height, cfg.data.width))
     # print('Model complexity: params={:,} flops={:,}'.format(num_params, flops))
 
-    if cfg.model.load_weights and check_isfile(cfg.model.load_weights):
-        load_pretrained_weights(model, cfg.model.load_weights)
+    # load weights 경로가 없으면 error. 무조건 유저가 weights 넣어주게 하기
+    topdb_dir = os.path.dirname(os.path.abspath(__file__))
+    weights_path = "{}/{}".format(topdb_dir, cfg.model.load_weights)
+    if cfg.model.load_weights == '' or not check_isfile(weights_path):
+        print(" [Reid Error] {}: Weights file of top-dropblock is not exist\n\n".format(weights_path))
+        exit(-1)
+    # 경로가 있으면 load 하기
+    load_pretrained_weights(model, weights_path)
     
     if cfg.use_gpu:
         device = torch.device("cuda:{}".format(gpu_idx))
