@@ -33,6 +33,7 @@ def fakeReid3(shm, processOrder, nextPid):
     f_conf = 0.1
     # find confirmed_tid
     for fIdx in range(start_frame, end_frame + 1):
+        print("reid frame in process : {}".format(fIdx))
         frameIdx, personIdx = shm.get_ready_to_read()
         if len(personIdx) == 0 : 
             shm.data.frames[frameIdx].reid = -1
@@ -150,6 +151,8 @@ def runPersonReid(shm, processOrder, nextPid, select_reid_model, gpu_idx=0):
         fakeReid(shm, processOrder, nextPid)
     elif select_reid_model == 'fake2' : 
         fakeReid2(shm, processOrder, nextPid)
+    elif select_reid_model == 'fake3' : 
+        fakeReid3(shm, processOrder, nextPid)
     else:
         print("Plz Select PersonReid model")
         sys.exit()
