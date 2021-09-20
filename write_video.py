@@ -87,7 +87,7 @@ def writeVideo(shm, processOrder, nextPid):
         shm.finish_a_frame()
         
     shm.finish_process()
-    res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path)
+    res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path, runInfo.start_frame, runInfo.end_frame)
     out.release()
     video_capture.release()
 
