@@ -121,6 +121,8 @@ def config_la_transformer(root_path, gpu_idx, gpu_usage_check=False):
     print("Load LA-Transformer......")
     name = "la_with_lmbd_8"
     save_path = os.path.join(model_save_path, name,'net_best.pth')
+    if not os.path.exists(save_path):
+        print(" [LA-transformer Error] {}: Weights file of LA-transformer is not exists".format(model_save_path))
     model.load_state_dict(torch.load(save_path), strict=False)
     model.eval()
     

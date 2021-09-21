@@ -140,6 +140,7 @@ def set_cuda_visible_devices(gpu_idx):
             os.environ["CUDA_VISIBLE_DEVICES"] += ","+str(g_idx)
    
 def runPersonReid(shm, processOrder, nextPid, select_reid_model, gpu_idx=0): 
+    print(" ********************** in personreid: input file path: {}".format(runInfo.input_video_path))
     set_cuda_visible_devices(gpu_idx)
     
     if select_reid_model == 'topdb':
