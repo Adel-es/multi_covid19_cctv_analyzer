@@ -2,10 +2,9 @@ import os, sys
 import threading
 import math
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, pyqtSlot, pyqtSignal, QEventLoop, QTimer
+from PyQt5.QtCore import QObject, Qt, pyqtSlot, pyqtSignal, QEventLoop, QTimer
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
-# from qtimeline import QTimeLine
 import cv2 # for test
 
 from configs import appInfo
@@ -14,12 +13,22 @@ from .confirmedListUI import *
 from .utils import *
 import numpy as np
 
+
 if appInfo.only_app_test == False:
     import shutil
     # if appInfo.sync_analysis_system == True:
     #     from multiprocessing import Process, Queue
     #     import run
+
+class RunAnalysisSystemSignal(QObject):
+    sig = pyqtSignal()
+    def __init__(self, func):
+        super().__init__()
+        self.sig.connect(func)
         
+    def run(self):
+        self.sig.emit()
+    
 class ErrorAlertMessage(QMessageBox):
     def __init__(self):
         super().__init__()
@@ -133,6 +142,7 @@ class DataInputWindow(QDialog):
 
         self.addPhotoBtn.clicked.connect(self.addPhotoBtnClicked)
         self.addVideoBtn.clicked.connect(self.addVideoBtnClicked)
+        
         if appInfo.only_app_test == False:
             self.errorMessage = ErrorAlertMessage() # 유효성 검사 에서 사용
             self.startAnalysisBtn.clicked.connect(self.startAnalysisBtnClicked)
@@ -205,7 +215,7 @@ class DataInputWindow(QDialog):
             self.stackedWidget.currentWidget().start()
 
     def startAnalysisBtnClickedNoValid(self):
-        '''입력 파일에 대한 유효성 검사(비어있지 않은지 등)'''
+        '''입력 파일에 대한 유효성 검사 X'''
         # AnalysisWindow로 전환
         self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
         # 분석 thread 시작
@@ -237,13 +247,21 @@ class AnalysisWindow(QDialog):
 
         self.photo_paths = []
         self.video_paths = []
-
+        
         self.running = False
         self.timer = 0
         self.playTime = 3
         self.currrentVideoCnt = 0
         self.showRsltBtn.clicked.connect(self.showRsltBtnClicked)
         self.nextVideoBtn.clicked.connect(self.nextVideoRunBtnClicked)
+
+        if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
+            from run import runAnalysisSystem
+            # analysis system 실행시키는 signal
+            self.cur_pInfo = ''
+            self.get_pInfo_flag = False
+            self.analysisProcess = None
+            self.runAnalysisSystemSignal = RunAnalysisSystemSignal(runAnalysisSystem)
         
     def getProjectDirPath(self, project_dir_path, photo_paths, video_paths):
         self.project_dir_path = project_dir_path
@@ -256,20 +274,20 @@ class AnalysisWindow(QDialog):
         self.video_paths = video_paths
 
         # project 디렉토리는 항상 시스템 레포 바로 하위에 있어야 함.
-        self.repo_path = os.path.dirname(self.project_dir_path)
+        self.repo_path = appInfo.repo_path
         print("repo path: {}".format(self.repo_path))
         # runInfo.py의 path
         self.setting_path = "{}/{}".format(self.repo_path, "configs/runInfo.py")
         print("runInfo path: {}".format(self.setting_path))
         
-    def writeRunInfoFile(self):
+    def writeRunInfoFile(self, video_index):
         '''
             runInfo 설정값 변경하기
         '''
         setting_file = open(self.setting_path, "w", encoding="utf8")
 
         project_name        = self.project_dir_path.split('/')[-1]
-        input_video_name    = self.video_paths[0].split('/')[-1]        # ****************************** 일단 video_paths를 하나만 받는 걸로
+        input_video_name    = self.video_paths[video_index].split('/')[-1]        # ****************************** 일단 video_paths를 하나만 받는 걸로
         output_video_name   = input_video_name.split('.')[0] + ".avi"   # input video name에서 확장자만 avi로 변경
         
         contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
@@ -280,15 +298,105 @@ class AnalysisWindow(QDialog):
                                             )
         setting_file.write(contents)
         setting_file.close()
-
-    @pyqtSlot()
-    def analysisWithoutThread(self, video_path):
-        if appInfo.only_app_test == False:
-            self.writeRunInfoFile()
-            
-        cap = cv2.VideoCapture(video_path)
+      
         
-        self.videoNameLabel.setText(video_path)
+    def stop(self):
+        print(" *** stop - before call exit system")
+        if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
+            if self.analysisProcess != None and self.analysisProcess.is_alive():
+                import psutil
+                parent = psutil.Process(self.analysisProcess.pid)
+                for child in parent.children(recursive=True): 
+                    child.kill()
+                parent.kill()
+            
+        if self.running != False:
+            self.running = False
+        print("stopped..")
+
+    def start(self):
+        self.running = True
+        self.displaySetNum = math.ceil(len(self.video_paths) / 4)
+        self.startTimer()
+        print("started..")
+    
+        if appInfo.only_app_test == False:
+            # runInfo 파일 작성
+            self.writeRunInfoFile(self.currrentVideoCnt)
+            if appInfo.sync_analysis_system == True:
+                # print(" *** start - run analysis system")
+                self.analysisFromWriteVideo()
+            else:
+                self.analysisWithoutThread()
+        else:
+            self.analysisWithoutThread()
+        
+    # @pyqtSlot()
+    # def receiveAnalysisFinished(self):
+    #     if self.running != False:
+    #         self.running = False
+    #     print("stopped..")
+    
+    @pyqtSlot(np.ndarray)
+    def receiveAnalysisResultPersonInfo(self, pInfo):
+        '''
+            write_video()에서 signal을 받았을 때 실행.
+            write_video()에서 signal을 보내면서 pInfo도 함께 전송.
+        '''
+        print(" *** Receive Signal")
+        self.cur_pInfo = pInfo
+        if self.get_pInfo_flag == False:
+            self.get_pInfo_flag = True
+        
+    def analysisFromWriteVideo(self):
+        '''
+            appInfo.sync_analysis_system == True 일 때 실행되는 analysis Window
+        '''
+        
+        from run import runAnalysisSystem
+        from multiprocessing import Process
+        
+        # 중간에 중단할 경우, analysis를 강제 종료시키기 위해 서브 프로세스로 실행.
+        self.analysisProcess = Process( target=runAnalysisSystem, args=(self,) )
+        self.analysisProcess.start()
+        
+        cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
+        
+        self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
+        label = self.videoShowLabel
+        # get label geometry
+        qrect = label.geometry()
+        width = qrect.width()
+        height = qrect.height()
+
+        loop = QEventLoop()
+        while self.running:
+            if self.get_pInfo_flag == True:
+                print(" *** Receive pInfo: ", self.cur_pInfo)
+                self.get_pInfo_flag = False
+            # print(" *** analysis - in running loop")
+            ret, img = cap.read()
+            if ret:
+                img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+                h,w,c = img.shape
+                qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
+                pixmap = QtGui.QPixmap.fromImage(qImg)
+                label.setPixmap(pixmap)
+            else:
+                break
+            QTimer.singleShot(25, loop.quit) #25ms
+            loop.exec_()
+        
+        self.analysisProcess.join()
+        cap.release()
+        # print(" *** out of loop (running == False)")
+        label.setText("finish")     
+
+    def analysisWithoutThread(self):
+        cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
+        
+        self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
         label = self.videoShowLabel
         # get label geometry
         qrect = label.geometry()
@@ -311,24 +419,11 @@ class AnalysisWindow(QDialog):
             loop.exec_()
             
         cap.release()
-        label.setText("finish")        
+        label.setText("finish")  
         
-    def stop(self):
-        if self.running != False:
-            self.running = False
-        print("stoped..")
-
-    def start(self):
-        self.running = True
-        self.displaySetNum = math.ceil(len(self.video_paths) / 4)
-        self.startTimer()
-
-        self.analysisWithoutThread(self.video_paths[ self.currrentVideoCnt ])
-        print("started..")
-
     def onExit(self):
         print("exit")
-        self.stop()
+        self.stop()            
 
     def startTimer(self):
         self.timer += 1
@@ -342,14 +437,17 @@ class AnalysisWindow(QDialog):
     def showRsltBtnClicked(self):
         '''분석 중단일 경우 정리할 것들 정리'''
         # 결과 화면 목록창으로 전환
+        # print(" *** showRsltBtnClicked")
         self.stop()
         self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
         self.stackedWidget.currentWidget().getProjectDirPath(self.project_dir_path)
 
     def nextVideoRunBtnClicked(self):
+        # print(" *** nextVideoRunBtnClicked - before stop")
         self.stop()
         self.currrentVideoCnt += 1
         if self.currrentVideoCnt < len(self.video_paths):
+            # print(" *** nextVideoRunBtnClicked - before start")
             self.start()
         else:
             QMessageBox.information(self, 'Complete', '모든 영상 분석이 완료되었습니다.')
