@@ -45,7 +45,7 @@ def runMaskDetection(shm, processOrder, nextPid):
 	while (input_capture.isOpened()) :
 		frame_index = frame_index + 1 
 		ret, raw_image = input_capture.read() 
-		print("mask detection frame : {}".format(frame_index))
+		# print("mask detection frame : {}".format(frame_index))
 		if ret == False : 
 			logger.critical("mask detection process last frame :)")
 			break 

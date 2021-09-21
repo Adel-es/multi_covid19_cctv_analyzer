@@ -6,5 +6,7 @@
 		}
 	],
 	"video_name": "proj/data/output/08_14_2020_1_1.avi",
+	"start_frame": 750,
+	"end_frame": 800,
 	"contactor": []
 }

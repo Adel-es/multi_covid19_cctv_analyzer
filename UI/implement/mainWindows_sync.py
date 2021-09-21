@@ -349,7 +349,13 @@ class AnalysisWindow(QDialog):
                                             )
         setting_file.write(contents)
         setting_file.close()
-      
+
+        from configs import runInfo
+        runInfo.input_video_path        = project_name + '/data/input/' + input_video_name
+        runInfo.query_image_path        = project_name + '/data/input/query/'
+        runInfo.output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json'
+        runInfo.output_video_path       = project_name + '/data/output/' + output_video_name
+        runInfo.output_contactors_path  = project_name + '/data/output/analysis/'
         
     def stop(self):
         print(" *** stop - before call exit system")
@@ -454,6 +460,7 @@ class AnalysisWindow(QDialog):
         
         # Prepare input video
         video_capture = cv2.VideoCapture(input_video_path)
+        print(" {}'s frame count: {}".format(input_video_path, video_capture.get(cv2.CAP_PROP_FRAME_COUNT)))
         frame_index = -1
         
         # Prepare output video
@@ -539,9 +546,10 @@ class AnalysisWindow(QDialog):
             out.write(frame)
 
             shm.finish_a_frame()
-            
+        
+        print(" ******** cv2 ret: ", ret)
         shm.finish_process()
-        res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path)
+        res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path, runInfo.start_frame, runInfo.end_frame)
         out.release()
         video_capture.release()
         label.setText("finish")

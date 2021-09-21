@@ -2,9 +2,11 @@
 	"target": [
 		{
 			"in": 752,
-			"out": 760
+			"out": 800
 		}
 	],
 	"video_name": "proj/data/output/08_14_2027_1_2.avi",
+	"start_frame": 750,
+	"end_frame": 800,
 	"contactor": []
 }
