@@ -1,4 +1,5 @@
 from typing import MutableMapping
+from utils.resultManager import maskToken_to_dangerLevel
 from utils.types import MaskToken
 
 
@@ -9,13 +10,15 @@ class VotingStatus :
     
     def __init__(self) : 
         self.votes = { 
-            MaskToken.UnKnown : VotingStatus.initVote, 
+            MaskToken.FaceNotFound : VotingStatus.initVote, 
             MaskToken.Masked : 0 , 
             MaskToken.NotMasked : 0
         } 
         self.continuedNF = 0 
-        self.voteResult = MaskToken.UnKnown  
-        
+        self.voteResult = MaskToken.FaceNotFound  
+    
+    def getVoteResult(self) -> MaskToken : 
+        return self.voteResult  
         
     def vote(self, mtoken) -> MaskToken :
         
@@ -33,12 +36,16 @@ class VotingStatus :
             return self.voteResult 
         
         # others  
+        voteWeight = 1
+        if mtoken == MaskToken.NotMasked : 
+            voteWeight = 5
         self.continuedNF = 0 
-        if self.votes[mtoken] < VotingStatus.limitVote : 
-            self.votes[mtoken] += 1 
+        if (self.votes[mtoken] + voteWeight) < VotingStatus.limitVote : 
+            self.votes[mtoken] += voteWeight  
         else :  # if voting overflows the limit, divide by 2 to continue, and give opportunity for others,, 
             self.votes[MaskToken.Masked] = self.votes[MaskToken.Masked] / 2
             self.votes[MaskToken.NotMasked] = self.votes[MaskToken.NotMasked] / 2 
+            self.votes[mtoken] += voteWeight  
             
         if self.voteResult != mtoken : 
             if  self.votes[self.voteResult] < self.votes[mtoken] : 
@@ -53,6 +60,14 @@ class VotingStatus :
 class VotingSystem : 
     def __init__(self) : 
         self.vstatus = {}
+    
+    def getVote(self, tid) -> MaskToken : 
+        if self.vstatus.get(tid) is None : 
+            return MaskToken.FaceNotFound  #there is not vote before.... =<  
+        
+        result = self.vstatus[tid].getVoteResult() 
+        return result 
+        
         
     def vote(self, tid, mtoken) -> MaskToken : 
         if self.vstatus.get(tid) is None : 

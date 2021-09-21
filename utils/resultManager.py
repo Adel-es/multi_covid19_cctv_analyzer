@@ -157,14 +157,16 @@ class ResultManager :
             return False, ""
     
     
-    def write_jsonfile(self, filename : str, outputVideo : str) : 
+    def write_jsonfile(self, filename : str, outputVideo : str, startFrame : int, endFrame : int ) : 
         """ write result_dict as json format 
         
         Args : 
             filename : filename output file 
         """
-        self.result_dict["video_name"] = outputVideo 
-        self.result_dict["contactor"] = self.transfer_contactor_dict_format()
+        self.result_dict["video_name"]  = outputVideo
+        self.result_dict["start_frame"] = startFrame
+        self.result_dict["end_frame"]   = endFrame
+        self.result_dict["contactor"]   = self.transfer_contactor_dict_format()
 
         with open(filename, 'w', encoding='utf-8') as write_file : 
             json.dump(self.result_dict, write_file, indent="\t")
