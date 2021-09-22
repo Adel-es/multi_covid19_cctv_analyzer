@@ -1,3 +1,4 @@
+from personReid.utils.votingSystem import VotingSystem
 import sys
 import os
 import os.path as osp
@@ -7,6 +8,8 @@ import argparse
 
 import torch
 import torch.nn as nn
+
+import utils.votingSystem as vs 
 
 from default_config import (
     get_default_config, imagedata_kwargs, videodata_kwargs,
@@ -212,6 +215,7 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     print(end_frame)
     print("+++++++++++++++++++++++++++++++++++")
 
+    votingSystem = vs.VotingSystem()
     video_capture = cv2.VideoCapture(input_video_path)
 
     fps_imutils = imutils.video.FPS().start()
@@ -249,8 +253,18 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
         
         # reid 수행
         top1_gpIdx, top1_conf = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
-        shm.data.frames[frameIdx].reid = top1_gpIdx
-        shm.data.frames[frameIdx].confidence = top1_conf
+        top1_tid = shm.data.people[top1_gpIdx].tid 
+        vote_tid = None 
+        if top1_conf >= 0.9 : 
+            vote_tid = votingSystem.vote(top1_tid)
+        
+        vote_tid_index = 0 
+        for pIdx in personIdx : 
+            if bbox = shm.data.people[pIdx].tid == vote_tid : 
+                vote_tid_index = pIdx 
+                break 
+        shm.data.frames[frameIdx].reid = vote_tid_index
+        shm.data.frames[frameIdx].confidence = top1_conf #need to fix
 
         # print("********** distance :", top1_conf)
             
