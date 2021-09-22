@@ -746,9 +746,7 @@ class RouteOfConfirmedCaseWindow(QDialog):
                 timelineWidget = TimeLineWidget(targetInfoListOfEachVideo)
             
                 # (아래쪽 list) 영상 이름 추가
-                videoNameWidget = QLabel( targetInfoListOfEachVideo[0]['video_name'] )
-                videoNameWidget.setAlignment(Qt.AlignCenter)
-                videoNameWidget.setFixedHeight( timelineWidget.height()+4 )
+                videoNameWidget = QLabel( targetInfoListOfEachVideo[0]['video_name'].split('/')[-1] )
                 
                 timelineList.append((timelineWidget.getFirstInStartTime(), timelineWidget, videoNameWidget))
 
@@ -756,6 +754,9 @@ class RouteOfConfirmedCaseWindow(QDialog):
         for timeline in timelineList:
             print('get input time: ',timeline[0])
             self.insertWidgetInListWidget( timeline[1], self.listWidget ) # timeline
+            
+            timeline[2].setAlignment(Qt.AlignCenter)
+            timeline[2].setFixedHeight( timeline[1].height()+4 )
             self.insertWidgetInListWidget( timeline[2], self.listWidget_2 ) # videoname
         
     def backBtnClicked(self):
