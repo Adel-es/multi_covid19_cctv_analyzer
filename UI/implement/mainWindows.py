@@ -284,20 +284,20 @@ class AnalysisWindow(QDialog):
         '''
             runInfo 설정값 변경하기
         '''
-        setting_file = open(self.setting_path, "w", encoding="utf8")
+        # setting_file = open(self.setting_path, "w", encoding="utf8")
 
         project_name        = self.project_dir_path.split('/')[-1]
         input_video_name    = self.video_paths[video_index].split('/')[-1]        # ****************************** 일단 video_paths를 하나만 받는 걸로
         output_video_name   = input_video_name.split('.')[0] + ".avi"   # input video name에서 확장자만 avi로 변경
         
-        contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
-                                            query_image_path        = project_name + '/data/input/query/',
-                                            output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json', 
-                                            output_video_path       = project_name + '/data/output/' + output_video_name, 
-                                            output_contactors_path  = project_name + '/data/output/analysis/',
-                                            )
-        setting_file.write(contents)
-        setting_file.close()
+        # contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
+        #                                     query_image_path        = project_name + '/data/input/query/',
+        #                                     output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json', 
+        #                                     output_video_path       = project_name + '/data/output/' + output_video_name, 
+        #                                     output_contactors_path  = project_name + '/data/output/analysis/',
+        #                                     )
+        # setting_file.write(contents)
+        # setting_file.close()
       
         
     def stop(self):
@@ -535,22 +535,30 @@ class RouteOfConfirmedCaseWindow(QDialog):
                 self.tableWidget.setItem(row, col, 
                                         QTableWidgetItem(result[col]))
 
+        timelineList = []
         # 아래쪽 list -> 각 video결과에 대해 timeline을 그려야 함.
         for targetInfoListOfEachVideo in self.targetInfoList:
             print('in showResult')
+
             if len(targetInfoListOfEachVideo) == 0:
                 # 확진자가 없는 영상은 결과에 나타나지 않음.
                 continue
             else:
                 # (아래쪽 list) Timeline widget 추가
                 timelineWidget = TimeLineWidget(targetInfoListOfEachVideo)
-                self.insertWidgetInListWidget( timelineWidget, self.listWidget )
-
+            
                 # (아래쪽 list) 영상 이름 추가
                 videoNameWidget = QLabel( targetInfoListOfEachVideo[0]['video_name'] )
                 videoNameWidget.setAlignment(Qt.AlignCenter)
                 videoNameWidget.setFixedHeight( timelineWidget.height()+4 )
-                self.insertWidgetInListWidget( videoNameWidget, self.listWidget_2 )
+                
+                timelineList.append((timelineWidget.getFirstInStartTime(), timelineWidget, videoNameWidget))
+
+        timelineList = sorted(timelineList, key=lambda x : x[0])
+        for timeline in timelineList:
+            print('get input time: ',timeline[0])
+            self.insertWidgetInListWidget( timeline[1], self.listWidget ) # timeline
+            self.insertWidgetInListWidget( timeline[2], self.listWidget_2 ) # videoname
 
     def backBtnClicked(self):
         # 결과 화면 목록창으로 전환

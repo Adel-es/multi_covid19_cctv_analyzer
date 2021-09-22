@@ -78,7 +78,8 @@ class TimeLineWidget(QWidget):
         # self.fps = videoResult.fps
         # self.targetInfoList = videoResult.targetInfoList
         # frameNo = self.targetInfoListOfEachVideo[0]['frame_no']
-        
+
+        self.first_in_time = targetInfoListOfEachVideo[0]['in']        
         start_frame = targetInfoListOfEachVideo[0]['frame_start']
         end_frame   = targetInfoListOfEachVideo[0]['frame_end']
         frameNo = end_frame - start_frame + 1
@@ -109,5 +110,7 @@ class TimeLineWidget(QWidget):
         layout.addWidget(line, stretch = frameNo-prev_end_time+1)
         layout.setSpacing(0) # widget 간 거리를 0으로 만듦 -> hline과 colorbar간의 거리를 없앰
         self.setLayout(layout)
-    # def getStartTimeOfVideo(self, video_name):
+    
+    def getFirstInStartTime(self):
+        return self.first_in_time
         
