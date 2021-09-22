@@ -100,6 +100,7 @@ class TimeLineWidget(QWidget):
 
             # 컬러 시간 블록 추가
             label = QLabel()
+            
             label.setFixedHeight(20)
             label.setStyleSheet("background-color: orange;")
 

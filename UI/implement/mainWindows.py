@@ -394,6 +394,7 @@ class AnalysisWindow(QDialog):
         label.setText("finish")     
 
     def analysisWithoutThread(self):
+        
         cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
         
         self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
