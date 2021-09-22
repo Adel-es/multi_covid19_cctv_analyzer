@@ -29,10 +29,14 @@ class VotingSystem :
             self.voteResult = tid   
         elif self.voteDict[self.voteResult] < self.voteDict[tid] : 
                 self.voteResult = tid 
+        print("<==============>")
+        print(self.voteDict)
+        print("<=============>")
         return self.voteResult 
     
     
     def vote(self, tid) -> int: 
+        print("vote to : {}".format(tid))
         index = self.count % self.voteListSize; 
         self.count = self.count + 1 
         

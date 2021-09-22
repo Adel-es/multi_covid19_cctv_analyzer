@@ -9,6 +9,8 @@ import argparse
 import torch
 import torch.nn as nn
 
+import os, sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import utils.votingSystem as vs 
 
 from default_config import (
@@ -172,12 +174,14 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path,
 
     # load weights 경로가 없으면 error. 무조건 유저가 weights 넣어주게 하기
     topdb_dir = os.path.dirname(os.path.abspath(__file__))
+    '''
     weights_path = "{}/{}".format(topdb_dir, cfg.model.load_weights)
     if cfg.model.load_weights == '' or not check_isfile(weights_path):
         print(" [Reid Error] {}: Weights file of top-dropblock is not exist\n\n".format(weights_path))
         exit(-1)
     # 경로가 있으면 load 하기
     load_pretrained_weights(model, weights_path)
+    '''
     
     if cfg.use_gpu:
         device = torch.device("cuda:{}".format(gpu_idx))
@@ -253,10 +257,14 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
         
         # reid 수행
         top1_gpIdx, confidenceList = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
-        shm.data.frames[frameIdx].reid = top1_gpIdx
+        top1_tid = shm.data.people[top1_gpIdx].tid 
+        vote_tid = -1 
+        if top1_conf >= 0.8 : 
+            vote_tid = VotingSystem.vote(top1_tid)
+        shm.data.frames[frameIdx].reid = top1_tid
+        
         for i, pIdx in enumerate(personIdx):
             shm.data.people[pIdx].reidConf = confidenceList[i]
-
         # print("********** distance :", top1_conf)
             
         fps_imutils.update()

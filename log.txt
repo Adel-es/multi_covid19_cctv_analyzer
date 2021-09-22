@@ -1,0 +1,50 @@
+[DEBUG|2021-09-22 07:52:05,157] - types.py(272) - gTruthDetectAndTrack init
+[DEBUG|2021-09-22 07:52:05,337] - types.py(287) - gTruthDetectAndTrack send_ready_signal
+[DEBUG|2021-09-22 07:56:09,429] - types.py(272) - gTruthDetectAndTrack init
+[DEBUG|2021-09-22 07:56:09,593] - types.py(287) - gTruthDetectAndTrack send_ready_signal
+[DEBUG|2021-09-22 07:57:00,879] - types.py(272) - gTruthDetectAndTrack init
+[DEBUG|2021-09-22 07:57:01,043] - types.py(287) - gTruthDetectAndTrack send_ready_signal
+[DEBUG|2021-09-22 07:57:09,360] - types.py(272) - topdbReid init
+[DEBUG|2021-09-22 08:01:07,365] - types.py(287) - topdbReid send_ready_signal
+[INFO|2021-09-22 08:01:07,391] - run_accuracy.py(95) - Running time: 246.5143961906433
+[INFO|2021-09-22 08:01:07,941] - check_reid.py(132) - ========== Reid ===========
+[INFO|2021-09-22 08:01:07,941] - check_reid.py(137) - groundTruths: 344, detections: 344
+[INFO|2021-09-22 08:01:07,941] - check_reid.py(138) - total TP: 8, total FP: 336
+[INFO|2021-09-22 08:01:07,941] - check_reid.py(139) - AP: 0.022727272727272728
+[INFO|2021-09-22 08:01:07,942] - check_reid.py(140) - ===========================
+[DEBUG|2021-09-22 08:06:08,100] - types.py(272) - gTruthDetectAndTrack init
+[DEBUG|2021-09-22 08:06:08,264] - types.py(287) - gTruthDetectAndTrack send_ready_signal
+[DEBUG|2021-09-22 08:06:16,667] - types.py(272) - topdbReid init
+[DEBUG|2021-09-22 08:10:11,177] - types.py(287) - topdbReid send_ready_signal
+[DEBUG|2021-09-22 08:10:11,256] - types.py(272) - writeVideo init
+[DEBUG|2021-09-22 08:10:14,299] - resultManager.py(105) - resultmanager - target appeared at 633
+[DEBUG|2021-09-22 08:10:20,765] - resultManager.py(111) - resultmanager - target disappeared at 977
+[DEBUG|2021-09-22 08:10:39,482] - resultManager.py(105) - resultmanager - target appeared at 2076
+[DEBUG|2021-09-22 08:11:05,860] - resultManager.py(117) - resultmanager - video end at 3571, so make sure target is disappeared.
+[INFO|2021-09-22 08:11:05,905] - run_accuracy.py(95) - Running time: 297.8072202205658
+[INFO|2021-09-22 08:11:06,376] - check_reid.py(132) - ========== Reid ===========
+[INFO|2021-09-22 08:11:06,376] - check_reid.py(137) - groundTruths: 344, detections: 344
+[INFO|2021-09-22 08:11:06,376] - check_reid.py(138) - total TP: 8, total FP: 336
+[INFO|2021-09-22 08:11:06,376] - check_reid.py(139) - AP: 0.022727272727272728
+[INFO|2021-09-22 08:11:06,376] - check_reid.py(140) - ===========================
+[DEBUG|2021-09-22 09:56:45,281] - types.py(272) - gTruthDetectAndTrack init
+[DEBUG|2021-09-22 09:56:45,447] - types.py(287) - gTruthDetectAndTrack send_ready_signal
+[DEBUG|2021-09-22 09:56:53,788] - types.py(272) - topdbReid init
+[DEBUG|2021-09-22 10:00:52,035] - types.py(287) - topdbReid send_ready_signal
+[DEBUG|2021-09-22 10:00:52,114] - types.py(272) - writeVideo init
+[DEBUG|2021-09-22 10:00:55,204] - resultManager.py(105) - resultmanager - target appeared at 633
+[DEBUG|2021-09-22 10:01:01,609] - resultManager.py(111) - resultmanager - target disappeared at 977
+[DEBUG|2021-09-22 10:01:19,986] - resultManager.py(105) - resultmanager - target appeared at 2076
+[DEBUG|2021-09-22 10:01:45,876] - resultManager.py(117) - resultmanager - video end at 3571, so make sure target is disappeared.
+[INFO|2021-09-22 10:01:45,918] - run_accuracy.py(95) - Running time: 300.6399793624878
+[INFO|2021-09-22 10:01:46,330] - check_reid.py(132) - ========== Reid ===========
+[INFO|2021-09-22 10:01:46,330] - check_reid.py(137) - groundTruths: 344, detections: 1
+[INFO|2021-09-22 10:01:46,330] - check_reid.py(138) - total TP: 0, total FP: 1
+[INFO|2021-09-22 10:01:46,330] - check_reid.py(139) - AP: 0.0
+[INFO|2021-09-22 10:01:46,331] - check_reid.py(140) - ===========================
+[DEBUG|2021-09-22 10:10:53,238] - types.py(272) - gTruthDetectAndTrack init
+[DEBUG|2021-09-22 10:10:53,401] - types.py(287) - gTruthDetectAndTrack send_ready_signal
+[DEBUG|2021-09-22 10:11:01,690] - types.py(272) - topdbReid init
+[DEBUG|2021-09-22 10:11:59,179] - types.py(272) - gTruthDetectAndTrack init
+[DEBUG|2021-09-22 10:11:59,342] - types.py(287) - gTruthDetectAndTrack send_ready_signal
+[DEBUG|2021-09-22 10:12:07,731] - types.py(272) - topdbReid init
