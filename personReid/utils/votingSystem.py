@@ -33,7 +33,7 @@ class VotingSystem :
             self.voteResult = tid   
         elif self.voteDict[self.voteResult] < self.voteDict[tid] : 
                 self.voteResult = tid 
-        logging.debug("Reid Vote State : {}".format(self.voteDict))
+        print("Reid Vote State : {}".format(self.voteDict))
         return self.voteResult 
     
     
