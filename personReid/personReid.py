@@ -18,6 +18,7 @@ input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
 start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
+use_vote = runInfo.use_reid_voting
 query_image_path = runInfo.query_image_path
 
 def fakeReid3(shm, processOrder, nextPid):
@@ -126,6 +127,7 @@ def personReid_topdb(shm, processOrder, nextPid, gpu_idx):
     top_db_engine, top_db_cfg = config_for_topdb( root_path=root_path, query_image_path=query_image_path, gpu_idx=gpu_idx)
     run_top_db_test(engine=top_db_engine, cfg=top_db_cfg, 
                     start_frame=start_frame, end_frame=end_frame,
+                    use_vote=use_vote, 
                     input_video_path=input_video_path,
                     shm=shm, processOrder=processOrder, myPid=myPid, nextPid=nextPid,
                     query_image_path=query_image_path)
@@ -137,6 +139,7 @@ def personReid_la_transformer(shm, processOrder, nextPid, calculation_mode, gpu_
     run_la_transformer(model=model, data_transforms=data_transforms,
                     root_path=root_path, query_image_path=query_image_path,
                     start_frame=start_frame, end_frame=end_frame,
+                    use_vote=use_vote, 
                     input_video_path=input_video_path, output_video_path=output_video_path, 
                     shm=shm, processOrder=processOrder, myPid=myPid, nextPid=nextPid,
                     calculation_mode=calculation_mode,

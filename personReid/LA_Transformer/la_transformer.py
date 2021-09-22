@@ -300,6 +300,7 @@ def crop_frame_image(frame, bbox):
 def run_la_transformer(model, data_transforms, 
                        root_path, query_image_path,
                     start_frame, end_frame, 
+                    use_vote,
                     input_video_path, output_video_path, 
                     shm, processOrder, myPid, nextPid,
                     calculation_mode='custom',

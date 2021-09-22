@@ -1,3 +1,4 @@
+from posix import sched_param
 from personReid.utils.votingSystem import VotingSystem
 import sys
 import os
@@ -9,7 +10,6 @@ import argparse
 import torch
 import torch.nn as nn
 
-import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import utils.votingSystem as vs 
 
@@ -209,7 +209,7 @@ def crop_frame_image(frame, bbox):
     return Image.fromarray(frame).crop( (int(bbox.minX),int(bbox.minY), 
                                          int(bbox.maxX),int(bbox.maxY)) ) # (start_x, start_y, start_x + width, start_y + height) 
      
-def run_top_db_test(engine, cfg, start_frame, end_frame, 
+def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote, 
                     input_video_path,
                     shm, processOrder, myPid, nextPid,
                     query_image_path):
@@ -219,7 +219,8 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     print(end_frame)
     print("+++++++++++++++++++++++++++++++++++")
 
-    votingSystem = vs.VotingSystem()
+    if use_vote : 
+        votingSystem = vs.VotingSystem()
     video_capture = cv2.VideoCapture(input_video_path)
 
     fps_imutils = imutils.video.FPS().start()
@@ -258,13 +259,25 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
         # reid 수행
         top1_gpIdx, confidenceList = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
         top1_tid = shm.data.people[top1_gpIdx].tid 
-        vote_tid = -1 
-        if top1_conf >= 0.8 : 
-            vote_tid = VotingSystem.vote(top1_tid)
-        shm.data.frames[frameIdx].reid = top1_tid
-        
         for i, pIdx in enumerate(personIdx):
             shm.data.people[pIdx].reidConf = confidenceList[i]
+            if top1_gpIdx == pIdx : 
+                top1_conf = confidenceList[i]
+        
+        if use_vote :         
+            vote_tid = -1 
+            # print("top1 tid : {}".format(top1_tid))
+            if top1_conf >= 0.9 : 
+                vote_tid = votingSystem.vote(top1_tid)
+                for _pIdx in personIdx : 
+                    if shm.data.people[_pIdx].tid == vote_tid :  
+                        shm.data.frames[frameIdx].reid = _pIdx 
+                        break 
+            else : 
+                shm.data.frames[frameIdx].reid = -1
+        else : 
+            shm.data.frames[frameIdx].reid = top1_gpIdx
+        
         # print("********** distance :", top1_conf)
             
         fps_imutils.update()
