@@ -356,6 +356,8 @@ class AnalysisWindow(QDialog):
         runInfo.output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json'
         runInfo.output_video_path       = project_name + '/data/output/' + output_video_name
         runInfo.output_contactors_path  = project_name + '/data/output/analysis/'
+        runInfo.start_frame             = appInfo.start_frame
+        runInfo.end_frame               = appInfo.end_frame
         
     def stop(self):
         print(" *** stop - before call exit system")
@@ -383,7 +385,11 @@ class AnalysisWindow(QDialog):
                 
                 self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
                 self.videoShowLabel.setText("분석 준비 중입니다. 잠시만 기다려 주세요.")
-                self.videoShowLabel.repaint()
+                
+                loop = QEventLoop()
+                QTimer.singleShot(10, loop.quit) #25ms
+                loop.exec_()
+                # self.videoShowLabel.repaint()
                 
                 from multiprocessing import Process
                 from utils.types import ShmManager, ShmSerialManager
@@ -399,8 +405,7 @@ class AnalysisWindow(QDialog):
                 from accuracy_check.file_io import writeShmToJsonFile
 
                 input_video_path = runInfo.input_video_path
-                # output_video_path = runInfo.output_video_path
-                # output_contactors_path = runInfo.output_contactors_path
+                print(" *** start : input_video_path: {}".format(input_video_path))
                 start_frame = runInfo.start_frame
                 end_frame = runInfo.end_frame
 
@@ -452,8 +457,6 @@ class AnalysisWindow(QDialog):
         from configs import runInfo
         input_video_path = runInfo.input_video_path
         output_video_path = runInfo.output_video_path
-        start_frame = runInfo.start_frame
-        end_frame = runInfo.end_frame
         
         # prepare ResultManager to write output json file  
         res_manager = ResultManager() 
@@ -461,6 +464,15 @@ class AnalysisWindow(QDialog):
         # Prepare input video
         video_capture = cv2.VideoCapture(input_video_path)
         print(" {}'s frame count: {}".format(input_video_path, video_capture.get(cv2.CAP_PROP_FRAME_COUNT)))
+        # 영상 실제 길이와 runInfo의 설정 frame 구간 간의 조정
+        real_end_frame = video_capture.get(cv2.CAP_PROP_FRAME_COUNT)
+        if real_end_frame < runInfo.start_frame :
+            runInfo.start_frame = real_end_frame
+        if real_end_frame < runInfo.end_frame :
+            runInfo.end_frame = real_end_frame
+        start_frame = runInfo.start_frame
+        end_frame = runInfo.end_frame
+            
         frame_index = -1
         
         # Prepare output video
@@ -491,7 +503,11 @@ class AnalysisWindow(QDialog):
                 continue
             if frame_index > end_frame:
                 break
-            # for test 
+            
+            # 분석 영상 처리하는 과정 동안 이벤트 처리할 수 있도록 함.
+            # bef_loop = QEventLoop()
+            # QTimer.singleShot(10, bef_loop.quit) #25ms
+            # bef_loop.exec_()
             
             frameIdx, personIdx = shm.get_ready_to_read()
             
@@ -541,7 +557,12 @@ class AnalysisWindow(QDialog):
             qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
             pixmap = QtGui.QPixmap.fromImage(qImg)
             label.setPixmap(pixmap)
-            label.repaint()
+            
+            aft_loop = QEventLoop()
+            QTimer.singleShot(25, aft_loop.quit) #25ms
+            aft_loop.exec_()
+            
+            # label.repaint()
             
             out.write(frame)
 

@@ -1,12 +1,20 @@
 {
 	"target": [
 		{
-			"in": 752,
-			"out": 800
+			"in": 802,
+			"out": 900
 		}
 	],
 	"video_name": "proj/data/output/08_14_2027_1_2.avi",
-	"start_frame": 750,
-	"end_frame": 800,
-	"contactor": []
+	"start_frame": 800,
+	"end_frame": 900,
+	"contactor": [
+		{
+			"tid": 4,
+			"danger_level": 1,
+			"capture_time": 878,
+			"start_time": 802,
+			"end_time": 897
+		}
+	]
 }

@@ -1,12 +1,12 @@
 {
 	"target": [
 		{
-			"in": 752,
-			"out": 800
+			"in": 802,
+			"out": 900
 		}
 	],
 	"video_name": "proj/data/output/08_14_2020_1_1.avi",
-	"start_frame": 750,
-	"end_frame": 800,
+	"start_frame": 800,
+	"end_frame": 900,
 	"contactor": []
 }

@@ -7,8 +7,8 @@ query_image_path        = "proj/data/input/query/" # query image의 이름은 "�
 output_video_path       = "proj/data/output/08_14_2027_1_2.avi"
 output_json_path        = "proj/data/output/analysis/08_14_2027_1_2.json"
 output_contactors_path  = "proj/data/output/analysis/" 
-start_frame             = 750
-end_frame               = 800
+start_frame             = 800
+end_frame               = 900
 
 # log setting 
 logfile_name            = "log.txt"

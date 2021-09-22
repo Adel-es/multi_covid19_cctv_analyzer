@@ -14,8 +14,15 @@ input_video = runInfo.input_video_path
 FRAME_NUM = end_frame - start_frame + 1 
 
 
-    
+
 def runMaskDetection(shm, processOrder, nextPid):
+	# 영상이 바뀐 runInfo의 값을 갱신
+	start_frame = runInfo.start_frame 
+	end_frame = runInfo.end_frame 
+	input_video = runInfo.input_video_path 
+	FRAME_NUM = end_frame - start_frame + 1 
+	print(" ********************** in maskDetection: input file path: {}".format(input_video))
+
 	myPid = 'maskDetection'
 	shm.init_process(processOrder, myPid, nextPid) 
 	logger = logging.getLogger('root') 

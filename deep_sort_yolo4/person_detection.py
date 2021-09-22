@@ -42,7 +42,13 @@ def positioning_in_frame(bbox, f_width, f_height):
         bbox[3] = f_height
 
 def detectAndTrack(shm, processOrder, nextPid):
-    
+    # 영상이 바뀐 runInfo의 값을 갱신
+    input_video_path = runInfo.input_video_path
+    start_frame = runInfo.start_frame
+    end_frame = runInfo.end_frame
+    gpuNum = runInfo.trackingGPU
+    print(" ************ detectAndTrack: input_video_path: {}".format(input_video_path))
+
     gpus = tf.config.experimental.list_physical_devices('GPU')
     if gpus:
         # Limit TensorFlow to use only the first GPU
