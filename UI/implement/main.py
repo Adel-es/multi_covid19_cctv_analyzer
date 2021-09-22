@@ -2,7 +2,12 @@ import sys
 from PyQt5.QtCore import Qt, pyqtSlot
 
 from configs import appInfo
-from .mainWindows import *
+
+if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
+    from UI.implement.mainWindows_sync import *
+else:
+    from UI.implement.mainWindows import *
+    
 from .utils import center
 
 
@@ -11,9 +16,6 @@ def runUI():
 
     #화면 전환용 Widget 설정
     widget = QStackedWidget()
-    
-    # system 출력 결과 json파일 로드
-    # targetInfoList, contactorInfoList = loadJson()
 
     #레이아웃 인스턴스 생성
     firstWindow = FirstWindow(widget)

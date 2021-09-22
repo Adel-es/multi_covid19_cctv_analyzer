@@ -1,5 +1,10 @@
 {
-	"target": [],
+	"target": [
+		{
+			"in": 752,
+			"out": 800
+		}
+	],
 	"video_name": "proj/data/output/output_test_final.avi",
 	"contactor": []
 }

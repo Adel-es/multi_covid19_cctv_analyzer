@@ -2,8 +2,12 @@ import cv2
 from typing import List
 from distance import getCentroid
 from utils.types import MaskToken
-from configs import runInfo
+from configs import runInfo, appInfo
 from utils.resultManager import Contactor, ResultManager
+import numpy as np
+
+# from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
+# if appInfo.only_app_test==False and appInfo.sync_analysis_system==True:
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
@@ -11,7 +15,102 @@ output_contactors_path = runInfo.output_contactors_path
 start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 
-def writeVideo(shm, processOrder, nextPid):
+# class SendResultFrameSignal(QObject):
+#     sig = pyqtSignal(np.ndarray)
+#     def __init__(self, func):
+#         super().__init__()
+#         self.sig.connect(func)
+        
+#     def run(self, frame):
+#         self.sig.emit(frame)
+        
+def writeVideoSyncWithUI(shm, processOrder, nextPid):
+    # from UI.implement.mainWindows import AnalysisWindow
+    # sendResultFrameSignal = SendResultFrameSignal(analysisClass.receiveAnalysisResultPersonInfo)
+    # print(" *************** [write_video] sendResultFrameSignal 객체 생성")
+    # print(" *************** writeVideoSyncWithUI")
+    
+    # prepare ResultManager to write output json file  
+    res_manager = ResultManager() 
+    
+    # Prepare input video
+    video_capture = cv2.VideoCapture(input_video_path)
+    frame_index = -1
+    
+    # Prepare output video
+    w = int(video_capture.get(3))
+    h = int(video_capture.get(4))
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    # fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
+    out = cv2.VideoWriter(output_video_path, fourcc, 30, (w, h))
+    
+    myPid = 'writeVideo'
+    shm.init_process(processOrder, myPid, nextPid)
+    
+    while True:
+        ret, frame = video_capture.read()
+        if ret != True:
+            break
+        
+        # for test
+        frame_index += 1
+        if frame_index < start_frame:
+            continue
+        if frame_index > end_frame:
+            break
+        # for test 
+        
+        frameIdx, personIdx = shm.get_ready_to_read()
+        
+        #update result manager to write json file and contactor photos 
+        if start_frame + 2 <= frame_index : 
+            save_list = update_output_json(shm, res_manager, frame_index, frameIdx, personIdx) 
+            save_contactor_images(frame, shm, personIdx, save_list) 
+        
+        # Draw detection and tracking result for a frame
+        for pIdx in personIdx:
+            draw_bbox_and_tid(frame=frame, person=shm.data.people[pIdx], isConfirmed=False)
+            
+        reid = shm.data.frames[frameIdx].reid
+        if reid != -1: # if there is confirmed case
+            confirmed = shm.data.people[reid]
+            
+            # Draw red bbox for confirmed case
+            draw_bbox_and_tid(frame=frame, person=confirmed, isConfirmed=True)
+                
+            # Draw distance result for a frame
+            c_stand_point = getCentroid(bbox=confirmed.bbox, return_int=True)
+            for pIdx in personIdx:
+                person = shm.data.people[pIdx]
+                if not person.isClose:
+                    continue
+                stand_point = getCentroid(bbox=person.bbox, return_int=True)
+                cv2.line(frame, c_stand_point, stand_point, (0, 0, 255), 2) #red 
+
+            # Draw mask result for a frame
+            for pIdx in personIdx:
+                person = shm.data.people[pIdx]
+                square = person.bbox
+                if person.isMask == MaskToken.NotNear : 
+                    continue 
+                # save_contactor_images()
+                if person.isMask == MaskToken.NotMasked : 
+                    cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (127, 127, 255), 2) #light pink
+                elif person.isMask == MaskToken.Masked : 
+                    cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (127, 255, 127), 2) #light green 
+                elif person.isMask == MaskToken.FaceNotFound : 
+                    cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (0, 165, 255), 2) #orange 
+
+        # sendResultFrameSignal.run(np.array([frameIdx, personIdx, shm.data.frames[frameIdx].reid, shm.data.people]))
+        out.write(frame)
+        shm.finish_a_frame()
+        
+    shm.finish_process()
+    res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path, runInfo.start_frame, runInfo.end_frame)
+    out.release()
+    video_capture.release()
+
+def writeVideo(shm, processOrder, nextPid):            
     # prepare ResultManager to write output json file  
     res_manager = ResultManager() 
     
@@ -83,13 +182,14 @@ def writeVideo(shm, processOrder, nextPid):
                 elif person.isMask == MaskToken.FaceNotFound : 
                     cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (0, 165, 255), 2) #orange 
         out.write(frame)
+
         shm.finish_a_frame()
         
     shm.finish_process()
-    res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path)
+    res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path, runInfo.start_frame, runInfo.end_frame)
     out.release()
     video_capture.release()
-
+    
 def draw_bbox_and_tid(frame, person, isConfirmed):
     TEXT_UP_FROM_BBOX = 2
     bboxLeftUpPoint = (int(person.bbox.minX), int(person.bbox.minY))
