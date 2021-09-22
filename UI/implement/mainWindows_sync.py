@@ -335,20 +335,20 @@ class AnalysisWindow(QDialog):
         '''
             runInfo 설정값 변경하기
         '''
-        setting_file = open(self.setting_path, "w", encoding="utf8")
-
         project_name        = self.project_dir_path.split('/')[-1]
         input_video_name    = self.video_paths[video_index].split('/')[-1]        # ****************************** 일단 video_paths를 하나만 받는 걸로
         output_video_name   = input_video_name.split('.')[0] + ".avi"   # input video name에서 확장자만 avi로 변경
         
-        contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
-                                            query_image_path        = project_name + '/data/input/query/',
-                                            output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json', 
-                                            output_video_path       = project_name + '/data/output/' + output_video_name, 
-                                            output_contactors_path  = project_name + '/data/output/analysis/',
-                                            )
-        setting_file.write(contents)
-        setting_file.close()
+        # setting_file = open(self.setting_path, "w", encoding="utf8")
+
+        # contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
+        #                                     query_image_path        = project_name + '/data/input/query/',
+        #                                     output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json', 
+        #                                     output_video_path       = project_name + '/data/output/' + output_video_name, 
+        #                                     output_contactors_path  = project_name + '/data/output/analysis/',
+        #                                     )
+        # setting_file.write(contents)
+        # setting_file.close()
 
         from configs import runInfo
         runInfo.input_video_path        = project_name + '/data/input/' + input_video_name
@@ -358,6 +358,22 @@ class AnalysisWindow(QDialog):
         runInfo.output_contactors_path  = project_name + '/data/output/analysis/'
         runInfo.start_frame             = appInfo.start_frame
         runInfo.end_frame               = appInfo.end_frame
+
+        runInfo.logfile_name            = appInfo.logfile_name
+        runInfo.console_log_level       = appInfo.console_log_level
+        runInfo.file_log_level          = appInfo.file_log_level
+
+        runInfo.write_result            = appInfo.write_result
+
+        runInfo.parallel_processing     = appInfo.parallel_processing
+        runInfo.use_mask_voting         = appInfo.use_mask_voting
+
+        runInfo.reid_model              = appInfo.reid_model
+
+        runInfo.trackingGPU             = appInfo.trackingGPU
+        runInfo.reidGPU                 = appInfo.reidGPU
+        runInfo.faceGPU                 = appInfo.faceGPU
+        runInfo.maskGPU                 = appInfo.maskGPU
         
     def stop(self):
         print(" *** stop - before call exit system")
