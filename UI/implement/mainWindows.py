@@ -317,7 +317,7 @@ class AnalysisWindow(QDialog):
     def start(self):
         self.running = True
         self.displaySetNum = math.ceil(len(self.video_paths) / 4)
-        self.startTimer()
+        # self.startTimer()
         print("started..")
     
         if appInfo.only_app_test == False:
@@ -425,14 +425,14 @@ class AnalysisWindow(QDialog):
         print("exit")
         self.stop()            
 
-    def startTimer(self):
-        self.timer += 1
-        self.timeLabel.setText(str(self.timer) + " sec")
-        timerThread = threading.Timer(1, self.startTimer)
-        timerThread.start()
-        if self.running == False:
-            print("Timer stop")
-            timerThread.cancel()
+    # def startTimer(self):
+    #     self.timer += 1
+    #     self.timeLabel.setText(str(self.timer) + " sec")
+    #     timerThread = threading.Timer(1, self.startTimer)
+    #     timerThread.start()
+    #     if self.running == False:
+    #         print("Timer stop")
+    #         timerThread.cancel()
 
     def showRsltBtnClicked(self):
         '''분석 중단일 경우 정리할 것들 정리'''
@@ -538,16 +538,19 @@ class RouteOfConfirmedCaseWindow(QDialog):
         # 아래쪽 list -> 각 video결과에 대해 timeline을 그려야 함.
         for targetInfoListOfEachVideo in self.targetInfoList:
             print('in showResult')
+            if len(targetInfoListOfEachVideo) == 0:
+                # 확진자가 없는 영상은 결과에 나타나지 않음.
+                continue
+            else:
+                # (아래쪽 list) Timeline widget 추가
+                timelineWidget = TimeLineWidget(targetInfoListOfEachVideo)
+                self.insertWidgetInListWidget( timelineWidget, self.listWidget )
 
-            # (아래쪽 list) Timeline widget 추가
-            timelineWidget = TimeLineWidget(targetInfoListOfEachVideo)
-            self.insertWidgetInListWidget( timelineWidget, self.listWidget )
-
-            # (아래쪽 list) 영상 이름 추가
-            videoNameWidget = QLabel( targetInfoListOfEachVideo[0]['video_name'] )
-            videoNameWidget.setAlignment(Qt.AlignCenter)
-            videoNameWidget.setFixedHeight( timelineWidget.height()+4 )
-            self.insertWidgetInListWidget( videoNameWidget, self.listWidget_2 )
+                # (아래쪽 list) 영상 이름 추가
+                videoNameWidget = QLabel( targetInfoListOfEachVideo[0]['video_name'] )
+                videoNameWidget.setAlignment(Qt.AlignCenter)
+                videoNameWidget.setFixedHeight( timelineWidget.height()+4 )
+                self.insertWidgetInListWidget( videoNameWidget, self.listWidget_2 )
 
     def backBtnClicked(self):
         # 결과 화면 목록창으로 전환

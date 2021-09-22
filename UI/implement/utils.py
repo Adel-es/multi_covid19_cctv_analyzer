@@ -51,11 +51,15 @@ def loadJson(video_dir_path, contactor_dir, result_json_dir):
         video_capture = cv2.VideoCapture(output_video_path)
         video_frameno = int(video_capture.get( cv2.CAP_PROP_FRAME_COUNT ))
         video_fps = int(video_capture.get( cv2.CAP_PROP_FPS ))
-
+        video_start_frame = result_json['start_frame']
+        video_end_frame = result_json['end_frame']
+        
         # targetInfoList에 video 정보 추가하기
         for idx, info in enumerate(_targetInfoList):
             info['video_name'] = result_json['video_name']
             info['frame_no'] = video_frameno
+            info['frame_start'] = video_start_frame
+            info['frame_end'] = video_end_frame
             info['fps'] = video_fps
             info['index'] = idx
 
@@ -63,6 +67,8 @@ def loadJson(video_dir_path, contactor_dir, result_json_dir):
         for info in _contactorInfoList:
             info['video_name'] = result_json['video_name']
             info['frame_no'] = video_frameno
+            # info['frame_start'] = video_start_frame
+            # info['frame_end'] = video_end_frame
             info['fps'] = video_fps
             info['image_path'] = contactor_dir + "/fr{}_tid{}.jpg".format(info['capture_time'], info['tid'])
 

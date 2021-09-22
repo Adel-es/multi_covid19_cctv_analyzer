@@ -6,6 +6,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5 import QtGui
 from PIL import Image, ImageQt
+import cv2
 
 from .utils import *
 
@@ -50,7 +51,9 @@ class PictureWidget(QWidget):
         # 원본 사진 & 썸네일 용 작은 사진
         self.origin_pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture))
         self.origin_window = OriginPictureWindow(self.origin_pixmap)
-        self.small_pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture.crop( (0, 0, self.w, self.w) )))
+        small_picture = picture.crop( (0, 0, self.w, self.w) ).resize( (100,100))
+        # small_picture = small_picture.resize( (50,50) )
+        self.small_pixmap = QPixmap.fromImage(ImageQt.ImageQt(small_picture))
 
         # 목록에는 썸네일 사진만 보여준다.
         self.picture_label = QLabel()

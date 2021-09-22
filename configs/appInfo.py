@@ -24,7 +24,7 @@ sync_analysis_system = True
 
 ''' In runInfo setting '''
 start_frame  = 800
-end_frame = 900
+end_frame = 810
 
 logfile_name = "log.txt"
 # select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL]
