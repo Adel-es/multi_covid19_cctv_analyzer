@@ -284,20 +284,20 @@ class AnalysisWindow(QDialog):
         '''
             runInfo 설정값 변경하기
         '''
-        setting_file = open(self.setting_path, "w", encoding="utf8")
+        # setting_file = open(self.setting_path, "w", encoding="utf8")
 
         project_name        = self.project_dir_path.split('/')[-1]
         input_video_name    = self.video_paths[video_index].split('/')[-1]        # ****************************** 일단 video_paths를 하나만 받는 걸로
         output_video_name   = input_video_name.split('.')[0] + ".avi"   # input video name에서 확장자만 avi로 변경
         
-        contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
-                                            query_image_path        = project_name + '/data/input/query/',
-                                            output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json', 
-                                            output_video_path       = project_name + '/data/output/' + output_video_name, 
-                                            output_contactors_path  = project_name + '/data/output/analysis/',
-                                            )
-        setting_file.write(contents)
-        setting_file.close()
+        # contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
+        #                                     query_image_path        = project_name + '/data/input/query/',
+        #                                     output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json', 
+        #                                     output_video_path       = project_name + '/data/output/' + output_video_name, 
+        #                                     output_contactors_path  = project_name + '/data/output/analysis/',
+        #                                     )
+        # setting_file.write(contents)
+        # setting_file.close()
       
         
     def stop(self):
@@ -317,7 +317,7 @@ class AnalysisWindow(QDialog):
     def start(self):
         self.running = True
         self.displaySetNum = math.ceil(len(self.video_paths) / 4)
-        self.startTimer()
+        # self.startTimer()
         print("started..")
     
         if appInfo.only_app_test == False:
@@ -394,6 +394,7 @@ class AnalysisWindow(QDialog):
         label.setText("finish")     
 
     def analysisWithoutThread(self):
+        
         cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
         
         self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
@@ -425,14 +426,14 @@ class AnalysisWindow(QDialog):
         print("exit")
         self.stop()            
 
-    def startTimer(self):
-        self.timer += 1
-        self.timeLabel.setText(str(self.timer) + " sec")
-        timerThread = threading.Timer(1, self.startTimer)
-        timerThread.start()
-        if self.running == False:
-            print("Timer stop")
-            timerThread.cancel()
+    # def startTimer(self):
+    #     self.timer += 1
+    #     self.timeLabel.setText(str(self.timer) + " sec")
+    #     timerThread = threading.Timer(1, self.startTimer)
+    #     timerThread.start()
+    #     if self.running == False:
+    #         print("Timer stop")
+    #         timerThread.cancel()
 
     def showRsltBtnClicked(self):
         '''분석 중단일 경우 정리할 것들 정리'''
@@ -534,20 +535,31 @@ class RouteOfConfirmedCaseWindow(QDialog):
             for col in range(4):
                 self.tableWidget.setItem(row, col, 
                                         QTableWidgetItem(result[col]))
-
+        timelineList = []
         # 아래쪽 list -> 각 video결과에 대해 timeline을 그려야 함.
         for targetInfoListOfEachVideo in self.targetInfoList:
             print('in showResult')
 
-            # (아래쪽 list) Timeline widget 추가
-            timelineWidget = TimeLineWidget(targetInfoListOfEachVideo)
-            self.insertWidgetInListWidget( timelineWidget, self.listWidget )
+            if len(targetInfoListOfEachVideo) == 0:
+                # 확진자가 없는 영상은 결과에 나타나지 않음.
+                continue
+            else:
+                # (아래쪽 list) Timeline widget 추가
+                timelineWidget = TimeLineWidget(targetInfoListOfEachVideo)
+            
+                # (아래쪽 list) 영상 이름 추가
+                videoNameWidget = QLabel( targetInfoListOfEachVideo[0]['video_name'].split('/')[-1] )
+                
+                timelineList.append((timelineWidget.getFirstInStartTime(), timelineWidget, videoNameWidget))
 
-            # (아래쪽 list) 영상 이름 추가
-            videoNameWidget = QLabel( targetInfoListOfEachVideo[0]['video_name'] )
-            videoNameWidget.setAlignment(Qt.AlignCenter)
-            videoNameWidget.setFixedHeight( timelineWidget.height()+4 )
-            self.insertWidgetInListWidget( videoNameWidget, self.listWidget_2 )
+        timelineList = sorted(timelineList, key=lambda x : x[0])
+        for timeline in timelineList:
+            print('get input time: ',timeline[0])
+            self.insertWidgetInListWidget( timeline[1], self.listWidget ) # timeline
+            
+            timeline[2].setAlignment(Qt.AlignCenter)
+            timeline[2].setFixedHeight( timeline[1].height()+4 )
+            self.insertWidgetInListWidget( timeline[2], self.listWidget_2 ) # videoname
 
     def backBtnClicked(self):
         # 결과 화면 목록창으로 전환

@@ -73,15 +73,21 @@ class TimeLineWidget(QWidget):
         super().__init__()
         layout = QHBoxLayout()
 
-        self.targetInfoListOfEachVideo = targetInfoListOfEachVideo
-
+        # self.targetInfoListOfEachVideo = targetInfoListOfEachVideo
         # self.frameNo = videoResult.frameNo
         # self.fps = videoResult.fps
         # self.targetInfoList = videoResult.targetInfoList
-        frameNo = self.targetInfoListOfEachVideo[0]['frame_no']
+        # frameNo = self.targetInfoListOfEachVideo[0]['frame_no']
 
-        prev_end_time = 0
-        for info in self.targetInfoListOfEachVideo:
+        self.first_in_time = targetInfoListOfEachVideo[0]['in']        
+        start_frame = targetInfoListOfEachVideo[0]['frame_start']
+        end_frame   = targetInfoListOfEachVideo[0]['frame_end']
+        frameNo = end_frame - start_frame + 1
+        if frameNo < 0 :
+            print(" [Error] TimeLineWidget: frame_count < 0 of '{}'".format(targetInfoListOfEachVideo[0]['video_name']))
+
+        prev_end_time = start_frame
+        for info in targetInfoListOfEachVideo:
             in_time = info['in']
             out_time = info['out']
             
@@ -94,6 +100,7 @@ class TimeLineWidget(QWidget):
 
             # 컬러 시간 블록 추가
             label = QLabel()
+            
             label.setFixedHeight(20)
             label.setStyleSheet("background-color: orange;")
 
@@ -104,3 +111,7 @@ class TimeLineWidget(QWidget):
         layout.addWidget(line, stretch = frameNo-prev_end_time+1)
         layout.setSpacing(0) # widget 간 거리를 0으로 만듦 -> hline과 colorbar간의 거리를 없앰
         self.setLayout(layout)
+    
+    def getFirstInStartTime(self):
+        return self.first_in_time
+        

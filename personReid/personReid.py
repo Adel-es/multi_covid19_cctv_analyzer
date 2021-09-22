@@ -160,7 +160,14 @@ def set_cuda_visible_devices(gpu_idx):
             os.environ["CUDA_VISIBLE_DEVICES"] += ","+str(g_idx)
    
 def runPersonReid(shm, processOrder, nextPid, select_reid_model, gpu_idx=0): 
-    print(" ********************** in personreid: input file path: {}".format(runInfo.input_video_path))
+    # 영상이 바뀐 rnuInfo의 값을 갱신
+    input_video_path = runInfo.input_video_path
+    output_video_path = runInfo.output_video_path
+    start_frame = runInfo.start_frame
+    end_frame = runInfo.end_frame
+    query_image_path = runInfo.query_image_path
+    print(" ********************** in personreid: input file path: {}".format(input_video_path))
+
     set_cuda_visible_devices(gpu_idx)
     
     if select_reid_model == 'topdb':

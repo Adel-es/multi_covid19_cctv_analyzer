@@ -21,6 +21,11 @@ def getCentroid(bbox, return_int=False):
     return centroid
 
 def checkDistance(shm, processOrder, nextPid):
+    # 영상이 바뀐 runInfo의 값을 갱신
+    start_frame = runInfo.start_frame
+    end_frame = runInfo.end_frame
+    FRAME_NUM = end_frame - start_frame + 1    
+    
     myPid = 'checkDistance'
     shm.init_process(processOrder, myPid, nextPid)
     
