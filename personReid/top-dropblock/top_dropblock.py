@@ -1,3 +1,5 @@
+from posix import sched_param
+from personReid.utils.votingSystem import VotingSystem
 import sys
 import os
 import os.path as osp
@@ -7,6 +9,9 @@ import argparse
 
 import torch
 import torch.nn as nn
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+import utils.votingSystem as vs 
 
 from default_config import (
     get_default_config, imagedata_kwargs, videodata_kwargs,
@@ -169,12 +174,14 @@ def main_concat_with_track( config_file_path, data_root_path , query_image_path,
 
     # load weights 경로가 없으면 error. 무조건 유저가 weights 넣어주게 하기
     topdb_dir = os.path.dirname(os.path.abspath(__file__))
+    '''
     weights_path = "{}/{}".format(topdb_dir, cfg.model.load_weights)
     if cfg.model.load_weights == '' or not check_isfile(weights_path):
         print(" [Reid Error] {}: Weights file of top-dropblock is not exist\n\n".format(weights_path))
         exit(-1)
     # 경로가 있으면 load 하기
     load_pretrained_weights(model, weights_path)
+    '''
     
     if cfg.use_gpu:
         device = torch.device("cuda:{}".format(gpu_idx))
@@ -202,8 +209,8 @@ def crop_frame_image(frame, bbox):
     return Image.fromarray(frame).crop( (int(bbox.minX),int(bbox.minY), 
                                          int(bbox.maxX),int(bbox.maxY)) ) # (start_x, start_y, start_x + width, start_y + height) 
      
-def run_top_db_test(engine, cfg, start_frame, end_frame, 
-                    input_video_path, output_video_path,
+def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote, 
+                    input_video_path,
                     shm, processOrder, myPid, nextPid,
                     query_image_path):
     #DEBUG
@@ -212,6 +219,8 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
     print(end_frame)
     print("+++++++++++++++++++++++++++++++++++")
 
+    if use_vote : 
+        votingSystem = vs.VotingSystem()
     video_capture = cv2.VideoCapture(input_video_path)
 
     fps_imutils = imutils.video.FPS().start()
@@ -229,8 +238,8 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             continue
         if frame_no > end_frame:
             break
-        if frame_no % 10 == 0:
-            print("\tFrame no in topdb: {}".format(frame_no))
+        # if frame_no % 10 == 0:
+            # print("\tFrame no in topdb: {}".format(frame_no))
         frameIdx, personIdx = shm.get_ready_to_read()
         
         # frame에 사람이 없다면 pass
@@ -248,10 +257,27 @@ def run_top_db_test(engine, cfg, start_frame, end_frame,
             gallery.append( (image, tid, cam_id, pIdx))
         
         # reid 수행
-        top1_gpIdx, top1_conf = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
-        shm.data.frames[frameIdx].reid = top1_gpIdx
-        shm.data.frames[frameIdx].confidence = top1_conf
-
+        top1_gpIdx, confidenceList = engine.test_only(gallery_data = gallery, query_image_path=query_image_path, **engine_test_kwargs(cfg)) # top1의 index
+        top1_tid = shm.data.people[top1_gpIdx].tid 
+        for i, pIdx in enumerate(personIdx):
+            shm.data.people[pIdx].reidConf = confidenceList[i]
+            if top1_gpIdx == pIdx : 
+                top1_conf = confidenceList[i]
+        
+        if use_vote :         
+            vote_tid = -1 
+            # print("top1 tid : {}".format(top1_tid))
+            if top1_conf >= 0.9 : 
+                vote_tid = votingSystem.vote(top1_tid)
+                for _pIdx in personIdx : 
+                    if shm.data.people[_pIdx].tid == vote_tid :  
+                        shm.data.frames[frameIdx].reid = _pIdx 
+                        break 
+            else : 
+                shm.data.frames[frameIdx].reid = -1
+        else : 
+            shm.data.frames[frameIdx].reid = top1_gpIdx
+        
         # print("********** distance :", top1_conf)
             
         fps_imutils.update()

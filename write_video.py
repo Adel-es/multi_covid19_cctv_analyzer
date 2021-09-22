@@ -103,7 +103,6 @@ def writeVideoSyncWithUI(shm, processOrder, nextPid):
 
         # sendResultFrameSignal.run(np.array([frameIdx, personIdx, shm.data.frames[frameIdx].reid, shm.data.people]))
         out.write(frame)
-
         shm.finish_a_frame()
         
     shm.finish_process()

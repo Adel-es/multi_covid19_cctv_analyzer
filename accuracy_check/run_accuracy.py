@@ -24,9 +24,9 @@ from utils.types import MaskToken
 TEST_BBOX = False
 TEST_REID = True
 TEST_MASK = False
-TEST_SYSTEM = True
-QUERY_GROUND_TRUTH = "P7"
-WRITE_VIDEO = False
+TEST_SYSTEM = False
+QUERY_GROUND_TRUTH = "P8"
+WRITE_VIDEO = True
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path

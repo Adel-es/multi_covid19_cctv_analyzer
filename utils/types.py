@@ -10,11 +10,6 @@ from configs import runInfo
 import logging
 from enum import IntEnum
 
-class TrackToken:
-    def __init__(self, bbox, tid):
-        self.bbox = bbox
-        self.tid = tid
-
 class MaskToken(IntEnum) : 
     Masked = 0
     NotMasked = 1 
@@ -23,13 +18,13 @@ class MaskToken(IntEnum) :
     UnKnown = 4 
     
 class FrameInfo(Structure):
-    _fields_ = [('reid', c_int32), ('confidence', c_float)]
+    _fields_ = [('reid', c_int32)]
         
 class BBox(Structure):
     _fields_ = [('minX', c_float), ('minY', c_float), ('maxX', c_float), ('maxY', c_float), ('confidence', c_float)]
 
 class PersonInfo(Structure):
-    _fields_ = [('bbox', BBox), ('tid', c_int32), ('isClose', c_bool), ('isMask', c_uint8)]
+    _fields_ = [('bbox', BBox), ('tid', c_int32), ('reidConf', c_float), ('isClose', c_bool), ('isMask', c_uint8)]
 
 
 class Data():

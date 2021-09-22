@@ -18,6 +18,7 @@ input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
 start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
+use_vote = runInfo.use_reid_voting
 query_image_path = runInfo.query_image_path
 
 def fakeReid3(shm, processOrder, nextPid):
@@ -37,14 +38,21 @@ def fakeReid3(shm, processOrder, nextPid):
         frameIdx, personIdx = shm.get_ready_to_read()
         if len(personIdx) == 0 : 
             shm.data.frames[frameIdx].reid = -1
-            shm.data.frames[frameIdx].confidence = f_conf 
         else : 
-            shm.data.frames[frameIdx].reid = shm.data.people[personIdx[0]].tid
-            shm.data.frames[frameIdx].confidence = t_conf
+            confimed_pIdx = personIdx[0]
+            shm.data.frames[frameIdx].reid = confimed_pIdx
+            for pIdx in personIdx:
+                shm.data.people[pIdx].reidConf = f_conf
+            shm.data.people[confimed_pIdx].reidConf = t_conf
         shm.finish_a_frame()
     shm.finish_process()
 
 def fakeReid2(shm, processOrder, nextPid):
+    '''
+        Select the person 
+        who appeared first in personIdx
+        among those who belong to confirmed_tid
+    '''
     myPid = 'fakeReid2'
     shm.init_process(processOrder, myPid, nextPid)
     
@@ -57,17 +65,22 @@ def fakeReid2(shm, processOrder, nextPid):
     for fIdx in range(start_frame, end_frame):
         frameIdx, personIdx = shm.get_ready_to_read()
         shm.data.frames[frameIdx].reid = -1
-        shm.data.frames[frameIdx].confidence = f_conf
+        for pIdx in personIdx:
+            shm.data.people[pIdx].reidConf = f_conf
+        
         for pIdx in personIdx:
             if shm.data.people[pIdx].tid in confirmed_tid:
                 shm.data.frames[frameIdx].reid = pIdx
-                shm.data.frames[frameIdx].confidence = t_conf
+                shm.data.people[pIdx].reidConf = t_conf
                 break
         shm.finish_a_frame()
         
     shm.finish_process()
 
 def fakeReid(shm, processOrder, nextPid):
+    '''
+        Pick one person randomly
+    '''
     myPid = 'fakeReid'
     shm.init_process(processOrder, myPid, nextPid)
     
@@ -82,7 +95,9 @@ def fakeReid(shm, processOrder, nextPid):
             random_pIdx = random.choice(personIdx)
             confirmed_tid = shm.data.people[random_pIdx].tid
             shm.data.frames[frameIdx].reid = random_pIdx
-            shm.data.frames[frameIdx].confidence = t_conf
+            for pIdx in personIdx:
+                shm.data.people[pIdx].reicConf = f_conf
+            shm.data.people[random_pIdx].reicConf = t_conf
             shm.finish_a_frame()
             doneFIdx = fIdx
             break
@@ -94,12 +109,15 @@ def fakeReid(shm, processOrder, nextPid):
     for fIdx in range(doneFIdx + 1, FRAME_NUM):
         frameIdx, personIdx = shm.get_ready_to_read()
         shm.data.frames[frameIdx].reid = -1
-        shm.data.frames[frameIdx].confidence = f_conf
+        for pIdx in personIdx:
+            shm.data.people[pIdx].reidConf = f_conf
+        
         for pIdx in personIdx:
             if shm.data.people[pIdx].tid == confirmed_tid:
                 shm.data.frames[frameIdx].reid = pIdx
-                shm.data.frames[frameIdx].confidence = t_conf
+                shm.data.people[pIdx].reidConf = t_conf
                 break
+            
         shm.finish_a_frame()
         
     shm.finish_process()
@@ -109,7 +127,8 @@ def personReid_topdb(shm, processOrder, nextPid, gpu_idx):
     top_db_engine, top_db_cfg = config_for_topdb( root_path=root_path, query_image_path=query_image_path, gpu_idx=gpu_idx)
     run_top_db_test(engine=top_db_engine, cfg=top_db_cfg, 
                     start_frame=start_frame, end_frame=end_frame,
-                    input_video_path=input_video_path, output_video_path=output_video_path,
+                    use_vote=use_vote, 
+                    input_video_path=input_video_path,
                     shm=shm, processOrder=processOrder, myPid=myPid, nextPid=nextPid,
                     query_image_path=query_image_path)
     # 지금 reidRslt에서 확진자가 없는 경우(-1)는 나오지 않는다. (reid 정확성 문제 때문에)
@@ -120,6 +139,7 @@ def personReid_la_transformer(shm, processOrder, nextPid, calculation_mode, gpu_
     run_la_transformer(model=model, data_transforms=data_transforms,
                     root_path=root_path, query_image_path=query_image_path,
                     start_frame=start_frame, end_frame=end_frame,
+                    use_vote=use_vote, 
                     input_video_path=input_video_path, output_video_path=output_video_path, 
                     shm=shm, processOrder=processOrder, myPid=myPid, nextPid=nextPid,
                     calculation_mode=calculation_mode,

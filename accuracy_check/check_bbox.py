@@ -18,7 +18,8 @@ def boundingBoxes(shm, gTruth):
     num_of_frames = end_frame - start_frame + 1
     
     if len(shm['people']) != num_of_frames:
-        sys.exit("accuracy_detection.py line 45: The number of frames doesn't match.")
+        logger.critical("The number of frames doesn't match.")
+        sys.exit(-1)
 
     # Fill detections
     for fIdx in range(num_of_frames):
