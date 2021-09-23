@@ -20,6 +20,7 @@ from deep_sort import nn_matching
 from deep_sort.detection import Detection
 from deep_sort.tracker import Tracker
 from tools import generate_detections as gdet
+from timeit import time
 
 from configs import runInfo
 from utils.types import BBox
@@ -80,7 +81,7 @@ def detectAndTrack(shm, processOrder, nextPid):
     
     myPid = 'detectAndTrack'
     shm.init_process(processOrder, myPid, nextPid)
-    
+    shm.data.startTime.value = time.time()
     while True:
         ret, frame = video_capture.read()
         if ret != True:
