@@ -985,7 +985,7 @@ class Engine(object):
 
         # Get pIdx of the person with the smallest distance
         top_1_indices = np.transpose(dist_indices)[0] # 각 query에 대해 top1으로 꼽히는 gallery들의 list
-        top_1_indices_idx = np.argmin(distmat[query][idx] for query, idx in enumerate(top_1_indices))
+        top_1_indices_idx = np.argmin([distmat[query][idx] for query, idx in enumerate(top_1_indices)])
         top_1_idx = top_1_indices[top_1_indices_idx]
         smallest_dist_pIdx = g_pIdx[top_1_idx]
         

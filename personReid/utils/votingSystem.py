@@ -48,3 +48,6 @@ class VotingSystem :
         self.visited[index] = True 
         self.voteList[index] = tid
         return self._vote_increase(tid) 
+    
+    def get_most_vote_tid(self) :
+        return self.voteResult
