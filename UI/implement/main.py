@@ -3,10 +3,7 @@ from PyQt5.QtCore import Qt, pyqtSlot
 
 from configs import appInfo
 
-if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
-    from UI.implement.mainWindows_sync import *
-else:
-    from UI.implement.mainWindows import *
+from UI.implement.mainWindows import *
     
 from .utils import center
 
