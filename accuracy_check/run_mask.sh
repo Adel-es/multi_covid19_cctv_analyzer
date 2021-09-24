@@ -41,6 +41,8 @@ do
         break
     fi
     echo "=== result of ${inputVideo} ===" >> $resultFile
+    awk '/average precision : /' "${tmpFile}" >> $resultFile
+    awk '/average recall : /' "${tmpFile}" >> $resultFile 
     awk '/F1-score : /' "${tmpFile}" >> $resultFile
     rm "${tmpFile}"
 done
@@ -74,6 +76,8 @@ do
         break
     fi
     echo "=== result of ${inputVideo} ===" >> $resultFile
+    awk '/average precision : /' "${tmpFile}" >> $resultFile
+    awk '/average recall : /' "${tmpFile}" >> $resultFile 
     awk '/F1-score : /' "${tmpFile}" >> $resultFile
     rm "${tmpFile}"
 done
