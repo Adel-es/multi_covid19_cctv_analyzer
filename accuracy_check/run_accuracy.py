@@ -22,11 +22,14 @@ from personReid.personReid import fakeReid3
 from utils.types import MaskToken
 
 TEST_BBOX = False
-TEST_REID = True
-TEST_MASK = False
+TEST_REID = False
+TEST_MASK = True
 TEST_SYSTEM = False
-QUERY_GROUND_TRUTH = 'P8'
+QUERY_GROUND_TRUTH = "P8"
 WRITE_VIDEO = False
+
+# print(TEST_MASK)
+print(runInfo.input_video_path)
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path
@@ -53,6 +56,22 @@ if __name__ == '__main__':
     if os.path.exists(runInfo.query_image_path) == False:
         logger.critical("[IO Error] Query image directory path: {} is not exists".format(runInfo.query_image_path))
         exit(-1)
+        
+    if runInfo.end_frame == -1 : 
+        import cv2 
+        video_capture = cv2.VideoCapture(runInfo.input_video_path)
+        video_frameno = int(video_capture.get( cv2.CAP_PROP_FRAME_COUNT )) - 1
+        runInfo.end_frame = video_frameno 
+        end_frame = video_frameno
+        
+        FRAMES_SIZE = end_frame - start_frame + 1
+        # 사람 단위 정보 저장 배열의 크기
+        PEOPLE_SIZE = FRAMES_SIZE * 5
+
+        # 처리할 프레임 총 개수
+        FRAME_NUM = end_frame - start_frame + 1
+        # 프레임 인원 수의 상한선
+        MAX_PEOPLE_NUM = 8
     
     gTruth_file_path = getGTruthFilePath(runInfo.input_video_path) 
     if os.path.exists(gTruth_file_path) == False : 
