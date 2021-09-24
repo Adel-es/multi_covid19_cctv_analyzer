@@ -263,8 +263,9 @@ def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote,
             shm.data.people[pIdx].reidConf = confidenceList[i]
         top1_conf = shm.data.people[top1_gpIdx].reidConf
         
+        threshold = 0.98
         if use_vote :         
-            if top1_conf >= 0.98 : #threshold  
+            if top1_conf >= threshold : #threshold  
                 vote_tid = votingSystem.vote(top1_tid)
             else :
                 vote_tid = votingSystem.get_most_vote_tid()
@@ -280,7 +281,7 @@ def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote,
             shm.data.frames[frameIdx].reid = vote_tid_pIdx
                 
         else : # not voting
-            if top1_conf >= 0.98 : #threshold  
+            if top1_conf >= threshold : #threshold  
                 shm.data.frames[frameIdx].reid = top1_gpIdx
             else:
                 shm.data.frames[frameIdx].reid = -1
