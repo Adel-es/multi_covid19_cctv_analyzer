@@ -25,8 +25,8 @@ TEST_BBOX = False
 TEST_REID = True
 TEST_MASK = False
 TEST_SYSTEM = False
-QUERY_GROUND_TRUTH = "P8"
-WRITE_VIDEO = True
+QUERY_GROUND_TRUTH = 'P8'
+WRITE_VIDEO = False
 
 input_video_path = runInfo.input_video_path
 output_video_path = runInfo.output_video_path

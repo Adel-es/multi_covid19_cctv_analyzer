@@ -2,13 +2,13 @@
 import logging
 
 # anaylsis time, file setting 
-input_video_path        = "proj/data/input/08_14_2020_3_1.mp4"
+input_video_path        = "proj/data/input/08_14_2020_1_1.mp4"
 query_image_path        = "proj/data/input/query/" # query image의 이름은 "숫자_숫자_숫자" 로 설정. ex) 1_0_0.jpg
-output_video_path       = "proj/data/output/08_14_2020_3_1.avi"
-output_json_path        = "proj/data/output/analysis/08_14_2020_3_1.json"
+output_video_path       = "proj/data/output/08_14_2020_1_1.avi"
+output_json_path        = "proj/data/output/analysis/08_14_2020_1_1.json"
 output_contactors_path  = "proj/data/output/analysis/" 
-start_frame             = 600
-end_frame               = 3600
+start_frame = 631
+end_frame = 3571
 
 # log setting 
 logfile_name            = "log.txt"
@@ -21,7 +21,7 @@ write_result            = False
 # system setting 
 parallel_processing     = True
 use_mask_voting         = False 
-use_reid_voting         = True
+use_reid_voting = False
 
 # reid model setting
 reid_model              = 'topdb' # 'fake2' / 'fake' / 'topdb' / 'la'

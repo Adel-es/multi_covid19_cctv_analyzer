@@ -102,17 +102,26 @@ def getReidAccuracy(shm, gTruth, shmToGTruthMapping=[], makeLog=True):
 
     if len(detections) == 0 and len(groundtruths) == 0:
         if makeLog:
-            logger.info("========== Reid ===========")
-            logger.info("groundTruths: 0, detections: 0")
-            logger.info("Cannot calculate accuracy")
-            logger.info("===========================")
+            print("========== Reid ===========")
+            print("groundTruths: 0, detections: 0")
+            print("Cannot calculate accuracy")
+            print("===========================")
+            # logger.info("========== Reid ===========")
+            # logger.info("groundTruths: 0, detections: 0")
+            # logger.info("Cannot calculate accuracy")
+            # logger.info("===========================")
     elif len(detections) == 0 or len(groundtruths) == 0:
         if makeLog:
-            logger.info("========== Reid ===========")
-            logger.info("groundTruths: {}, detections: {}".format(len(groundtruths), len(detections)))
-            logger.info("total TP: 0, total FP: {}".format(len(detections)))
-            logger.info("AP: 0.0")
-            logger.info("===========================")
+            print("========== Reid ===========")
+            print("groundTruths: {}, detections: {}".format(len(groundtruths), len(detections)))
+            print("total TP: 0, total FP: {}".format(len(detections)))
+            print("AP: 0.0")
+            print("===========================")
+            # logger.info("========== Reid ===========")
+            # logger.info("groundTruths: {}, detections: {}".format(len(groundtruths), len(detections)))
+            # logger.info("total TP: 0, total FP: {}".format(len(detections)))
+            # logger.info("AP: 0.0")
+            # logger.info("===========================")
     else: # if len(detections) > 0 and len(groundtruths) > 0
         if len(shmToGTruthMapping) == 0:
             getBboxAccuracyAndMapping(shm, gTruth, shmToGTruthMapping, makeLog=False)
@@ -120,15 +129,20 @@ def getReidAccuracy(shm, gTruth, shmToGTruthMapping=[], makeLog=True):
         result = AP(detections, groundtruths, shmToGTruthMapping, shm['gTruth_query'])
         
         if makeLog:
-            logger.info("========== Reid ===========")
-            # Long log
-            # for resultKey in result:
-            #     logger.info("{}: {}".format(resultKey, result[resultKey]))
-            # Short log
-            logger.info("groundTruths: {}, detections: {}".format(len(groundtruths), len(detections)))
-            logger.info("total TP: {}, total FP: {}".format(result['total TP'], result['total FP']))
-            logger.info("AP: {}".format(result['AP']))
-            logger.info("===========================")
+            print("========== Reid ===========")
+            print("groundTruths: {}, detections: {}".format(len(groundtruths), len(detections)))
+            print("total TP: {}, total FP: {}".format(result['total TP'], result['total FP']))
+            print("AP: {}".format(result['AP']))
+            print("===========================")
+            # logger.info("========== Reid ===========")
+            # # Long log
+            # # for resultKey in result:
+            # #     logger.info("{}: {}".format(resultKey, result[resultKey]))
+            # # Short log
+            # logger.info("groundTruths: {}, detections: {}".format(len(groundtruths), len(detections)))
+            # logger.info("total TP: {}, total FP: {}".format(result['total TP'], result['total FP']))
+            # logger.info("AP: {}".format(result['AP']))
+            # logger.info("===========================")
     
 if __name__ == '__main__':
     logger = make_logger(runInfo.logfile_name, 'root')
