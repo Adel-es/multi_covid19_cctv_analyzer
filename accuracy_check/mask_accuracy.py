@@ -34,6 +34,7 @@ def copy_from_gtruth (shm, processOrder, nextPid) :
     for fIdx in range(FRAME_NUM):
         logger.debug("frame {}".format(fIdx))
         frameNumber = fIdx + runInfo.start_frame 
+        # print("frameNumber : {}".format(frameNumber))
         tids = []
         bboxes = []
         confidences = []
@@ -79,12 +80,14 @@ def get_precision() :
         precisions.append(precision)
     
     sum_precision = 0 
+    average_percisions = 0 
     sum_count = 0 
     for p in precisions : 
         if p != 0 : 
             sum_count += 1 
         sum_precision += p  
-    average_percisions = sum_precision / float(sum_count)
+    if sum_count != 0 : 
+        average_percisions = sum_precision / float(sum_count)
     return precisions, average_percisions 
 
 def get_recall() : 
@@ -103,11 +106,13 @@ def get_recall() :
     
     sum_recalls = 0 
     sum_count = 0
+    average_recall = 0
     for p in recalls :
         if p != 0 : 
             sum_count += 1  
-        sum_recalls += p  
-    average_recall = sum_recalls / float(sum_count) 
+        sum_recalls += p 
+    if sum_count != 0 :  
+        average_recall = sum_recalls / float(sum_count) 
     return recalls, average_recall
 
 def print_precisions() : 

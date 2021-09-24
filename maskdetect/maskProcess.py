@@ -45,7 +45,6 @@ def runMaskDetection(shm, processOrder, nextPid):
 	while (input_capture.isOpened()) :
 		frame_index = frame_index + 1 
 		ret, raw_image = input_capture.read() 
-		# print("mask detection frame : {}".format(frame_index))
 		if ret == False : 
 			logger.critical("mask detection process last frame :)")
 			break 
@@ -54,6 +53,7 @@ def runMaskDetection(shm, processOrder, nextPid):
 		if frame_index > end_frame : 
 			break 
 
+		print("mask detection frame : {}".format(frame_index))
 		shm_frame_index, person_indices = shm.get_ready_to_read() 
 		reid = shm.data.frames[shm_frame_index].reid
 		if reid == -1 : 
@@ -68,7 +68,7 @@ def runMaskDetection(shm, processOrder, nextPid):
 			person = shm.data.people[p_index] 
 			tid = shm.data.people[p_index].tid
 			bbox = person.bbox 
-			if (person.isClose == False) : 
+			if (person.isClose == False) and (reid != p_index): 
 				shm.data.people[p_index].isMask = int(MaskToken.NotNear)
 			else : 
 				cropped_person = raw_image[int(bbox.minY): int(bbox.maxY), int(bbox.minX):int(bbox.maxX)] 
