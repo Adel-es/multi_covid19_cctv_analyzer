@@ -165,6 +165,7 @@ personReid/top-dropblock/pt-config
 personReid/top-dropblock/pt
 personReid/top-dropblock/data
 personReid/top-dropblock/weight/model.pth.tar-400
+personReid/top-dropblock/weight/*/model.pth.tar-400
 
 # Byte-compiled / optimized / DLL files
 personReid/top-dropblock/__pycache__/

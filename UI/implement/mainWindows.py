@@ -16,18 +16,74 @@ import numpy as np
 
 if appInfo.only_app_test == False:
     import shutil
-    # if appInfo.sync_analysis_system == True:
-    #     from multiprocessing import Process, Queue
-    #     import run
+    if appInfo.sync_analysis_system == True:
+        # from write_video
+        from typing import List
+        from distance import getCentroid
+        from utils.types import MaskToken
+        from configs import runInfo
+        from utils.resultManager import Contactor, ResultManager
 
-class RunAnalysisSystemSignal(QObject):
-    sig = pyqtSignal()
-    def __init__(self, func):
-        super().__init__()
-        self.sig.connect(func)
-        
-    def run(self):
-        self.sig.emit()
+        def draw_bbox_and_tid(frame, person, isConfirmed):
+            TEXT_UP_FROM_BBOX = 2
+            bboxLeftUpPoint = (int(person.bbox.minX), int(person.bbox.minY))
+            bboxRightDownPoint = (int(person.bbox.maxX), int(person.bbox.maxY))
+            tidText = "ID: " + str(person.tid)
+            tidPosition = (bboxLeftUpPoint[0], bboxLeftUpPoint[1]-TEXT_UP_FROM_BBOX)
+            
+            if isConfirmed:
+                bboxColor = (0, 0, 255) # red
+                tidColor = (0, 0, 255) # red
+            else:
+                bboxColor = (255, 255, 255) # white
+                tidColor = (0, 255, 0) # green
+                
+            cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 2)
+            cv2.putText(frame, tidText, tidPosition, 0, 8e-4 * frame.shape[0], tidColor, 3)
+
+        def save_contactor_images(frame, shm, person_indices : List[int], save_list) :
+            from configs import runInfo
+            output_contactors_path = runInfo.output_contactors_path
+            
+            for index, pIdx in enumerate(person_indices) : 
+                if save_list[index] == None : 
+                    continue 
+                file_name = output_contactors_path + save_list[index]
+                person = shm.data.people[pIdx]
+                minX = int(person.bbox.minX) 
+                minY = int(person.bbox.minY)
+                maxX = int(person.bbox.maxX)
+                maxY = int(person.bbox.maxY)
+                cropped_person = frame[minY : maxY, minX: maxX] 
+                cv2.imwrite(file_name, cropped_person)
+                
+
+        def update_output_json(shm, res_manager, frame_number:int, frame_index : int, person_indices : List[int]) -> List : 
+            from configs import runInfo
+            end_frame = runInfo.end_frame
+            
+            reid_index = shm.data.frames[frame_index].reid 
+            is_target : bool = ( reid_index != -1 )
+            is_lastframe : bool = (frame_number == end_frame)
+            res_manager.update_targetinfo(frame_number, is_target, is_lastframe)
+            
+            target = shm.data.people[reid_index]
+            target_mask = target.isMask 
+            
+            save_images = [] 
+            for pIdx in person_indices:
+                person = shm.data.people[pIdx]
+                if not person.isClose:
+                    save_images.append(None)
+                    continue
+                tid = person.tid 
+                contactor_mask = person.isMask 
+                save, filename = res_manager.update_contactorinfo(frame_number, tid, target_mask, contactor_mask)
+                if save == True : 
+                    save_images.append(filename)
+                else : 
+                    save_images.append(None)
+            return save_images 
     
 class ErrorAlertMessage(QMessageBox):
     def __init__(self):
@@ -255,14 +311,9 @@ class AnalysisWindow(QDialog):
         self.showRsltBtn.clicked.connect(self.showRsltBtnClicked)
         self.nextVideoBtn.clicked.connect(self.nextVideoRunBtnClicked)
 
-        if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
-            from run import runAnalysisSystem
-            # analysis system 실행시키는 signal
-            self.cur_pInfo = ''
-            self.get_pInfo_flag = False
-            self.analysisProcess = None
-            self.runAnalysisSystemSignal = RunAnalysisSystemSignal(runAnalysisSystem)
+        # if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
         
+            
     def getProjectDirPath(self, project_dir_path, photo_paths, video_paths):
         self.project_dir_path = project_dir_path
         self.query_dir_path = "{}/{}".format(self.project_dir_path, "data/input/query")
@@ -284,12 +335,12 @@ class AnalysisWindow(QDialog):
         '''
             runInfo 설정값 변경하기
         '''
-        # setting_file = open(self.setting_path, "w", encoding="utf8")
-
         project_name        = self.project_dir_path.split('/')[-1]
         input_video_name    = self.video_paths[video_index].split('/')[-1]        # ****************************** 일단 video_paths를 하나만 받는 걸로
         output_video_name   = input_video_name.split('.')[0] + ".avi"   # input video name에서 확장자만 avi로 변경
         
+        # setting_file = open(self.setting_path, "w", encoding="utf8")
+
         # contents = getRunInfoFileContents(  input_video_path        = project_name + '/data/input/' + input_video_name, 
         #                                     query_image_path        = project_name + '/data/input/query/',
         #                                     output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json', 
@@ -298,17 +349,39 @@ class AnalysisWindow(QDialog):
         #                                     )
         # setting_file.write(contents)
         # setting_file.close()
-      
+
+        from configs import runInfo
+        runInfo.input_video_path        = project_name + '/data/input/' + input_video_name
+        runInfo.query_image_path        = project_name + '/data/input/query/'
+        runInfo.output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json'
+        runInfo.output_video_path       = project_name + '/data/output/' + output_video_name
+        runInfo.output_contactors_path  = project_name + '/data/output/analysis/'
+        runInfo.start_frame             = appInfo.start_frame
+        runInfo.end_frame               = appInfo.end_frame
+
+        runInfo.logfile_name            = appInfo.logfile_name
+        runInfo.console_log_level       = appInfo.console_log_level
+        runInfo.file_log_level          = appInfo.file_log_level
+
+        runInfo.write_result            = appInfo.write_result
+
+        runInfo.parallel_processing     = appInfo.parallel_processing
+        runInfo.use_mask_voting         = appInfo.use_mask_voting
+
+        runInfo.reid_model              = appInfo.reid_model
+
+        runInfo.trackingGPU             = appInfo.trackingGPU
+        runInfo.reidGPU                 = appInfo.reidGPU
+        runInfo.faceGPU                 = appInfo.faceGPU
+        runInfo.maskGPU                 = appInfo.maskGPU
         
     def stop(self):
         print(" *** stop - before call exit system")
         if appInfo.only_app_test == False and appInfo.sync_analysis_system == True:
-            if self.analysisProcess != None and self.analysisProcess.is_alive():
-                import psutil
-                parent = psutil.Process(self.analysisProcess.pid)
-                for child in parent.children(recursive=True): 
-                    child.kill()
-                parent.kill()
+            import psutil
+            parent = psutil.Process(os.getpid())
+            for child in parent.children(recursive=True): 
+                child.kill()
             
         if self.running != False:
             self.running = False
@@ -325,76 +398,200 @@ class AnalysisWindow(QDialog):
             self.writeRunInfoFile(self.currrentVideoCnt)
             if appInfo.sync_analysis_system == True:
                 # print(" *** start - run analysis system")
-                self.analysisFromWriteVideo()
+                
+                self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
+                self.videoShowLabel.setText("분석 준비 중입니다. 잠시만 기다려 주세요.")
+                
+                loop = QEventLoop()
+                QTimer.singleShot(10, loop.quit) #25ms
+                loop.exec_()
+                # self.videoShowLabel.repaint()
+                
+                from multiprocessing import Process
+                from utils.types import ShmManager, ShmSerialManager
+                from utils.logger import make_logger 
+                from configs import runInfo
+                from timeit import time
+
+                from deep_sort_yolo4.person_detection import detectAndTrack
+                from distance import checkDistance
+                from personReid.personReid import runPersonReid
+                from maskdetect.maskProcess import runMaskDetection
+                from write_video import writeVideo
+                from accuracy_check.file_io import writeShmToJsonFile
+
+                input_video_path = runInfo.input_video_path
+                print(" *** start : input_video_path: {}".format(input_video_path))
+                start_frame = runInfo.start_frame
+                end_frame = runInfo.end_frame
+
+                # 프레임 단위 정보 저장 배열의 크기
+                FRAMES_SIZE = end_frame - start_frame + 1
+                # 사람 단위 정보 저장 배열의 크기
+                PEOPLE_SIZE = FRAMES_SIZE * 5
+
+                # 처리할 프레임 총 개수
+                FRAME_NUM = end_frame - start_frame + 1
+                # 프레임 인원 수의 상한선
+                MAX_PEOPLE_NUM = 8
+
+                logger = make_logger(runInfo.logfile_name, 'root')
+
+                startTime = time.time()
+                if runInfo.parallel_processing:
+                    shm = ShmManager(processNum=5, framesSize=FRAMES_SIZE, peopleSize=PEOPLE_SIZE)
+                else:
+                    shm = ShmSerialManager(processNum=5, framesSize=FRAME_NUM, peopleSize=FRAME_NUM*MAX_PEOPLE_NUM)
+                
+                maskProc = Process(target=runMaskDetection, args=(shm, 3, os.getpid()))
+                maskProc.start()
+
+                distanceProc = Process(target=checkDistance, args=(shm, 2, maskProc.pid))
+                distanceProc.start()
+                
+                reidProc = Process(target=runPersonReid, args=(shm, 1, distanceProc.pid, runInfo.reid_model, runInfo.reidGPU)) # (shm, procNo, nxtPid, reidmodel, gpuNo), reid model:'fake'/'topdb'/'la'
+                reidProc.start()
+                    
+                detectTrackProc = Process(target=detectAndTrack, args=(shm, 0, reidProc.pid))
+                detectTrackProc.start()
+                
+                logger.info("Running time: {}".format(time.time() - startTime))
+                
+                if (not runInfo.parallel_processing) and runInfo.write_result:
+                    writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path)
+                    
+                self.analysisFromWriteVideo(shm=shm, processOrder=4, nextPid=detectTrackProc.pid)
             else:
                 self.analysisWithoutThread()
         else:
             self.analysisWithoutThread()
-        
-    # @pyqtSlot()
-    # def receiveAnalysisFinished(self):
-    #     if self.running != False:
-    #         self.running = False
-    #     print("stopped..")
     
-    @pyqtSlot(np.ndarray)
-    def receiveAnalysisResultPersonInfo(self, pInfo):
-        '''
-            write_video()에서 signal을 받았을 때 실행.
-            write_video()에서 signal을 보내면서 pInfo도 함께 전송.
-        '''
-        print(" *** Receive Signal")
-        self.cur_pInfo = pInfo
-        if self.get_pInfo_flag == False:
-            self.get_pInfo_flag = True
-        
-    def analysisFromWriteVideo(self):
+    def analysisFromWriteVideo(self, shm, processOrder, nextPid):
         '''
             appInfo.sync_analysis_system == True 일 때 실행되는 analysis Window
         '''
+        from configs import runInfo
+        input_video_path = runInfo.input_video_path
+        output_video_path = runInfo.output_video_path
         
-        from run import runAnalysisSystem
-        from multiprocessing import Process
+        # prepare ResultManager to write output json file  
+        res_manager = ResultManager() 
         
-        # 중간에 중단할 경우, analysis를 강제 종료시키기 위해 서브 프로세스로 실행.
-        self.analysisProcess = Process( target=runAnalysisSystem, args=(self,) )
-        self.analysisProcess.start()
+        # Prepare input video
+        video_capture = cv2.VideoCapture(input_video_path)
+        print(" {}'s frame count: {}".format(input_video_path, video_capture.get(cv2.CAP_PROP_FRAME_COUNT)))
+        # 영상 실제 길이와 runInfo의 설정 frame 구간 간의 조정
+        real_end_frame = video_capture.get(cv2.CAP_PROP_FRAME_COUNT)
+        if real_end_frame < runInfo.start_frame :
+            runInfo.start_frame = real_end_frame
+        if real_end_frame < runInfo.end_frame :
+            runInfo.end_frame = real_end_frame
+        start_frame = runInfo.start_frame
+        end_frame = runInfo.end_frame
+            
+        frame_index = -1
         
-        cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
+        # Prepare output video
+        w = int(video_capture.get(3))
+        h = int(video_capture.get(4))
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        # fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
+        out = cv2.VideoWriter(output_video_path, fourcc, 30, (w, h))
         
-        self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
+        myPid = 'writeVideo'
+        shm.init_process(processOrder, myPid, nextPid)
+        
+        # set to draw on window
         label = self.videoShowLabel
         # get label geometry
         qrect = label.geometry()
         width = qrect.width()
         height = qrect.height()
-
-        loop = QEventLoop()
+        
         while self.running:
-            if self.get_pInfo_flag == True:
-                print(" *** Receive pInfo: ", self.cur_pInfo)
-                self.get_pInfo_flag = False
-            # print(" *** analysis - in running loop")
-            ret, img = cap.read()
-            if ret:
-                img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-                h,w,c = img.shape
-                qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
-                pixmap = QtGui.QPixmap.fromImage(qImg)
-                label.setPixmap(pixmap)
-            else:
+            ret, frame = video_capture.read()
+            if ret != True:
                 break
-            QTimer.singleShot(25, loop.quit) #25ms
-            loop.exec_()
-        
-        self.analysisProcess.join()
-        cap.release()
-        # print(" *** out of loop (running == False)")
-        label.setText("finish")     
+            
+            # for test
+            frame_index += 1
+            if frame_index < start_frame:
+                continue
+            if frame_index > end_frame:
+                break
+            
+            # 분석 영상 처리하는 과정 동안 이벤트 처리할 수 있도록 함.
+            # bef_loop = QEventLoop()
+            # QTimer.singleShot(10, bef_loop.quit) #25ms
+            # bef_loop.exec_()
+            
+            frameIdx, personIdx = shm.get_ready_to_read()
+            
+            #update result manager to write json file and contactor photos 
+            if start_frame + 2 <= frame_index : 
+                save_list = update_output_json(shm, res_manager, frame_index, frameIdx, personIdx) 
+                save_contactor_images(frame, shm, personIdx, save_list) 
+            
+            # Draw detection and tracking result for a frame
+            for pIdx in personIdx:
+                draw_bbox_and_tid(frame=frame, person=shm.data.people[pIdx], isConfirmed=False)
+                
+            reid = shm.data.frames[frameIdx].reid
+            if reid != -1: # if there is confirmed case
+                confirmed = shm.data.people[reid]
+                
+                # Draw red bbox for confirmed case
+                draw_bbox_and_tid(frame=frame, person=confirmed, isConfirmed=True)
+                    
+                # Draw distance result for a frame
+                c_stand_point = getCentroid(bbox=confirmed.bbox, return_int=True)
+                for pIdx in personIdx:
+                    person = shm.data.people[pIdx]
+                    if not person.isClose:
+                        continue
+                    stand_point = getCentroid(bbox=person.bbox, return_int=True)
+                    cv2.line(frame, c_stand_point, stand_point, (0, 0, 255), 2) #red 
 
-    def analysisWithoutThread(self):
+                # Draw mask result for a frame
+                for pIdx in personIdx:
+                    person = shm.data.people[pIdx]
+                    square = person.bbox
+                    if person.isMask == MaskToken.NotNear : 
+                        continue 
+                    # save_contactor_images()
+                    if person.isMask == MaskToken.NotMasked : 
+                        cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (127, 127, 255), 2) #light pink
+                    elif person.isMask == MaskToken.Masked : 
+                        cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (127, 255, 127), 2) #light green 
+                    elif person.isMask == MaskToken.FaceNotFound : 
+                        cv2.rectangle(frame, (int(square.minX+5), int(square.minY+5)), (int(square.maxX-5), int(square.maxY-5)), (0, 165, 255), 2) #orange 
+            
+            # draw on window
+            img = cv2.resize(frame, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+            h,w,c = img.shape
+            qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
+            pixmap = QtGui.QPixmap.fromImage(qImg)
+            label.setPixmap(pixmap)
+            
+            aft_loop = QEventLoop()
+            QTimer.singleShot(25, aft_loop.quit) #25ms
+            aft_loop.exec_()
+            
+            # label.repaint()
+            
+            out.write(frame)
+
+            shm.finish_a_frame()
         
+        print(" ******** cv2 ret: ", ret)
+        shm.finish_process()
+        res_manager.write_jsonfile(runInfo.output_json_path, runInfo.output_video_path, runInfo.start_frame, runInfo.end_frame)
+        out.release()
+        video_capture.release()
+        label.setText("finish")
+        
+    def analysisWithoutThread(self):
         cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
         
         self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
@@ -535,6 +732,7 @@ class RouteOfConfirmedCaseWindow(QDialog):
             for col in range(4):
                 self.tableWidget.setItem(row, col, 
                                         QTableWidgetItem(result[col]))
+
         timelineList = []
         # 아래쪽 list -> 각 video결과에 대해 timeline을 그려야 함.
         for targetInfoListOfEachVideo in self.targetInfoList:
@@ -560,7 +758,7 @@ class RouteOfConfirmedCaseWindow(QDialog):
             timeline[2].setAlignment(Qt.AlignCenter)
             timeline[2].setFixedHeight( timeline[1].height()+4 )
             self.insertWidgetInListWidget( timeline[2], self.listWidget_2 ) # videoname
-
+        
     def backBtnClicked(self):
         # 결과 화면 목록창으로 전환
         self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()-1)

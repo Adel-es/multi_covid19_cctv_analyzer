@@ -20,25 +20,8 @@ only_app_test = False
         True: 시스템과 App의 상호작용을 확인하고 싶을 때
         False: 시스템 동작 X
 '''
-sync_analysis_system = True
+sync_analysis_system = False
 
 ''' In runInfo setting '''
 start_frame  = 800
-end_frame = 810
-
-logfile_name = "log.txt"
-# select in [logging.INFO, logging.DEBUG, logging.WARNING, logging.ERROR, logging.CRITICAL]
-console_log_level = logging.INFO 
-file_log_level = logging.DEBUG
-
-write_result = False
-
-parallel_processing = True
-use_mask_voting = False
-
-reid_model = 'topdb' # 'fake2' / 'fake' / 'topdb' / 'la'
-
-trackingGPU = 0
-reidGPU = 1
-faceGPU = 3 
-maskGPU = 4
+end_frame = 900
