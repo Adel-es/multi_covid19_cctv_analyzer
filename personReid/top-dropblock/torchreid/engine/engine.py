@@ -29,6 +29,7 @@ from torchreid.utils import read_image
 GRID_SPACING = 10
 VECT_HEIGTH = 10
 
+from configs import runInfo
 from gpuinfo import GPUInfo
 
 class Engine(object):
@@ -762,9 +763,9 @@ class Engine(object):
             # GPUInfo.get_users(1)
             # GPUInfo.get_info()
             if self.use_gpu:
-                # device = torch.device("cuda:3")
-                # imgs = imgs.to(device)
-                imgs = imgs.cuda()
+                device = torch.device("cuda:{}".format(runInfo.reidGPU))
+                imgs = imgs.to(device)
+                # imgs = imgs.cuda()
             end = time.time()
             features = self._extract_features(imgs)
             # print("* feature size: ", features.size())
@@ -803,7 +804,9 @@ class Engine(object):
             imgs = torch.unsqueeze(imgs, 0)   
             
             if self.use_gpu:
-                imgs = imgs.cuda()
+                device = torch.device("cuda:{}".format(runInfo.reidGPU))
+                imgs = imgs.to(device)
+                # imgs = imgs.cuda()
                 
             end = time.time()
             features = self._extract_features(imgs)
