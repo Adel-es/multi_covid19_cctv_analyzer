@@ -264,25 +264,26 @@ def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote,
         top1_conf = shm.data.people[top1_gpIdx].reidConf
         
         if use_vote :         
-            vote_tid = -1 
-            # print("top1 tid : {}".format(top1_tid))
             if top1_conf >= 0.98 : #threshold  
                 vote_tid = votingSystem.vote(top1_tid)
-                for _pIdx in personIdx : 
-                    if shm.data.people[_pIdx].tid == vote_tid :
-                        if _pIdx != top1_gpIdx : 
-                            print("after voting reid target is chagned before({}) -> after({})".format(top1_tid, vote_tid))
-                            shm.data.people[_pIdx].reidConf = top1_conf
-                            
-                            # vote_tid의 화면 존재 여부
-                        shm.data.frames[frameIdx].reid = _pIdx 
-                        break 
-            else : 
-                # mostVoteTid = votingSystem.getVote() # 이때 까지 표 가장 많이 받은 사람 
-                # mostVoteTid가 현채 프레임에 있는지 체크 
+            else :
+                vote_tid = votingSystem.get_most_vote_tid()
+            
+            vote_tid_pIdx = -1
+            for _pIdx in personIdx : 
+                if shm.data.people[_pIdx].tid == vote_tid :
+                    vote_tid_pIdx = _pIdx
+                    if _pIdx != top1_gpIdx : 
+                        print("after voting reid target is chagned before({}) -> after({})".format(top1_tid, vote_tid))
+                        shm.data.people[_pIdx].reidConf = top1_conf
+                    break 
+            shm.data.frames[frameIdx].reid = vote_tid_pIdx
+                
+        else : # not voting
+            if top1_conf >= 0.98 : #threshold  
+                shm.data.frames[frameIdx].reid = top1_gpIdx
+            else:
                 shm.data.frames[frameIdx].reid = -1
-        else : 
-            shm.data.frames[frameIdx].reid = top1_gpIdx
         
         # print("********** distance :", top1_conf)
             

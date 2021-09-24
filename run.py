@@ -113,7 +113,7 @@ def main():
     writeVideo(shm, 4, detectTrackProc.pid)
     # writeVideo(shm, 3, detectTrackProc.pid)
     
-    logger.info("Running time: {}".format(time.time() - startTime))
+    logger.info("Running time: {}".format(time.time() - shm.data.startTime.value))
 
     if (not runInfo.parallel_processing) and runInfo.write_result:
         writeShmToJsonFile(shm.data, start_frame, end_frame, input_video_path)

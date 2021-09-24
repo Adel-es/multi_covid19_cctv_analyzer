@@ -40,6 +40,8 @@ class Data():
         self.peopleIdx = Array('l', framesSize+1, lock=False)
         # 각각의 프로세스에 대해 가장 최근에 처리를 완료한 프레임 번호를 저장하는 배열.
         self.finishedFrames = Array('l', processNum, lock=False)
+        # 영상 분석 시작 시각을 기록하는 변수
+        self.startTime = Value('d', 0.0, lock=False)
         
     def set_process_order(self, myOrder):
         # myOrder를 통해 몇 번째 프로세스인지, 몇 번째 프레임을 처리해야할 차례인지 구분한다.
