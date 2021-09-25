@@ -26,9 +26,9 @@ file_log_level = 10
 write_result = False
 
 # system setting 
-parallel_processing = True
-use_mask_voting = True
-use_reid_voting = True
+parallel_processing     = True
+use_mask_voting         = True
+use_reid_voting         = True
 
 # reid model setting
 reid_model              = 'topdb' # 'fake2' / 'fake' / 'topdb' / 'la'
