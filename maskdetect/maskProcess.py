@@ -81,6 +81,12 @@ def runMaskDetection(shm, processOrder, nextPid):
 						shm.data.people[p_index].isMask = int(MaskToken.FaceNotFound)
 				else :
 					cropped_face = cutoff_face(cropped_person, face_list[0])
+					if cropped_face.shape[0] == 0 or cropped_face.shape[1] == 0 : 
+						if runInfo.use_mask_voting : 
+							shm.data.people[p_index].isMask = votingSystem.getVote(tid)
+						else : 
+							shm.data.people[p_index].isMask = int(MaskToken.FaceNotFound)
+						continue
 					cropped_face = cv2.resize(cropped_face, (maskClassifier.width, maskClassifier.height)) 
 					cropped_face = cropped_face/255.0 
 					faces_in_frame.append(cropped_face)
