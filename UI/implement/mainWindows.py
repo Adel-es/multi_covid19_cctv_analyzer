@@ -25,11 +25,11 @@ if appInfo.only_app_test == False:
         from utils.resultManager import Contactor, ResultManager
 
     def draw_bbox_and_tid(frame, person, isConfirmed):
-        TEXT_UP_FROM_BBOX = 12
+        TEXT_UP_FROM_BBOX = 5
         Width = int((person.bbox.maxX - person.bbox.minX))
         Height = int( (person.bbox.maxY  - person.bbox.minY) )
-        bboxLeftUpPoint = (int(person.bbox.minX + 7 ), int(person.bbox.minY + 7))
-        bboxRightDownPoint = (int(person.bbox.maxX - 7), int(person.bbox.maxY - 7))
+        bboxLeftUpPoint = (int(person.bbox.minX ), int(person.bbox.minY))
+        bboxRightDownPoint = (int(person.bbox.maxX), int(person.bbox.maxY))
         bboxHeadX = int((person.bbox.minX + person.bbox.maxX) / 2 )
         bboxHeadY = int(person.bbox.minY - Height / 10)
         
@@ -43,12 +43,11 @@ if appInfo.only_app_test == False:
         tidPosition = (bboxLeftUpPoint[0], bboxLeftUpPoint[1]-TEXT_UP_FROM_BBOX)
         
         if isConfirmed:
-            bboxColor = (0, 0, 255) # red
+            # bboxColor = (0, 0, 255) # red
             tidColor = (0, 0, 255) # red
             # cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 3)
             cv2.drawContours(frame, [triangle_cnt], 0, tidColor, -1)
         else:
-            bboxColor = (255, 255, 255) # white
             tidColor = (0, 255, 0) # green
 
         thick = int(Width / 3)
@@ -61,7 +60,10 @@ if appInfo.only_app_test == False:
         if scale <= 0.7 : 
             scale = 0.7
         elif scale > 2 : 
-            scale = 2 
+            scale = 2
+        
+        bboxColor = (255, 255, 255) # white 
+        cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 3)
         cv2.putText(frame, tidText, tidPosition, 0, scale, tidColor, thick)
 
         def save_contactor_images(frame, shm, person_indices : List[int], save_list) :
@@ -583,11 +585,11 @@ class AnalysisWindow(QDialog):
                         continue 
                     # save_contactor_images()
                     if person.isMask == MaskToken.NotMasked : 
-                        cv2.rectangle(frame, (int(square.minX), int(square.minY)), (int(square.maxX), int(square.maxY)), (127, 127, 255), 2) #light pink
+                        cv2.rectangle(frame, (int(square.minX), int(square.minY)), (int(square.maxX), int(square.maxY)), (127, 127, 255), 3) #light pink
                     elif person.isMask == MaskToken.Masked : 
-                        cv2.rectangle(frame, (int(square.minX), int(square.minY)), (int(square.maxX), int(square.maxY)), (127, 255, 127), 2) #light green 
+                        cv2.rectangle(frame, (int(square.minX), int(square.minY)), (int(square.maxX), int(square.maxY)), (127, 255, 127), 3) #light green 
                     elif person.isMask == MaskToken.FaceNotFound : 
-                        cv2.rectangle(frame, (int(square.minX), int(square.minY)), (int(square.maxX), int(square.maxY)), (0, 165, 255), 2) #orange 
+                        cv2.rectangle(frame, (int(square.minX), int(square.minY)), (int(square.maxX), int(square.maxY)), (0, 165, 255), 3) #orange 
 
             # draw on window
             img = cv2.resize(frame, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
