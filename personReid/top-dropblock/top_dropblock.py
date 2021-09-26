@@ -209,7 +209,7 @@ def crop_frame_image(frame, bbox):
     return Image.fromarray(frame).crop( (int(bbox.minX),int(bbox.minY), 
                                          int(bbox.maxX),int(bbox.maxY)) ) # (start_x, start_y, start_x + width, start_y + height) 
      
-def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote, 
+def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote, reid_threshold,
                     input_video_path,
                     shm, processOrder, myPid, nextPid,
                     query_image_path):
@@ -264,7 +264,7 @@ def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote,
         top1_conf = shm.data.people[top1_gpIdx].reidConf
         
         if use_vote :         
-            if top1_conf >= 0.98 : #threshold  
+            if top1_conf >= reid_threshold :
                 vote_tid = votingSystem.vote(top1_tid)
             else :
                 vote_tid = votingSystem.get_most_vote_tid()
@@ -274,13 +274,13 @@ def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote,
                 if shm.data.people[_pIdx].tid == vote_tid :
                     vote_tid_pIdx = _pIdx
                     if _pIdx != top1_gpIdx : 
-                        print("after voting reid target is chagned before({}) -> after({})".format(top1_tid, vote_tid))
+                        # print("after voting reid target is chagned before({}) -> after({})".format(top1_tid, vote_tid))
                         shm.data.people[_pIdx].reidConf = top1_conf
                     break 
             shm.data.frames[frameIdx].reid = vote_tid_pIdx
                 
         else : # not voting
-            if top1_conf >= 0.98 : #threshold  
+            if top1_conf >= reid_threshold : 
                 shm.data.frames[frameIdx].reid = top1_gpIdx
             else:
                 shm.data.frames[frameIdx].reid = -1

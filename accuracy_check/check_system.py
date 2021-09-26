@@ -32,11 +32,25 @@ def getSystemAccuracy(shm, gTruth):
                 gTruth[pKey][frameNum] = []     # Remove
     
     # Remove data from shm except for inferred query
-    for fIdx in range(num_of_frames):
+    # and if the frame has no ground truth query
+    k = 0
+    for fIdx in range(2, num_of_frames):
+        
         inferredQueryPIdx = shm['frames'][fIdx]['reid']
+        # If there are no inferred query
         if inferredQueryPIdx == -1:
             shm['people'][fIdx] = []
             continue
+        
+        frameNum = start_frame + fIdx
+        # If there are no ground truth query
+        if type(gTruth[queryKey][frameNum]) != dict:
+            k = k+1
+            print("minus: {}".format(k))
+            shm['frames'][fIdx]['reid'] = -1
+            shm['people'][fIdx] = []
+            continue
+        
         shm['people'][fIdx] = [ shm['people'][fIdx][inferredQueryPIdx] ]
 
     # Count groundTruthsNum
@@ -67,7 +81,7 @@ def getSystemAccuracy(shm, gTruth):
         shmToGTruthMapping.append([{"pKey": "", "bboxTP": False, "reidTP": False, "maskTP": False} for i in range(len(aFrame))])
 
     getBboxAccuracyAndMapping(shm, gTruth, shmToGTruthMapping, makeLog=False)
-    getReidAccuracy(shm, gTruth, shmToGTruthMapping, makeLog=False)
+    getReidAccuracy(shm, gTruth, shmToGTruthMapping, makeLog=True)
     get_maskAccuracy(gTruth, shm, shmToGTruthMapping)
     # logger.info(shmToGTruthMapping)
 

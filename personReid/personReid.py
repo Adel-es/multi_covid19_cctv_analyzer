@@ -19,6 +19,7 @@ output_video_path = runInfo.output_video_path
 start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 use_vote = runInfo.use_reid_voting
+reid_threshold = runInfo.reid_threshold
 query_image_path = runInfo.query_image_path
 
 def fakeReid3(shm, processOrder, nextPid):
@@ -57,7 +58,7 @@ def fakeReid2(shm, processOrder, nextPid):
     shm.init_process(processOrder, myPid, nextPid)
     
     # decide confirmed tid 
-    confirmed_tid = {1}
+    confirmed_tid = {150}
     
     t_conf = 0.6
     f_conf = 0.1
@@ -128,6 +129,7 @@ def personReid_topdb(shm, processOrder, nextPid, gpu_idx):
     run_top_db_test(engine=top_db_engine, cfg=top_db_cfg, 
                     start_frame=start_frame, end_frame=end_frame,
                     use_vote=use_vote, 
+                    reid_threshold=reid_threshold,
                     input_video_path=input_video_path,
                     shm=shm, processOrder=processOrder, myPid=myPid, nextPid=nextPid,
                     query_image_path=query_image_path)
