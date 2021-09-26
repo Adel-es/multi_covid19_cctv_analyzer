@@ -5,7 +5,7 @@ start_frame = runInfo.start_frame
 end_frame = runInfo.end_frame
 FRAME_NUM = end_frame - start_frame + 1
 
-DISTANCE_BBOX_RATIO_CRITERIA = 5
+DISTANCE_BBOX_RATIO_CRITERIA = 3.6
 
 def getCentroid(bbox, return_int=False):
     '''
@@ -44,11 +44,16 @@ def checkDistance(shm, processOrder, nextPid):
                 person = shm.data.people[pIdx]
                 width = person.bbox.maxX - person.bbox.minX
                 bbox_average_width = (c_width + width) / 2
+                # Find width ratio
+                if c_width > width:
+                    width_ratio = width / c_width
+                else:
+                    width_ratio = c_width / width
                 # Find the distance between centroids for two people
                 centroid = getCentroid(person.bbox)
                 distance = math.sqrt(math.pow((c_centroid[0] - centroid[0]), 2) + math.pow((c_centroid[1] - centroid[1]), 2)) 
                 # Compare the bbox_average_width and distance to determine if the two people are close
-                is_close = distance <= DISTANCE_BBOX_RATIO_CRITERIA * bbox_average_width
+                is_close = distance <= DISTANCE_BBOX_RATIO_CRITERIA * bbox_average_width * width_ratio
                 if is_close:
                     shm.data.people[pIdx].isClose = True
                 else:
