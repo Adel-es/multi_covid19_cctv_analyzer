@@ -54,7 +54,7 @@
      <item>
       <widget class="QPushButton" name="showRsltBtn">
        <property name="text">
-        <string>분석 중단</string>
+        <string>분석 결과</string>
        </property>
       </widget>
      </item>

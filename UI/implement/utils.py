@@ -104,69 +104,67 @@ def output_file_validation_test(output_video_path):
         print(" [Error] {}: There is no such video file".format(output_video_path))
         exit(-1)
 
-def getRunInfoFileContents(input_video_path, 
-                    query_image_path,
-                    output_video_path, 
-                    output_json_path, 
-                    output_contactors_path,
+# def getRunInfoFileContents(input_video_path, 
+#                     query_image_path,
+#                     output_video_path, 
+#                     output_json_path, 
+#                     output_contactors_path,
 
-                    start_frame  = appInfo.start_frame, 
-                    end_frame = appInfo.end_frame,
+#                     start_frame  = appInfo.start_frame, 
+#                     end_frame = appInfo.end_frame,
 
-                    logfile_name = appInfo.logfile_name, 
-                    console_log_level = appInfo.console_log_level, 
-                    file_log_level = appInfo.file_log_level, 
+#                     console_log_level = appInfo.console_log_level, 
+#                     file_log_level = appInfo.file_log_level, 
 
-                    write_result = appInfo.write_result,
+#                     write_result = appInfo.write_result,
 
-                    parallel_processing = appInfo.parallel_processing, 
-                    use_mask_voting = appInfo.use_mask_voting,
+#                     parallel_processing = appInfo.parallel_processing, 
+#                     use_mask_voting = appInfo.use_mask_voting,
 
-                    reid_model = appInfo.reid_model,
+#                     reid_model = appInfo.reid_model,
 
-                    trackingGPU = appInfo.trackingGPU, 
-                    reidGPU = appInfo.reidGPU, 
-                    faceGPU = appInfo.faceGPU, 
-                    maskGPU = appInfo.maskGPU,):
-    contents=\
-    u"""
-import logging
+#                     trackingGPU = appInfo.trackingGPU, 
+#                     reidGPU = appInfo.reidGPU, 
+#                     faceGPU = appInfo.faceGPU, 
+#                     maskGPU = appInfo.maskGPU,):
+#     contents=\
+#     u"""
+# import logging
 
-# anaylsis time, file setting 
-input_video_path        = "{}"
-query_image_path        = "{}" # query image의 이름은 "숫자_숫자_숫자" 로 설정. ex) 1_0_0.jpg
-output_video_path       = "{}"
-output_json_path        = "{}"
-output_contactors_path  = "{}" 
-start_frame             = {}
-end_frame               = {}
+# # anaylsis time, file setting 
+# input_video_path        = "{}"
+# query_image_path        = "{}" # query image의 이름은 "숫자_숫자_숫자" 로 설정. ex) 1_0_0.jpg
+# output_video_path       = "{}"
+# output_json_path        = "{}"
+# output_contactors_path  = "{}" 
+# start_frame             = {}
+# end_frame               = {}
 
-# log setting 
-logfile_name            = "{}"
-console_log_level       = {} # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
-file_log_level          = {}
+# # log setting 
+# console_log_level       = {} # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
+# file_log_level          = {}
 
-# accuracy check setting
-write_result            = {}
+# # accuracy check setting
+# write_result            = {}
 
-# system setting 
-parallel_processing     = {}
-use_mask_voting         = {} 
+# # system setting 
+# parallel_processing     = {}
+# use_mask_voting         = {} 
 
-# reid model setting
-reid_model              = '{}' # 'fake2' / 'fake' / 'topdb' / 'la'
+# # reid model setting
+# reid_model              = '{}' # 'fake2' / 'fake' / 'topdb' / 'la'
 
-# allocate specific gpu device
-trackingGPU             = {}
-reidGPU                 = {}
-faceGPU                 = {}
-maskGPU                 = {}
-    """.format(input_video_path, query_image_path,
-                    output_video_path, output_json_path, output_contactors_path,
-                    start_frame, end_frame,
-                    logfile_name, console_log_level, file_log_level, 
-                    write_result,
-                    parallel_processing, use_mask_voting,
-                    reid_model,
-                    trackingGPU, reidGPU, faceGPU, maskGPU,)
-    return contents
+# # allocate specific gpu device
+# trackingGPU             = {}
+# reidGPU                 = {}
+# faceGPU                 = {}
+# maskGPU                 = {}
+#     """.format(input_video_path, query_image_path,
+#                     output_video_path, output_json_path, output_contactors_path,
+#                     start_frame, end_frame,
+#                     console_log_level, file_log_level, 
+#                     write_result,
+#                     parallel_processing, use_mask_voting,
+#                     reid_model,
+#                     trackingGPU, reidGPU, faceGPU, maskGPU,)
+#     return contents

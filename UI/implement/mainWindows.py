@@ -359,21 +359,21 @@ class AnalysisWindow(QDialog):
         runInfo.start_frame             = appInfo.start_frame
         runInfo.end_frame               = appInfo.end_frame
 
-        runInfo.logfile_name            = appInfo.logfile_name
-        runInfo.console_log_level       = appInfo.console_log_level
-        runInfo.file_log_level          = appInfo.file_log_level
+        # runInfo.logfile_name            = appInfo.logfile_name
+        # runInfo.console_log_level       = appInfo.console_log_level
+        # runInfo.file_log_level          = appInfo.file_log_level
 
-        runInfo.write_result            = appInfo.write_result
+        # runInfo.write_result            = appInfo.write_result
 
-        runInfo.parallel_processing     = appInfo.parallel_processing
-        runInfo.use_mask_voting         = appInfo.use_mask_voting
+        # runInfo.parallel_processing     = appInfo.parallel_processing
+        # runInfo.use_mask_voting         = appInfo.use_mask_voting
 
-        runInfo.reid_model              = appInfo.reid_model
+        # runInfo.reid_model              = appInfo.reid_model
 
-        runInfo.trackingGPU             = appInfo.trackingGPU
-        runInfo.reidGPU                 = appInfo.reidGPU
-        runInfo.faceGPU                 = appInfo.faceGPU
-        runInfo.maskGPU                 = appInfo.maskGPU
+        # runInfo.trackingGPU             = appInfo.trackingGPU
+        # runInfo.reidGPU                 = appInfo.reidGPU
+        # runInfo.faceGPU                 = appInfo.faceGPU
+        # runInfo.maskGPU                 = appInfo.maskGPU
         
     def stop(self):
         print(" *** stop - before call exit system")
