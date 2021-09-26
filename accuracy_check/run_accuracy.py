@@ -22,10 +22,10 @@ from personReid.personReid import fakeReid3
 from utils.types import MaskToken
 
 TEST_BBOX = False
-TEST_REID = False
-TEST_MASK = True
+TEST_REID = True
+TEST_MASK = False
 TEST_SYSTEM = False
-QUERY_GROUND_TRUTH = "P8"
+QUERY_GROUND_TRUTH = 'P7'
 WRITE_VIDEO = False
 
 # print(TEST_MASK)
