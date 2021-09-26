@@ -262,7 +262,7 @@ def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote, reid_threshol
         for i, pIdx in enumerate(personIdx):
             shm.data.people[pIdx].reidConf = confidenceList[i]
         top1_conf = shm.data.people[top1_gpIdx].reidConf
-        
+
         if use_vote :         
             if top1_conf >= reid_threshold :
                 vote_tid = votingSystem.vote(top1_tid)
