@@ -20,8 +20,23 @@ confusion_matrix = [
     [0, 0, 0]
 ]
 
+
+new_tid = 9
+tid_to_currentTid = {
+        1 : [1], 
+        2 : [2], 
+        3 : [3],
+        4 : [4],
+        5 : [5],
+        6 : [6],
+        7 : [7],
+        8 : [8]
+}
+
 def copy_from_gtruth (shm, processOrder, nextPid) : 
+    global new_tid
     myPid = 'mask_accuracy.copy_from_gtruth'
+    
     shm.init_process(processOrder, myPid, nextPid)
     logger = logging.getLogger('root') 
     
@@ -34,14 +49,18 @@ def copy_from_gtruth (shm, processOrder, nextPid) :
     for fIdx in range(FRAME_NUM):
         logger.debug("frame {}".format(fIdx))
         frameNumber = fIdx + runInfo.start_frame 
-        # print("frameNumber : {}".format(frameNumber))
+        print("frameNumber : {}".format(frameNumber))
         tids = []
         bboxes = []
         confidences = []
         for pKey in gTruth:
             person = gTruth[pKey][frameNumber]
             if type(person) == dict:
-                tids.append(int(pKey[-1])) # 수정
+                if frameNumber != runInfo.start_frame and type(gTruth[pKey][frameNumber - 1]) != dict :   
+                    # tids.append(new_tid)
+                    new_tid = new_tid + 1 
+                    tid_to_currentTid[int(pKey[-1])].append(new_tid)
+                tids.append(tid_to_currentTid[int(pKey[-1])][-1]) # 수정
                 bboxes.append(person['Position'])
                 confidences.append(1.0)
         

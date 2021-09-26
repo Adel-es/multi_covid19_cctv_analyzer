@@ -16,7 +16,7 @@ from accuracy_check.file_io import *
 from accuracy_check.check_bbox import getBboxAccuracyAndMapping
 from accuracy_check.check_reid import getReidAccuracy
 from accuracy_check.check_system import getSystemAccuracy
-from accuracy_check.mask_accuracy import copy_from_gtruth, get_f1_score, print_confusion_matrix, print_precisions, print_recalls, update_confusion_matrix
+from accuracy_check.mask_accuracy import copy_from_gtruth, get_f1_score, print_confusion_matrix, print_precisions, print_recalls, update_confusion_matrix, tid_to_currentTid
 from personReid.personReid import fakeReid3
 
 from utils.types import MaskToken
@@ -113,7 +113,7 @@ if __name__ == '__main__':
         getReidAccuracy(shm, gTruth)
     elif TEST_MASK:
         for i in range(1, 9) : 
-            update_confusion_matrix(shm, gTruth, "P{}".format(i), [i], runInfo.start_frame, runInfo.end_frame)
+            update_confusion_matrix(shm, gTruth, "P{}".format(i), tid_to_currentTid[i], runInfo.start_frame, runInfo.end_frame)
         print_confusion_matrix()
         print_precisions() 
         print_recalls() 
