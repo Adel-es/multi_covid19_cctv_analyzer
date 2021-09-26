@@ -6,6 +6,8 @@ gpu_usage_check.py
 test
 *.pyc 
 log.txt
+final_result/
+nohup.out
 
 # tempData
 log/*

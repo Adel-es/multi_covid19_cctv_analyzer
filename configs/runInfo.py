@@ -19,7 +19,7 @@ if end_frame == -1 :
 
 # log setting 
 logfile_name = "log.txt"
-console_log_level = 20 # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
+console_log_level = logging.WARNING # select in [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL] 
 file_log_level = 10
 
 # create output.json or not 
@@ -32,10 +32,10 @@ use_reid_voting = False
 
 # reid model setting
 reid_model              = 'topdb' # 'fake2' / 'fake' / 'topdb' / 'la'
+reid_threshold          = 0.975
 
 # allocate specific gpu device
 trackingGPU             = 0
-reidGPU = 6
-faceGPU                 = 3
-maskGPU                 = 4
-    
+reidGPU                 = 1
+faceGPU                 = 2
+maskGPU                 = 3
