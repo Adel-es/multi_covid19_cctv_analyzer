@@ -5,6 +5,7 @@ import logging
 
 from PyQt5.QtWidgets import *
 from configs import appInfo
+from IPython.utils.timing import clock2
 
 def center(self):
     qr = self.frameGeometry()
@@ -104,6 +105,69 @@ def output_file_validation_test(output_video_path):
         print(" [Error] {}: There is no such video file".format(output_video_path))
         exit(-1)
 
+def get_video_start_clock(video_name):
+    import re
+    # print(video_name)
+    p = re.compile(r"(\d+).(\d+).(\d\d)(\d\d).(\d+).(\d+).+")
+    m = re.findall(p, video_name)
+    # print(m)
+    clock = {'month':int(m[0][0]), 'day':int(m[0][1]),'h':int(m[0][2]),'m':int(m[0][3]), 's':0}
+    return clock
+
+def compare_video_clock(clock1, clock2, cmp='min'):
+    if cmp == 'min':
+        for k in ['month', 'day', 'h', 'm', 's']:
+            if(clock1[k] < clock2[k]):
+                return clock1
+            elif(clock1[k] > clock2[k]):
+                return clock2
+        return clock1
+    elif cmp == 'max':
+        for k in ['month', 'day', 'h', 'm', 's']:
+            if(clock1[k] > clock2[k]):
+                return clock1
+            elif(clock1[k] < clock2[k]):
+                return clock2
+        return clock1
+    else:
+        print("\033[91m [Error] utils.py - compare_video_clock() : parameter 'cmp' is expected 'min' or 'max', but now is {}. \033[0m".format(cmp))
+
+def get_video_end_clock(video_start_clock, video_frame_no, video_fps):
+    total_sec = int(video_frame_no / video_fps)
+    hour = int(total_sec / 3600)
+    total_sec %= 3600
+    min = int(total_sec / 60)
+    total_sec %= 60
+    sec = total_sec
+    
+    month = video_start_clock['month']
+    day = video_start_clock['day']
+    hour += video_start_clock['h']
+    min += video_start_clock['m']
+    sec += video_start_clock['s']
+    # if(sec >= 60):
+    #     min += sec/60
+    #     sec %= 60
+    if sec >= 60:
+        min += int(sec/60)
+        sec %= 60
+    if min >= 60:
+        hour += int(min/60)
+        min %= 60
+    if hour >= 24:
+        day += int(hour/24)
+        hour %= 24
+    # day는 아직 필요없으므로 패쓰
+    return {'month': month, 'day':day, 'h':hour, 'm':min, 's':sec}
+
+def getFrameFromClock(clock, fps):
+    # sec = clock['month'] * 12*24*60*60
+    sec = 0
+    # sec += clock['day'] * 24*60*60
+    sec += clock['h'] * 3600
+    sec += clock['m'] * 60
+    sec += clock['s']
+    return sec * fps
 # def getRunInfoFileContents(input_video_path, 
 #                     query_image_path,
 #                     output_video_path, 
