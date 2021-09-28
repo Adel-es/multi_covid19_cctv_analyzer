@@ -733,6 +733,7 @@ class RouteOfConfirmedCaseWindow(QDialog):
         self.targetInfoList = []
         # self.showResult()
         self.backBtn.clicked.connect(self.backBtnClicked)
+        self.comboBox.currentIndexChanged.connect(self.comboBoxIndexChanged)
 
     def getProjectDirPath(self, project_dir_path, targetInfoList):
         self.project_dir_path = project_dir_path
@@ -740,12 +741,35 @@ class RouteOfConfirmedCaseWindow(QDialog):
         self.result_dir_path = "{}/{}".format(self.project_dir_path, "data/output/analysis")
         self.targetInfoList = targetInfoList
 
-    def showResult(self):
+    def comboBoxIndexChanged(self):
+        if self.comboBox.currentIndex() == 0:
+            print("\t\tChoose ")
+            # print(type(self.comboBox.currentText()))
+            print(self.comboBox.currentText().encode('utf-8'))
+            self.drawAboveTable('IN 시각')
+        elif self.comboBox.currentIndex() == 1:
+            print("\t\tChoose ")
+            # print(type(self.comboBox.currentText()))
+            print(self.comboBox.currentText().encode('utf-8'))
+            self.drawAboveTable('영상 이름')
+        self.tableWidget.repaint()
+        
+    def drawAboveTable(self, sort='IN 시각'):
         # targetListInfo를 1차원 list로 합치기
         print(self.targetInfoList)
         if len(self.targetInfoList) == 0:
             print("There is no target information -> np.hstack(self.targetInfoList) is error")
         targetInfoFlattenList = np.hstack(self.targetInfoList)
+
+        if sort == 'IN 시각':
+            # IN 시각 sorting을 위해 IN 시각 프레임 + 시작 시각 프레임 으로 수정
+            for row, targetInfo in enumerate(targetInfoFlattenList):
+                # 영상 시작 시간, 종료 시간 구하기
+                video_start_clock = get_video_start_clock(targetInfo['video_name'].split('/')[-1])
+                targetInfo['real_in'] = targetInfo['in'] + getFrameFromClock(video_start_clock, targetInfo['fps'])
+            targetInfoFlattenList = sorted(targetInfoFlattenList, key=lambda x : x['real_in'])
+        elif sort == '영상 이름':
+            targetInfoFlattenList = sorted(targetInfoFlattenList, key=lambda x : x['video_name'].split('/')[-1])
 
         # 위쪽 tableWidget setting
         self.tableWidget.setRowCount( len(targetInfoFlattenList) )
@@ -755,22 +779,28 @@ class RouteOfConfirmedCaseWindow(QDialog):
         # 위쪽 table -> 전체 video 결과에 대해 정렬해야함.
         # 동시에 영상 최소 시작 시간, 최대 시작 시간 구하기
         min_start_clock = {'month':99, 'day':99, 'h':99, 'm':99}
-        max_start_clock = {'month':0, 'day':0, 'h':0, 'm':0}
+        max_end_clock = {'month':0, 'day':0, 'h':0, 'm':0, 's':0}
         for row, targetInfo in enumerate(targetInfoFlattenList):
-            print(targetInfo)
-            result = [ targetInfo['video_name'],
-                        str(targetInfo['index']),
-                        getTimeFromFrame(targetInfo['in'], targetInfo['fps']), 
-                        getTimeFromFrame(targetInfo['out'], targetInfo['fps'])]
-            
+            # 영상 시작 시간, 종료 시간 구하기
             video_start_clock = get_video_start_clock(targetInfo['video_name'].split('/')[-1])
-            # print('\033[102m video start clock: {} \033[0m'.format(video_start_clock) )
-            min_start_clock = compare_start_clock(video_start_clock, min_start_clock, 'min')
-            max_start_clock = compare_start_clock(video_start_clock, max_start_clock, 'max')
+            video_end_clock = get_video_end_clock(video_start_clock, targetInfo['frame_no'], targetInfo['fps'])
+            # print('\033[42m video start clock: {} \033[0m'.format(video_start_clock) )
+            # print('\033[42m video end clock: {} \033[0m'.format(video_end_clock) )
+            min_start_clock = compare_video_clock(video_start_clock, min_start_clock, 'min')
+            max_end_clock = compare_video_clock(video_end_clock, max_end_clock, 'max')
+            
+            print(targetInfo)
+            result = [ targetInfo['video_name'].split('/')[-1],
+                        str(targetInfo['index']),
+                        getTimeFromFrame(targetInfo['in']+getFrameFromClock(video_start_clock, targetInfo['fps']), targetInfo['fps']), 
+                        getTimeFromFrame(targetInfo['out']+getFrameFromClock(video_start_clock, targetInfo['fps']), targetInfo['fps'])]
+            
             for col in range(4):
                 self.tableWidget.setItem(row, col, 
                                         QTableWidgetItem(result[col]))
-
+        return min_start_clock, max_end_clock
+    
+    def drawBelowList(self, min_start_clock, max_end_clock):
         # print('\033[102m min start clock: {} \033[0m'.format(min_start_clock) )
         # print('\033[102m max start clock: {} \033[0m'.format(max_start_clock) )
         timelineList = []
@@ -782,14 +812,30 @@ class RouteOfConfirmedCaseWindow(QDialog):
                 # 확진자가 없는 영상은 결과에 나타나지 않음.
                 continue
             else:
-                # (아래쪽 list) Timeline widget 추가
-                timelineWidget = TimeLineWidget(targetInfoListOfEachVideo)
-            
                 # (아래쪽 list) 영상 이름 추가
-                videoNameWidget = QLabel( targetInfoListOfEachVideo[0]['video_name'].split('/')[-1] )
+                videoName = targetInfoListOfEachVideo[0]['video_name'].split('/')[-1]
+                videoNameWidget = QLabel( videoName )
+                # print(videoName)
                 
+                video_start_clock = get_video_start_clock(videoName)
+                video_end_clock = get_video_end_clock(video_start_clock, targetInfoListOfEachVideo[0]['frame_no'], targetInfoListOfEachVideo[0]['fps'])
+                
+                fps = targetInfoListOfEachVideo[0]['fps']
+                interval_start_time = getFrameFromClock(video_start_clock, fps) - getFrameFromClock(min_start_clock, fps)
+                interval_mid_time = getFrameFromClock(video_end_clock, fps) - getFrameFromClock(video_start_clock, fps)
+                interval_end_time = getFrameFromClock(max_end_clock, fps) - getFrameFromClock(video_end_clock, fps)
+                # print('\033[41m min start clock: \n\tis {}\n\tim {}\n\tie {} \033[0m'.format(interval_start_time, interval_mid_time, interval_end_time) )
+        
+                # 영상 분석 결과가 0이면 결과에 나타나지 않음.
+                # if interval_mid_time == 0:
+                #     print("\033[42m [Warning] {}의 분석 결과의 길이가 0 frame이므로 타임라인에 표시되지 않습니다. \033[0m".format(videoName))
+                #     continue
+                
+                # (아래쪽 list) Timeline widget 추가
+                timelineWidget = TimeLineWidget(targetInfoListOfEachVideo, interval_start_time, interval_mid_time, interval_end_time)
+            
                 timelineList.append((timelineWidget.getFirstInStartTime(), timelineWidget, videoNameWidget))
-
+        
         timelineList = sorted(timelineList, key=lambda x : x[0])
         for timeline in timelineList:
             print('get input time: ',timeline[0])
@@ -798,6 +844,10 @@ class RouteOfConfirmedCaseWindow(QDialog):
             timeline[2].setAlignment(Qt.AlignCenter)
             timeline[2].setFixedHeight( timeline[1].height()+4 )
             self.insertWidgetInListWidget( timeline[2], self.listWidget_2 ) # videoname
+            
+    def showResult(self):
+        min_start_clock, max_end_clock = self.drawAboveTable()
+        self.drawBelowList(min_start_clock, max_end_clock)
         
     def backBtnClicked(self):
         # 결과 화면 목록창으로 전환

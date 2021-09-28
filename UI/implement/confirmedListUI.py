@@ -69,10 +69,14 @@ class TimeLineWidget(QWidget):
     '''
         use in RootOfConfirmedCaseWindow class
     '''
-    def __init__(self, targetInfoListOfEachVideo):
+    def __init__(self, targetInfoListOfEachVideo, interval_start_time, interval_mid_time, interval_end_time):
         super().__init__()
+        layout_for_total_video = QHBoxLayout()
         layout = QHBoxLayout()
 
+        
+        print('\033[41m min start clock: \n\tis{}\n\tim{}\n\tie{} \033[0m'.format(interval_start_time, interval_mid_time, interval_end_time) )
+        
         # self.targetInfoListOfEachVideo = targetInfoListOfEachVideo
         # self.frameNo = videoResult.frameNo
         # self.fps = videoResult.fps
@@ -110,8 +114,14 @@ class TimeLineWidget(QWidget):
         line = HorizontalLine()
         layout.addWidget(line, stretch = frameNo-prev_end_time+1)
         layout.setSpacing(0) # widget 간 거리를 0으로 만듦 -> hline과 colorbar간의 거리를 없앰
-        self.setLayout(layout)
+        
+        layout_for_total_video.addWidget(QLabel(), stretch=interval_start_time)
+        layout_for_total_video.addLayout(layout, stretch=interval_mid_time)
+        layout_for_total_video.addWidget(QLabel(), stretch=interval_end_time)
+        layout_for_total_video.setSpacing(0)
+        self.setLayout(layout_for_total_video)
     
     def getFirstInStartTime(self):
         return self.first_in_time
+    
         
