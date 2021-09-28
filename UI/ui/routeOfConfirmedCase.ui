@@ -18,6 +18,11 @@
     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,3">
      <item>
       <widget class="QListWidget" name="listWidget_2">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <item>
         <property name="text">
          <string>영상 이름</string>
@@ -30,6 +35,11 @@
      </item>
      <item>
       <widget class="QListWidget" name="listWidget">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <item>
         <property name="text">
          <string>타임라인</string>
@@ -59,6 +69,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="backBtn">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>돌아가기</string>
        </property>
@@ -74,8 +89,14 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="font">
+      <font>
+       <family>-윤고딕310</family>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;확진자 출현 시간 목록&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>확진자 출현 목록</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -99,6 +120,11 @@
      </item>
      <item>
       <widget class="QLabel" name="label_2">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>정렬 기준:</string>
        </property>
@@ -106,6 +132,11 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboBox">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <item>
         <property name="text">
          <string>IN 시각</string>
@@ -122,6 +153,11 @@
    </item>
    <item row="5" column="0">
     <widget class="QTableWidget" name="tableWidget">
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <column>
       <property name="text">
        <string>영상 이름</string>

@@ -57,7 +57,7 @@ def loadJson(video_dir_path, contactor_dir, result_json_dir):
         
         # targetInfoList에 video 정보 추가하기
         for idx, info in enumerate(_targetInfoList):
-            info['video_name'] = result_json['video_name']
+            info['video_name'] = result_json['video_name'].split('/')[-1]
             info['frame_no'] = video_frameno
             info['frame_start'] = video_start_frame
             info['frame_end'] = video_end_frame
@@ -66,12 +66,21 @@ def loadJson(video_dir_path, contactor_dir, result_json_dir):
 
         # contactorInfoList에 video정보 추가하기
         for info in _contactorInfoList:
-            info['video_name'] = result_json['video_name']
+            info['video_name'] = result_json['video_name'].split('/')[-1]
             info['frame_no'] = video_frameno
             # info['frame_start'] = video_start_frame
             # info['frame_end'] = video_end_frame
             info['fps'] = video_fps
             info['image_path'] = contactor_dir + "/fr{}_tid{}.jpg".format(info['capture_time'], info['tid'])
+            
+            # 만약 json에 mask 라벨이 안붙어있다면 (구버전) 임의로 추가함
+            if not (info.get('target_mask') and info.get('contactor_mask')):
+                # print('\033[42m'+ '[Warning] {} is old version result file.'.format(json_path) + '\033[0m')
+                info['target_mask'] = "UnKnown"
+                info['contactor_mask'] = "UnKnown"
+            # else:
+                # print('\033[43m'+ '[Warning] {} is new version result file.'.format(json_path) + '\033[0m')
+                
 
         # targetInfoList는 video간 timeline을 그려야 하므로 append
         targetInfoList.append(_targetInfoList)

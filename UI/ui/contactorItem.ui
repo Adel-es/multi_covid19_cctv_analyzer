@@ -36,7 +36,7 @@
        <property name="font">
         <font>
          <family>-윤고딕310</family>
-         <pointsize>10</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -45,6 +45,9 @@
        <property name="wordWrap">
         <bool>true</bool>
        </property>
+       <property name="margin">
+        <number>2</number>
+       </property>
       </widget>
      </item>
      <item row="0" column="1">
@@ -52,7 +55,7 @@
        <property name="font">
         <font>
          <family>-윤고딕310</family>
-         <pointsize>10</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -60,6 +63,9 @@
        </property>
        <property name="wordWrap">
         <bool>true</bool>
+       </property>
+       <property name="margin">
+        <number>2</number>
        </property>
       </widget>
      </item>
@@ -68,7 +74,7 @@
        <property name="font">
         <font>
          <family>-윤고딕310</family>
-         <pointsize>10</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -77,6 +83,9 @@
        <property name="wordWrap">
         <bool>true</bool>
        </property>
+       <property name="margin">
+        <number>2</number>
+       </property>
       </widget>
      </item>
      <item row="1" column="1">
@@ -84,7 +93,7 @@
        <property name="font">
         <font>
          <family>-윤고딕310</family>
-         <pointsize>10</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -92,6 +101,9 @@
        </property>
        <property name="wordWrap">
         <bool>true</bool>
+       </property>
+       <property name="margin">
+        <number>2</number>
        </property>
       </widget>
      </item>
@@ -100,7 +112,7 @@
        <property name="font">
         <font>
          <family>-윤고딕310</family>
-         <pointsize>10</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -109,6 +121,9 @@
        <property name="wordWrap">
         <bool>true</bool>
        </property>
+       <property name="margin">
+        <number>2</number>
+       </property>
       </widget>
      </item>
      <item row="2" column="1">
@@ -116,7 +131,7 @@
        <property name="font">
         <font>
          <family>-윤고딕310</family>
-         <pointsize>10</pointsize>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <property name="text">
@@ -124,6 +139,9 @@
        </property>
        <property name="wordWrap">
         <bool>true</bool>
+       </property>
+       <property name="margin">
+        <number>2</number>
        </property>
       </widget>
      </item>

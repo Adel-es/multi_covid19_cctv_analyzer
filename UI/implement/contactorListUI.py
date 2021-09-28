@@ -96,7 +96,7 @@ class ContactorItem(QWidget):
         Args:
             info: 접촉자의 정보(사진, 영상 이름..)를 담고있는 ContactorInfo()
     '''
-    def __init__(self, info, videoName, fps):
+    def __init__(self, info, videoName, start_time_str, end_time_str, target_mask, contactor_mask):
         QWidget.__init__(self)
         loadUi("./UI/ui/contactorItem.ui", self)
         
@@ -108,9 +108,22 @@ class ContactorItem(QWidget):
         self.video_name_label.setText(videoName)
         # self.date_label.setText(info.date)
         self.time_label.setText("{} ~ {}".format(
-            getTimeFromFrame(info["start_time"], fps), 
-            getTimeFromFrame(info["end_time"], fps)
+            start_time_str, 
+            end_time_str
             ))
         if type(info['danger_level']) != str:
             info['danger_level'] = str(info['danger_level'])
-        self.dangerous_score_label.setText(info["danger_level"])
+        self.dangerous_score_label.setText("{}  (확진자: 마스크 {}, 접촉자: 마스크 {})".format(
+                                        info["danger_level"], 
+                                        self.getMaskStatusStatement(info['target_mask']),
+                                        self.getMaskStatusStatement(info['contactor_mask'])))
+
+    def getMaskStatusStatement(self, mask):
+        if mask == "masked" : 
+            return "O"
+        elif mask == "notMasked" : 
+            return "X"
+        elif mask == "faceNotFound" : 
+            return "?"
+        elif mask == "UnKnown" : 
+            return "?"

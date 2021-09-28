@@ -13,11 +13,16 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="1,1,0,0,0,1" columnstretch="1,0,8,0,1">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,1,1,1,0,1" columnstretch="1,0,8,0,1">
    <item row="3" column="2">
     <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,10,0">
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
        <property name="lineWidth">
         <number>0</number>
        </property>
@@ -34,6 +39,11 @@
      </item>
      <item row="0" column="1">
       <widget class="QLabel" name="projParentDirLabel">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -41,6 +51,11 @@
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>프로젝트 이름:</string>
        </property>
@@ -51,6 +66,11 @@
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="findPathBtn">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
@@ -63,7 +83,13 @@
       </widget>
      </item>
      <item row="1" column="1" colspan="2">
-      <widget class="QLineEdit" name="projNameLineEdit"/>
+      <widget class="QLineEdit" name="projNameLineEdit">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -167,6 +193,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="createBtn">
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>프로젝트 열기</string>
        </property>

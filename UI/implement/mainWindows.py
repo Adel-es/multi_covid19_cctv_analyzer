@@ -355,6 +355,9 @@ class AnalysisWindow(QDialog):
         self.photo_paths = photo_paths
         self.video_paths = video_paths
 
+        # (임시) 직접 분석하지 않을 땐 결과 영상이 뜨도록 하기
+        self.output_video_path = [self.output_video_dir_path + '/' + video_path.split('/')[-1].split('.')[0] + '.avi' for video_path in self.video_paths]
+        
         # project 디렉토리는 항상 시스템 레포 바로 하위에 있어야 함.
         self.repo_path = appInfo.repo_path
         print("repo path: {}".format(self.repo_path))
@@ -389,22 +392,6 @@ class AnalysisWindow(QDialog):
         runInfo.output_contactors_path  = project_name + '/data/output/analysis/'
         runInfo.start_frame             = appInfo.start_frame
         runInfo.end_frame               = appInfo.end_frame
-
-        # runInfo.logfile_name            = appInfo.logfile_name
-        # runInfo.console_log_level       = appInfo.console_log_level
-        # runInfo.file_log_level          = appInfo.file_log_level
-
-        # runInfo.write_result            = appInfo.write_result
-
-        # runInfo.parallel_processing     = appInfo.parallel_processing
-        # runInfo.use_mask_voting         = appInfo.use_mask_voting
-
-        # runInfo.reid_model              = appInfo.reid_model
-
-        # runInfo.trackingGPU             = appInfo.trackingGPU
-        # runInfo.reidGPU                 = appInfo.reidGPU
-        # runInfo.faceGPU                 = appInfo.faceGPU
-        # runInfo.maskGPU                 = appInfo.maskGPU
         
     def stop(self):
         print(" *** stop - before call exit system")
@@ -623,7 +610,8 @@ class AnalysisWindow(QDialog):
         label.setText("finish")
         
     def analysisWithoutThread(self):
-        cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
+        # cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
+        cap = cv2.VideoCapture(self.output_video_path[ self.currrentVideoCnt ])
         
         self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
         label = self.videoShowLabel
@@ -756,7 +744,6 @@ class RouteOfConfirmedCaseWindow(QDialog):
         
     def drawAboveTable(self, sort='IN 시각'):
         # targetListInfo를 1차원 list로 합치기
-        print(self.targetInfoList)
         if len(self.targetInfoList) == 0:
             print("There is no target information -> np.hstack(self.targetInfoList) is error")
         targetInfoFlattenList = np.hstack(self.targetInfoList)
@@ -782,15 +769,14 @@ class RouteOfConfirmedCaseWindow(QDialog):
         max_end_clock = {'month':0, 'day':0, 'h':0, 'm':0, 's':0}
         for row, targetInfo in enumerate(targetInfoFlattenList):
             # 영상 시작 시간, 종료 시간 구하기
-            video_start_clock = get_video_start_clock(targetInfo['video_name'].split('/')[-1])
+            video_start_clock = get_video_start_clock(targetInfo['video_name'])
             video_end_clock = get_video_end_clock(video_start_clock, targetInfo['frame_no'], targetInfo['fps'])
             # print('\033[42m video start clock: {} \033[0m'.format(video_start_clock) )
             # print('\033[42m video end clock: {} \033[0m'.format(video_end_clock) )
             min_start_clock = compare_video_clock(video_start_clock, min_start_clock, 'min')
             max_end_clock = compare_video_clock(video_end_clock, max_end_clock, 'max')
             
-            print(targetInfo)
-            result = [ targetInfo['video_name'].split('/')[-1],
+            result = [ targetInfo['video_name'],
                         str(targetInfo['index']),
                         getTimeFromFrame(targetInfo['in']+getFrameFromClock(video_start_clock, targetInfo['fps']), targetInfo['fps']), 
                         getTimeFromFrame(targetInfo['out']+getFrameFromClock(video_start_clock, targetInfo['fps']), targetInfo['fps'])]
@@ -805,6 +791,8 @@ class RouteOfConfirmedCaseWindow(QDialog):
         # print('\033[102m max start clock: {} \033[0m'.format(max_start_clock) )
         timelineList = []
         # 아래쪽 list -> 각 video결과에 대해 timeline을 그려야 함.
+        # timeline_width = self.listWidget.sizeHint().width()
+
         for targetInfoListOfEachVideo in self.targetInfoList:
             print('in showResult')
 
@@ -813,17 +801,18 @@ class RouteOfConfirmedCaseWindow(QDialog):
                 continue
             else:
                 # (아래쪽 list) 영상 이름 추가
-                videoName = targetInfoListOfEachVideo[0]['video_name'].split('/')[-1]
+                videoName = targetInfoListOfEachVideo[0]['video_name']
                 videoNameWidget = QLabel( videoName )
                 # print(videoName)
                 
                 video_start_clock = get_video_start_clock(videoName)
-                video_end_clock = get_video_end_clock(video_start_clock, targetInfoListOfEachVideo[0]['frame_no'], targetInfoListOfEachVideo[0]['fps'])
+                video_end_clock = get_video_end_clock(video_start_clock, targetInfoListOfEachVideo[0]['frame_end'], targetInfoListOfEachVideo[0]['fps'])
                 
                 fps = targetInfoListOfEachVideo[0]['fps']
                 interval_start_time = getFrameFromClock(video_start_clock, fps) - getFrameFromClock(min_start_clock, fps)
                 interval_mid_time = getFrameFromClock(video_end_clock, fps) - getFrameFromClock(video_start_clock, fps)
                 interval_end_time = getFrameFromClock(max_end_clock, fps) - getFrameFromClock(video_end_clock, fps)
+                interval_total_time = getFrameFromClock(max_end_clock, fps) - getFrameFromClock(min_start_clock, fps)
                 # print('\033[41m min start clock: \n\tis {}\n\tim {}\n\tie {} \033[0m'.format(interval_start_time, interval_mid_time, interval_end_time) )
         
                 # 영상 분석 결과가 0이면 결과에 나타나지 않음.
@@ -832,7 +821,7 @@ class RouteOfConfirmedCaseWindow(QDialog):
                 #     continue
                 
                 # (아래쪽 list) Timeline widget 추가
-                timelineWidget = TimeLineWidget(targetInfoListOfEachVideo, interval_start_time, interval_mid_time, interval_end_time)
+                timelineWidget = TimeLineWidget(targetInfoListOfEachVideo, video_start_clock, video_end_clock, interval_start_time, interval_mid_time, interval_end_time, interval_total_time)
             
                 timelineList.append((timelineWidget.getFirstInStartTime(), timelineWidget, videoNameWidget))
         
@@ -890,7 +879,14 @@ class ContactorListWindow(QDialog):
         for contactorInfo in self.contactorInfoList:
             if os.path.exists(contactorInfo['image_path']):
                 # custom widget를 listWidgetItem으로 추상화하는 용도.
-                custom_widget = ContactorItem(contactorInfo, contactorInfo['video_name'], contactorInfo['fps'])
+                video_start_clock = get_video_start_clock(contactorInfo['video_name'])
+                video_start_frame = getFrameFromClock(video_start_clock, contactorInfo['fps'])
+                appear_clock_str = getTimeFromFrame(contactorInfo['start_time']+video_start_frame, contactorInfo['fps'])
+                disapper_clock_str = getTimeFromFrame(contactorInfo['end_time']+video_start_frame, contactorInfo['fps'])
+                
+                custom_widget = ContactorItem(contactorInfo, contactorInfo['video_name'],
+                                              appear_clock_str, disapper_clock_str,
+                                              contactorInfo['target_mask'], contactorInfo['contactor_mask'])
                 item = QListWidgetItem(self.contactorList)
 
                 # listWidgetItem은 custom widget의 크기를 모르므로 알려줘야 한다.
@@ -900,7 +896,7 @@ class ContactorListWindow(QDialog):
                 
             else:
                 print("Image is not exists: {}")
-
+                
     def backBtnClicked(self):
         # 결과 화면 목록창으로 전환
         self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()-2)

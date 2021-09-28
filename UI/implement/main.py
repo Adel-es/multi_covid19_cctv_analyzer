@@ -32,7 +32,7 @@ def runUI():
 
     #프로그램 화면을 보여주는 코드
     widget.setWindowTitle('CCTV 영상 분석을 통한 코로나 확진자 동선 및 접촉자 판별 시스템')
-    widget.resize(1000, 700)
+    widget.resize(1350, 800)
     # 화면을 중앙에 위치시킴
     center(widget)
     widget.show()

@@ -6,6 +6,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5 import QtGui
 from PIL import Image, ImageQt
+from .utils import *
         
 def getTimeFromFrame(frame, fps):
     sec = frame/int(fps)
@@ -69,7 +70,7 @@ class TimeLineWidget(QWidget):
     '''
         use in RootOfConfirmedCaseWindow class
     '''
-    def __init__(self, targetInfoListOfEachVideo, interval_start_time, interval_mid_time, interval_end_time):
+    def __init__(self, targetInfoListOfEachVideo, video_start_clock, video_end_clock, interval_start_time, interval_mid_time, interval_end_time, interval_total_time):
         super().__init__()
         layout_for_total_video = QHBoxLayout()
         layout = QHBoxLayout()
@@ -82,42 +83,56 @@ class TimeLineWidget(QWidget):
         # self.fps = videoResult.fps
         # self.targetInfoList = videoResult.targetInfoList
         # frameNo = self.targetInfoListOfEachVideo[0]['frame_no']
-
-        self.first_in_time = targetInfoListOfEachVideo[0]['in']        
+        
+        self.first_in_time = targetInfoListOfEachVideo[0]['in'] + interval_start_time       
         start_frame = targetInfoListOfEachVideo[0]['frame_start']
         end_frame   = targetInfoListOfEachVideo[0]['frame_end']
-        frameNo = end_frame - start_frame + 1
+        fps         = targetInfoListOfEachVideo[0]['fps']
+        frameNo     = end_frame - start_frame + 1
         if frameNo < 0 :
             print(" [Error] TimeLineWidget: frame_count < 0 of '{}'".format(targetInfoListOfEachVideo[0]['video_name']))
 
-        prev_end_time = start_frame
+        prev_end_time_dict = get_video_end_clock(video_start_clock, start_frame, fps)
+        prev_end_time = prev_end_time_dict['m'] * 60 + prev_end_time_dict['s']
+        print("\tstart time: {}".format(prev_end_time))
         for info in targetInfoListOfEachVideo:
-            in_time = info['in']
-            out_time = info['out']
-            
-            lineRelWidth = in_time - prev_end_time + 1
-            labelRelWidth = out_time - in_time + 1
+            # sec 단위
+            in_time_dict = get_video_end_clock(video_start_clock, info['in'], fps) 
+            out_time_dict = get_video_end_clock(video_start_clock, info['out'], fps)
+            in_time = in_time_dict['m'] * 60 + in_time_dict['s']
+            out_time = out_time_dict['m'] * 60 + out_time_dict['s']
+            print("\tin_time: {}, out_time: {}".format(in_time, out_time))
+            lineRelWidth = in_time - prev_end_time
+            labelRelWidth = out_time - in_time
             prev_end_time = out_time
             
-            # 시간축 가로선 추가
-            line = HorizontalLine()
+            print(" ** line: {}, label: {}".format(lineRelWidth, labelRelWidth))
+            if lineRelWidth != 0:
+                # 시간축 가로선 추가
+                line = HorizontalLine()
+                layout.addWidget(line, stretch=lineRelWidth)
 
-            # 컬러 시간 블록 추가
-            label = QLabel()
-            
-            label.setFixedHeight(20)
-            label.setStyleSheet("background-color: orange;")
+            if labelRelWidth != 0 or in_time > prev_end_time:
+                # 컬러 시간 블록 추가
+                label = QLabel()
+                label.setFixedHeight(20)
+                label.setStyleSheet("background-color: orange;")
+                layout.addWidget(label, stretch=labelRelWidth)
 
-            layout.addWidget(line, stretch = lineRelWidth)
-            layout.addWidget(label, stretch = labelRelWidth)
 
         line = HorizontalLine()
-        layout.addWidget(line, stretch = frameNo-prev_end_time+1)
+        end_time_dict = get_video_end_clock(video_start_clock, frameNo, fps)
+        end_time = end_time_dict['m'] * 60 + end_time_dict['s']
+        print(" ** end: {}".format(end_time - prev_end_time))
+        layout.addWidget(line, stretch = end_time - prev_end_time)
         layout.setSpacing(0) # widget 간 거리를 0으로 만듦 -> hline과 colorbar간의 거리를 없앰
+        # layout.setFixedWidth(int(widthPerFrame * interval_mid_time))
         
-        layout_for_total_video.addWidget(QLabel(), stretch=interval_start_time)
+        blank1 = QLabel()
+        blank2 = QLabel()
+        layout_for_total_video.addWidget(blank1, stretch=interval_start_time)
         layout_for_total_video.addLayout(layout, stretch=interval_mid_time)
-        layout_for_total_video.addWidget(QLabel(), stretch=interval_end_time)
+        layout_for_total_video.addWidget(blank2, stretch=interval_end_time)
         layout_for_total_video.setSpacing(0)
         self.setLayout(layout_for_total_video)
     
