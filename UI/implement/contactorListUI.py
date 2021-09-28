@@ -48,29 +48,32 @@ class PictureWidget(QWidget):
         # picture = Image.open(path)
         picture = cv2.imread(path)
         h, w, c = picture.shape
-        fixed_sz = 150
+        origin_fixed_h = 500
+        small_fixed_sz = 150
         # 원본 사진 & 썸네일 용 작은 사진
         picture = cv2.cvtColor(picture, cv2.COLOR_BGR2RGB)
-                 
-        origin_pixmap = QPixmap.fromImage(QtGui.QImage(picture.data, w, h, w*c, QtGui.QImage.Format_RGB888))
+        
+        origin_w = int(w * (origin_fixed_h / h))
+        origin_picture = cv2.resize(picture, dsize=(origin_w, origin_fixed_h), interpolation=cv2.INTER_LINEAR)
+        origin_pixmap = QPixmap.fromImage(QtGui.QImage(origin_picture.data, origin_w, origin_fixed_h, origin_w*c, QtGui.QImage.Format_RGB888))
         self.origin_window = OriginPictureWindow(origin_pixmap)
         
         small_picture = picture[0:w, 0:w]
-        small_picture = cv2.resize(small_picture, dsize=(fixed_sz, fixed_sz), interpolation=cv2.INTER_LINEAR)
+        small_picture = cv2.resize(small_picture, dsize=(small_fixed_sz, small_fixed_sz), interpolation=cv2.INTER_LINEAR)
         sh, sw, sc = small_picture.shape
-        # small_picture = picture.crop( (0, 0, self.w, self.w) ).resize( (fixed_sz,fixed_sz))
+        # small_picture = picture.crop( (0, 0, self.w, self.w) ).resize( (small_fixed_sz,small_fixed_sz))
         small_pixmap = QPixmap.fromImage(QtGui.QImage(small_picture.data, sw, sh, sw*sc, QtGui.QImage.Format_RGB888)) # QPixmap.fromImage(ImageQt.ImageQt(Image.fromarray(small_picture)))
 
         
         # 목록에는 썸네일 사진만 보여준다.
         self.picture_label = QLabel()
         self.picture_label.setPixmap( small_pixmap )
-        self.picture_label.setFixedWidth(fixed_sz)
-        self.picture_label.setFixedHeight(fixed_sz)
+        self.picture_label.setFixedWidth(small_fixed_sz)
+        self.picture_label.setFixedHeight(small_fixed_sz)
 
         self.layout.addWidget(self.picture_label)
         self.setLayout(self.layout)
-        self.setFixedHeight(fixed_sz)
+        self.setFixedHeight(small_fixed_sz)
 
         # self.setMaximumWidth(self.w)
 

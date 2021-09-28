@@ -5,6 +5,7 @@ import logging
 
 from PyQt5.QtWidgets import *
 from configs import appInfo
+from IPython.utils.timing import clock2
 
 def center(self):
     qr = self.frameGeometry()
@@ -104,6 +105,33 @@ def output_file_validation_test(output_video_path):
         print(" [Error] {}: There is no such video file".format(output_video_path))
         exit(-1)
 
+def get_video_start_clock(video_name):
+    import re
+    print(video_name)
+    p = re.compile(r"(\d+).(\d+).(\d\d)(\d\d).(\d+).(\d+).+")
+    m = re.findall(p, video_name)
+    print(m)
+    # clock = {'month':int(m[0][0]), 'day':int(m[0][1]),'h':int(m[0][2]),'m':int(m[0][3])}
+    return clock
+
+def compare_start_clock(clock1, clock2, cmp='min'):
+    if cmp == 'min':
+        for k in ['month', 'day', 'h', 'm']:
+            if(clock1[k] < clock2[k]):
+                return clock1
+            elif(clock1[k] > clock2[k]):
+                return clock2
+        return clock1
+    elif cmp == 'max':
+        for k in ['month', 'day', 'h', 'm']:
+            if(clock1[k] > clock2[k]):
+                return clock1
+            elif(clock1[k] < clock2[k]):
+                return clock2
+        return clock1
+    else:
+        print("\033[91m [Error] utils.py - compare_start_clock() : parameter 'cmp' is expected 'min' or 'max', but now is {}. \033[0m".format(cmp))
+        
 # def getRunInfoFileContents(input_video_path, 
 #                     query_image_path,
 #                     output_video_path, 

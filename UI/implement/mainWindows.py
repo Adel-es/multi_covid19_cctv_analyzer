@@ -223,6 +223,7 @@ class DataInputWindow(QDialog):
 
         self.addPhotoBtn.clicked.connect(self.addPhotoBtnClicked)
         self.addVideoBtn.clicked.connect(self.addVideoBtnClicked)
+        self.showResultBtn.clicked.connect(self.showResultBtnClicked)
         
         if appInfo.only_app_test == False:
             self.errorMessage = ErrorAlertMessage() # 유효성 검사 에서 사용
@@ -302,6 +303,11 @@ class DataInputWindow(QDialog):
         # 분석 thread 시작
         self.stackedWidget.currentWidget().getProjectDirPath(self.project_dir_path, self.photo_paths, self.video_paths)
         self.stackedWidget.currentWidget().start()
+
+    def showResultBtnClicked(self):
+        '''바로 결과 화면으로 이동'''
+        self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+2)
+        self.stackedWidget.currentWidget().getProjectDirPath(self.project_dir_path)
 
     def insertWidgetInListWidget(self, widget, listWidget):
         '''
@@ -747,17 +753,26 @@ class RouteOfConfirmedCaseWindow(QDialog):
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         # 위쪽 table -> 전체 video 결과에 대해 정렬해야함.
+        # 동시에 영상 최소 시작 시간, 최대 시작 시간 구하기
+        min_start_clock = {'month':99, 'day':99, 'h':99, 'm':99}
+        max_start_clock = {'month':0, 'day':0, 'h':0, 'm':0}
         for row, targetInfo in enumerate(targetInfoFlattenList):
             print(targetInfo)
             result = [ targetInfo['video_name'],
                         str(targetInfo['index']),
                         getTimeFromFrame(targetInfo['in'], targetInfo['fps']), 
                         getTimeFromFrame(targetInfo['out'], targetInfo['fps'])]
-
+            
+            video_start_clock = get_video_start_clock(targetInfo['video_name'].split('/')[-1])
+            print('\033[102m video start clock: {} \033[0m'.format(video_start_clock) )
+            min_start_clock = compare_start_clock(video_start_clock, min_start_clock, 'min')
+            max_start_clock = compare_start_clock(video_start_clock, max_start_clock, 'max')
             for col in range(4):
                 self.tableWidget.setItem(row, col, 
                                         QTableWidgetItem(result[col]))
 
+        print('\033[102m min start clock: {} \033[0m'.format(min_start_clock) )
+        print('\033[102m max start clock: {} \033[0m'.format(max_start_clock) )
         timelineList = []
         # 아래쪽 list -> 각 video결과에 대해 timeline을 그려야 함.
         for targetInfoListOfEachVideo in self.targetInfoList:
