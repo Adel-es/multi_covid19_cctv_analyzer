@@ -107,11 +107,11 @@ def output_file_validation_test(output_video_path):
 
 def get_video_start_clock(video_name):
     import re
-    print(video_name)
+    # print(video_name)
     p = re.compile(r"(\d+).(\d+).(\d\d)(\d\d).(\d+).(\d+).+")
     m = re.findall(p, video_name)
-    print(m)
-    # clock = {'month':int(m[0][0]), 'day':int(m[0][1]),'h':int(m[0][2]),'m':int(m[0][3])}
+    # print(m)
+    clock = {'month':int(m[0][0]), 'day':int(m[0][1]),'h':int(m[0][2]),'m':int(m[0][3])}
     return clock
 
 def compare_start_clock(clock1, clock2, cmp='min'):

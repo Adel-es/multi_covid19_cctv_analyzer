@@ -764,15 +764,15 @@ class RouteOfConfirmedCaseWindow(QDialog):
                         getTimeFromFrame(targetInfo['out'], targetInfo['fps'])]
             
             video_start_clock = get_video_start_clock(targetInfo['video_name'].split('/')[-1])
-            print('\033[102m video start clock: {} \033[0m'.format(video_start_clock) )
+            # print('\033[102m video start clock: {} \033[0m'.format(video_start_clock) )
             min_start_clock = compare_start_clock(video_start_clock, min_start_clock, 'min')
             max_start_clock = compare_start_clock(video_start_clock, max_start_clock, 'max')
             for col in range(4):
                 self.tableWidget.setItem(row, col, 
                                         QTableWidgetItem(result[col]))
 
-        print('\033[102m min start clock: {} \033[0m'.format(min_start_clock) )
-        print('\033[102m max start clock: {} \033[0m'.format(max_start_clock) )
+        # print('\033[102m min start clock: {} \033[0m'.format(min_start_clock) )
+        # print('\033[102m max start clock: {} \033[0m'.format(max_start_clock) )
         timelineList = []
         # 아래쪽 list -> 각 video결과에 대해 timeline을 그려야 함.
         for targetInfoListOfEachVideo in self.targetInfoList:
