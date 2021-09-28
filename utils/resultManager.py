@@ -44,6 +44,15 @@ def maskToken_to_dangerLevel(target : MaskToken, contactor : MaskToken) -> Dange
         else : 
             return DangerLevel.TargetMasked_ContactorUnknown
 
+def maskToken_to_str(mask : MaskToken) -> str : 
+    if mask == MaskToken.Masked : 
+        return "masked"
+    elif mask == MaskToken.NotMasked : 
+        return "notMasked"
+    elif mask == MaskToken.FaceNotFound : 
+        return "faceNotFound"
+    elif mask == MaskToken.UnKnown : 
+        return "UnKnown"
 
 class Contactor : 
     threshold = 75 # our video data is 25fps => so, more than 3sec contact is considered
@@ -53,6 +62,8 @@ class Contactor :
         self.last_contact_frame     : int           = current_frame_num 
         self.is_contactor           : bool          = False
         self.most_danger            : DangerLevel   = DangerLevel.BothMasked
+        self.target_mask            : MaskToken     = MaskToken.UnKnown 
+        self.contactor_mask         : MaskToken     = MaskToken.UnKnown 
         self.capture_frame          : int           = -1
         self.start_contact_frame    : int           = current_frame_num
         self.end_contact_frame      : int           = current_frame_num 
@@ -73,6 +84,8 @@ class Contactor :
             if int(self.most_danger) < int(new_danger_level) :
                 self.most_danger = new_danger_level 
                 self.capture_frame = current_frame_num
+                self.target_mask = maskToken_to_str(target_mask) 
+                self.contactor_mask = maskToken_to_str(contactor_mask)  
                 haveto_save_image = True 
         self.last_contact_frame = current_frame_num 
         return haveto_save_image 
@@ -115,8 +128,7 @@ class ResultManager :
             self.continued = False 
             self.result_dict["target"].append({"in" : self.target_in, "out" : self.target_out})
             self.logger.debug("resultmanager - video end at {}, so make sure target is disappeared.".format(frame_num)) 
-
-
+    
     def transfer_contactor_dict_format(self) : 
         contactor_list = [] 
         for key, value in self.contactor_dict.items() : 
@@ -125,6 +137,8 @@ class ResultManager :
             contactor_list.append({
                 "tid" : key, 
                 "danger_level" : value.most_danger,
+                "target_mask"  : value.target_mask,
+                "contactor_mask" : value.contactor_mask,
                 "capture_time" : value.capture_frame,
                 "start_time" : value.start_contact_frame, 
                 "end_time" : value.end_contact_frame
