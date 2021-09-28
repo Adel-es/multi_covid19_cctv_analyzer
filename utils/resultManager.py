@@ -17,6 +17,7 @@ class DangerLevel(IntEnum) :
     TargetMasked_ContactorUnmasked      = 1  
     TargetMasked_ContactorUnknown       = 1
     BothMasked                          = 0 
+    InitialValue                        = -1
 
     
 def maskToken_to_dangerLevel(target : MaskToken, contactor : MaskToken) -> DangerLevel :
@@ -61,7 +62,7 @@ class Contactor :
         self.continued_contact      : int           = 0
         self.last_contact_frame     : int           = current_frame_num 
         self.is_contactor           : bool          = False
-        self.most_danger            : DangerLevel   = DangerLevel.BothMasked
+        self.most_danger            : DangerLevel   = DangerLevel.InitialValue
         self.target_mask            : MaskToken     = MaskToken.UnKnown 
         self.contactor_mask         : MaskToken     = MaskToken.UnKnown 
         self.capture_frame          : int           = -1
