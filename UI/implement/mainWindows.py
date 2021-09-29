@@ -429,6 +429,8 @@ class AnalysisWindow(QDialog):
         if appInfo.only_app_test == False:
             # runInfo 파일 작성
             self.writeRunInfoFile(self.currrentVideoCnt)
+            self.videoNameLabel.setText(self.video_paths[ self.currrentVideoCnt ])
+            self.videoShowLabel.setText("분석 준비 중입니다. 잠시만 기다려 주세요.")
             if appInfo.sync_analysis_system == True:
                 # print(" *** start - run analysis system")
                 
@@ -625,6 +627,7 @@ class AnalysisWindow(QDialog):
         label.setText("finish")
         
     def analysisWithoutThread(self):
+        
         # cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
         cap = cv2.VideoCapture(self.output_video_path[ self.currrentVideoCnt ])
         
