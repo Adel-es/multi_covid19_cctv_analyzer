@@ -169,6 +169,7 @@ def runPersonReid(shm, processOrder, nextPid, select_reid_model, gpu_idx=0):
     end_frame = runInfo.end_frame
     query_image_path = runInfo.query_image_path
     print(" ********************** in personreid: input file path: {}".format(input_video_path))
+    print(" ********************** in personreid: query file path: {}".format(query_image_path))
 
     set_cuda_visible_devices(gpu_idx)
     

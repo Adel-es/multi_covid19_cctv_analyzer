@@ -55,7 +55,7 @@ def runMaskDetection(shm, processOrder, nextPid):
 		if frame_index % 4 != 0 : 
 			continue 
 
-		print("mask detection frame : {}".format(frame_index))
+		# print("mask detection frame : {}".format(frame_index))
 		shm_frame_index, person_indices = shm.get_ready_to_read() 
 		reid = shm.data.frames[shm_frame_index].reid
 		if reid == -1 : 

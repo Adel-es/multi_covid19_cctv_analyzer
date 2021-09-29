@@ -13,6 +13,7 @@ from .confirmedListUI import *
 from .utils import *
 import numpy as np
 
+from configs import runInfo
 
 if appInfo.only_app_test == False:
     import shutil
@@ -21,50 +22,50 @@ if appInfo.only_app_test == False:
         from typing import List
         from distance import getCentroid
         from utils.types import MaskToken
-        from configs import runInfo
+        # from configs import runInfo
         from utils.resultManager import Contactor, ResultManager
 
-    def draw_bbox_and_tid(frame, person, isConfirmed):
-        TEXT_UP_FROM_BBOX = 5
-        Width = int((person.bbox.maxX - person.bbox.minX))
-        Height = int( (person.bbox.maxY  - person.bbox.minY) )
-        bboxLeftUpPoint = (int(person.bbox.minX ), int(person.bbox.minY))
-        bboxRightDownPoint = (int(person.bbox.maxX), int(person.bbox.maxY))
-        bboxHeadX = int((person.bbox.minX + person.bbox.maxX) / 2 )
-        bboxHeadY = int(person.bbox.minY - Height / 10)
-        
-        triangleSize = Width / 5 * 2 
-        pt1 = (bboxHeadX, bboxHeadY)
-        pt2 = (int(bboxHeadX - 0.5 * triangleSize), int(bboxHeadY - 0.86 *triangleSize)) 
-        pt3 =  (int(bboxHeadX + 0.5 * triangleSize), int(bboxHeadY - 0.86 *triangleSize)) 
-        triangle_cnt = np.array( [pt1, pt2, pt3] )
-        
-        tidText = "ID: " + str(person.tid)
-        tidPosition = (bboxLeftUpPoint[0], bboxLeftUpPoint[1]-TEXT_UP_FROM_BBOX)
-        
-        if isConfirmed:
-            # bboxColor = (0, 0, 255) # red
-            tidColor = (0, 0, 255) # red
-            # cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 3)
-            cv2.drawContours(frame, [triangle_cnt], 0, tidColor, -1)
-        else:
-            tidColor = (0, 255, 0) # green
-
-        thick = int(Width / 3)
-        if thick <= 0 : 
-            thick = 1
-        elif thick > 3 : 
-            thick = 3 
+        def draw_bbox_and_tid(frame, person, isConfirmed):
+            TEXT_UP_FROM_BBOX = 5
+            Width = int((person.bbox.maxX - person.bbox.minX))
+            Height = int( (person.bbox.maxY  - person.bbox.minY) )
+            bboxLeftUpPoint = (int(person.bbox.minX ), int(person.bbox.minY))
+            bboxRightDownPoint = (int(person.bbox.maxX), int(person.bbox.maxY))
+            bboxHeadX = int((person.bbox.minX + person.bbox.maxX) / 2 )
+            bboxHeadY = int(person.bbox.minY - Height / 10)
             
-        scale = Width / 140
-        if scale <= 0.7 : 
-            scale = 0.7
-        elif scale > 2 : 
-            scale = 2
-        
-        bboxColor = (255, 255, 255) # white 
-        cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 3)
-        cv2.putText(frame, tidText, tidPosition, 0, scale, tidColor, thick)
+            triangleSize = Width / 5 * 2 
+            pt1 = (bboxHeadX, bboxHeadY)
+            pt2 = (int(bboxHeadX - 0.5 * triangleSize), int(bboxHeadY - 0.86 *triangleSize)) 
+            pt3 =  (int(bboxHeadX + 0.5 * triangleSize), int(bboxHeadY - 0.86 *triangleSize)) 
+            triangle_cnt = np.array( [pt1, pt2, pt3] )
+            
+            tidText = "ID: " + str(person.tid)
+            tidPosition = (bboxLeftUpPoint[0], bboxLeftUpPoint[1]-TEXT_UP_FROM_BBOX)
+            
+            if isConfirmed:
+                # bboxColor = (0, 0, 255) # red
+                tidColor = (0, 0, 255) # red
+                # cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 3)
+                cv2.drawContours(frame, [triangle_cnt], 0, tidColor, -1)
+            else:
+                tidColor = (0, 255, 0) # green
+
+            thick = int(Width / 3)
+            if thick <= 0 : 
+                thick = 1
+            elif thick > 3 : 
+                thick = 3 
+                
+            scale = Width / 140
+            if scale <= 0.7 : 
+                scale = 0.7
+            elif scale > 2 : 
+                scale = 2
+            
+            bboxColor = (255, 255, 255) # white 
+            cv2.rectangle(frame, bboxLeftUpPoint, bboxRightDownPoint, bboxColor, 3)
+            cv2.putText(frame, tidText, tidPosition, 0, scale, tidColor, thick)
 
         def save_contactor_images(frame, shm, person_indices : List[int], save_list) :
             from configs import runInfo
@@ -84,7 +85,7 @@ if appInfo.only_app_test == False:
                 
 
         def update_output_json(shm, res_manager, frame_number:int, frame_index : int, person_indices : List[int]) -> List : 
-            from configs import runInfo
+            # from configs import runInfo
             end_frame = runInfo.end_frame
             
             reid_index = shm.data.frames[frame_index].reid 
@@ -398,8 +399,7 @@ class AnalysisWindow(QDialog):
         #                                     )
         # setting_file.write(contents)
         # setting_file.close()
-
-        from configs import runInfo
+        
         runInfo.input_video_path        = project_name + '/data/input/' + input_video_name
         runInfo.query_image_path        = project_name + '/data/input/query/'
         runInfo.output_json_path        = project_name + '/data/output/analysis/' + input_video_name.split('.')[0] +'.json'
@@ -407,6 +407,14 @@ class AnalysisWindow(QDialog):
         runInfo.output_contactors_path  = project_name + '/data/output/analysis/'
         runInfo.start_frame             = appInfo.start_frame
         runInfo.end_frame               = appInfo.end_frame
+        
+        if runInfo.end_frame == -1 : 
+            print("end frame is updated!")
+            video_capture = cv2.VideoCapture(runInfo.input_video_path)
+            real_end_frame = int(video_capture.get( cv2.CAP_PROP_FRAME_COUNT )) - 1
+            runInfo.end_frame = real_end_frame
+        
+        
         
     def stop(self):
         print(" *** stop - before call exit system")
@@ -438,7 +446,7 @@ class AnalysisWindow(QDialog):
                 self.videoShowLabel.setText("분석 준비 중입니다. 잠시만 기다려 주세요.")
                 
                 loop = QEventLoop()
-                QTimer.singleShot(10, loop.quit) #25ms
+                QTimer.singleShot(25, loop.quit) #25ms
                 loop.exec_()
                 # self.videoShowLabel.repaint()
                 
@@ -455,7 +463,9 @@ class AnalysisWindow(QDialog):
                 from write_video import writeVideo
                 from accuracy_check.file_io import writeShmToJsonFile
 
+                    
                 input_video_path = runInfo.input_video_path
+                    
                 print(" *** start : input_video_path: {}".format(input_video_path))
                 start_frame = runInfo.start_frame
                 end_frame = runInfo.end_frame
@@ -505,7 +515,7 @@ class AnalysisWindow(QDialog):
         '''
             appInfo.sync_analysis_system == True 일 때 실행되는 analysis Window
         '''
-        from configs import runInfo
+        # from configs import runInfo
         input_video_path = runInfo.input_video_path
         output_video_path = runInfo.output_video_path
         
@@ -543,8 +553,11 @@ class AnalysisWindow(QDialog):
         width = qrect.width()
         height = qrect.height()
         
+        print("\033[41m {} \033[0m".format("! start !"))
         while self.running:
             ret, frame = video_capture.read()
+            # print("\033[41m ret : {} \033[0m".format(ret))
+            # print("\033[41m end_frame : {} \033[0m".format(end_frame))
             if ret != True:
                 break
             
@@ -552,10 +565,11 @@ class AnalysisWindow(QDialog):
             frame_index += 1
             if frame_index < start_frame:
                 continue
-            if frame_index > end_frame:
+            if not (end_frame == -1) and frame_index > end_frame:
                 break
             if frame_index % 4 != 0 : 
                 continue 
+            # print("\033[41m frame : {} \033[0m".format(frame_index))
             
             # 분석 영상 처리하는 과정 동안 이벤트 처리할 수 있도록 함.
             # bef_loop = QEventLoop()
@@ -612,7 +626,7 @@ class AnalysisWindow(QDialog):
             label.setPixmap(pixmap)
             
             aft_loop = QEventLoop()
-            QTimer.singleShot(25, aft_loop.quit) #25ms
+            QTimer.singleShot(10, aft_loop.quit) #25ms
             aft_loop.exec_()
             
             # label.repaint()
@@ -630,6 +644,10 @@ class AnalysisWindow(QDialog):
         
     def analysisWithoutThread(self):
         
+        aft_loop = QEventLoop()
+        QTimer.singleShot(5000, aft_loop.quit) #25ms
+        aft_loop.exec_()
+            
         # cap = cv2.VideoCapture(self.video_paths[ self.currrentVideoCnt ])
         cap = cv2.VideoCapture(self.output_video_path[ self.currrentVideoCnt ])
         
@@ -640,8 +658,13 @@ class AnalysisWindow(QDialog):
         width = qrect.width()
         height = qrect.height()
 
+        frame_index = -1
         while self.running:
             ret, img = cap.read()
+            frame_index += 1
+            if frame_index % 4 != 0 : 
+                continue 
+            
             if ret:
                 img = cv2.resize(img, dsize=(width, height), interpolation=cv2.INTER_LINEAR)
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
@@ -652,7 +675,7 @@ class AnalysisWindow(QDialog):
             else:
                 break
             loop = QEventLoop()
-            QTimer.singleShot(10, loop.quit) #25ms
+            QTimer.singleShot(180, loop.quit) #25ms
             loop.exec_()
             
         cap.release()

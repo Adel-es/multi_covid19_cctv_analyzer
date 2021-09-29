@@ -242,7 +242,7 @@ def run_top_db_test(engine, cfg, start_frame, end_frame, use_vote, reid_threshol
             continue 
         # if frame_no % 10 == 0:
             # print("\tFrame no in topdb: {}".format(frame_no))
-        print("\tFrame no in topdb: {}".format(frame_no))
+        # print("\tFrame no in topdb: {}".format(frame_no))
         frameIdx, personIdx = shm.get_ready_to_read()
         
         # frame에 사람이 없다면 pass
