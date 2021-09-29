@@ -58,6 +58,8 @@ def writeVideoSyncWithUI(shm, processOrder, nextPid):
             continue
         if frame_index > end_frame:
             break
+        if frame_index % 4 != 0 : 
+            continue 
         # for test 
         
         frameIdx, personIdx = shm.get_ready_to_read()
@@ -139,6 +141,8 @@ def writeVideo(shm, processOrder, nextPid):
             continue
         if frame_index > end_frame:
             break
+        if frame_index % 4 != 0 : 
+            continue
         # for test 
         
         frameIdx, personIdx = shm.get_ready_to_read()
