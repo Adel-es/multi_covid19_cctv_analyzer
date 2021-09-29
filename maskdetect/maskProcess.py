@@ -52,6 +52,8 @@ def runMaskDetection(shm, processOrder, nextPid):
 			continue 
 		if frame_index > end_frame : 
 			break 
+		if frame_index % 4 != 0 : 
+			continue 
 
 		print("mask detection frame : {}".format(frame_index))
 		shm_frame_index, person_indices = shm.get_ready_to_read() 

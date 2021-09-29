@@ -550,6 +550,8 @@ class AnalysisWindow(QDialog):
                 continue
             if frame_index > end_frame:
                 break
+            if frame_index % 4 != 0 : 
+                continue 
             
             # 분석 영상 처리하는 과정 동안 이벤트 처리할 수 있도록 함.
             # bef_loop = QEventLoop()

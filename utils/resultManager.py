@@ -56,7 +56,7 @@ def maskToken_to_str(mask : MaskToken) -> str :
         return "UnKnown"
 
 class Contactor : 
-    threshold = 75 # our video data is 25fps => so, more than 3sec contact is considered
+    threshold = 75 / 4 # our video data is 25fps => so, more than 3sec contact is considered
     
     def __init__(self, current_frame_num : int) : 
         self.continued_contact      : int           = 0
@@ -73,7 +73,7 @@ class Contactor :
     def update(self, current_frame_num : int, target_mask : MaskToken, contactor_mask : MaskToken) -> bool: 
         haveto_save_image = False 
         
-        if self.last_contact_frame + 1 == current_frame_num : 
+        if self.last_contact_frame + 4 >= current_frame_num : 
             self.continued_contact = self.continued_contact + 1 
         else : 
             self.continued_contact = 1
