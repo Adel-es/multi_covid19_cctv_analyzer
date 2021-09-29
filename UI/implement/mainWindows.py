@@ -174,7 +174,8 @@ class FirstWindow(QDialog):
                         os.makedirs("{}/{}".format(self.proj_dir_path, "data/output/analysis"))
                         
                     # 이미 존재하는 프로젝트를 사용할 것인지 물음
-                    buttonReply = QMessageBox.question(self, 'Warning', u"이미 존재하는 프로젝트입니다. 계속하시겠습니까?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                    # buttonReply = QMessageBox.question(self, 'Warning', u"이미 존재하는 프로젝트입니다. 계속하시겠습니까?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                    buttonReply = QMessageBox.question(self, 'Warning', u"새로운 프로젝트를 생성합니다. 계속하시겠습니까?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                     if buttonReply == QMessageBox.Yes:
                         # DataInputWindow로 전환
                         self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
@@ -221,16 +222,17 @@ class DataInputWindow(QDialog):
         self.video_paths = []
         self.photo_paths = []
 
+        self.confirmedImage.setAlignment(Qt.AlignCenter)
         self.addPhotoBtn.clicked.connect(self.addPhotoBtnClicked)
         self.addVideoBtn.clicked.connect(self.addVideoBtnClicked)
         self.showResultBtn.clicked.connect(self.showResultBtnClicked)
+        self.photoListWidget.itemClicked.connect(self.photoItemClicked)
         
         if appInfo.only_app_test == False:
             self.errorMessage = ErrorAlertMessage() # 유효성 검사 에서 사용
             self.startAnalysisBtn.clicked.connect(self.startAnalysisBtnClicked)
         else:
             self.startAnalysisBtn.clicked.connect(self.startAnalysisBtnClickedNoValid)
-        
 
     def getProjectDirPath(self, project_dir_path):
         self.project_dir_path = project_dir_path
@@ -239,16 +241,12 @@ class DataInputWindow(QDialog):
         # 기존에 있던 프로젝트의 경우, 이미 옮겨놓은 파일들을 ListWidget에 띄워준다.
         self.photo_paths = [ self.query_dir_path+'/'+_ for _ in os.listdir(self.query_dir_path)]
         for ppath in self.photo_paths:
-            filepath_label = QLabel( ppath )
-            filepath_label.setFixedHeight(20)
-            self.insertWidgetInListWidget( filepath_label, self.photoListWidget )
+            self.photoListWidget.addItem(ppath)
             
         # print('existing photos: ', self.photo_paths)
         self.video_paths = [ self.video_dir_path+'/'+_ for _ in os.listdir(self.video_dir_path) if not os.path.isdir( self.video_dir_path+'/'+_ )]
         for vpath in self.video_paths:
-            filepath_label = QLabel( vpath )
-            filepath_label.setFixedHeight(20)
-            self.insertWidgetInListWidget( filepath_label, self.videoListWidget )
+            self.videoListWidget.addItem(vpath)
         # print('existing videos: ', self.video_paths)
         
         
@@ -257,11 +255,10 @@ class DataInputWindow(QDialog):
         image_format = 'All File(*);; PNG File(*.png *.PNG);; JPEG File(*.jpg *.jpeg *.jfif)'
         filepath = QFileDialog.getOpenFileName(self, 'Open Images', '', image_format)
         if filepath[0] != '':
-            filepath_label = QLabel( filepath[0] )
-            filepath_label.setFixedHeight(20)
-            self.insertWidgetInListWidget( filepath_label, self.photoListWidget )
+            self.photoListWidget.addItem(filepath[0])
             self.photo_paths.append( filepath[0] )
-
+            self.drawConfirmedPicture(filepath[0])
+            
             if appInfo.only_app_test == False:
                 shutil.copy(filepath[0], self.query_dir_path)
 
@@ -273,14 +270,32 @@ class DataInputWindow(QDialog):
         video_format = 'All File(*);; Video File(*.avi *.mp4);; H264 file(*.h264)'
         filepath = QFileDialog.getOpenFileName(self, 'Open Videos', '', video_format)
         if filepath[0] != '':
-            filepath_label = QLabel( filepath[0] )
-            filepath_label.setFixedHeight(20)
-            self.insertWidgetInListWidget( filepath_label, self.videoListWidget )
+            self.videoListWidget.addItem(filepath[0])
             self.video_paths.append( filepath[0] )
 
             if appInfo.only_app_test == False:
                 shutil.copy(filepath[0], self.video_dir_path)
 
+    def photoItemClicked(self):
+        # 이미지 로드
+        path = self.photoListWidget.currentItem().text()
+        self.drawConfirmedPicture(path)
+
+    def drawConfirmedPicture(self, path):
+        picture = cv2.imread(path)
+        h, w, c = picture.shape
+        picture = cv2.cvtColor(picture, cv2.COLOR_BGR2RGB)
+        
+        # origin_fixed_h = self.confirmedImage.size().height()-4
+        origin_w = self.confirmedImage.size().width()-4
+        origin_h = int(h * (origin_w / w))
+        origin_picture = cv2.resize(picture, dsize=(origin_w, origin_h), interpolation=cv2.INTER_LINEAR)
+        origin_pixmap = QPixmap.fromImage(QtGui.QImage(origin_picture.data, origin_w, origin_h, origin_w*c, QtGui.QImage.Format_RGB888))
+        self.origin_window = OriginPictureWindow(origin_pixmap)
+    
+        self.confirmedImage.setPixmap(origin_pixmap)
+        self.confirmedImage.repaint()
+        
     def startAnalysisBtnClicked(self):
         '''입력 파일에 대한 유효성 검사(비어있지 않은지 등)'''
         if len(self.photo_paths) == 0:
