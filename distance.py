@@ -30,6 +30,8 @@ def checkDistance(shm, processOrder, nextPid):
     shm.init_process(processOrder, myPid, nextPid)
     
     for fIdx in range(FRAME_NUM):
+        if fIdx % 4 != 0 : 
+            continue 
         frameIdx, personIdx = shm.get_ready_to_read()
     
         reid = shm.data.frames[frameIdx].reid
