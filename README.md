@@ -14,7 +14,7 @@
 아직 Person re-identification의 정확도가 높지 못하다.
 # Getting Start
 ## Requirements
--conda 4.10.1
+- conda 4.10.1
 ## Setting
 아래를 순서대로 실행한다.
 ```
